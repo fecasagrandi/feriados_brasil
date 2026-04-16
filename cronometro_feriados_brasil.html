@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cronômetro — Feriados Nacionais do Brasil</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #181818;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.15);
+      --text: #f0ede8;
+      --text-muted: rgba(240,237,232,0.45);
+      --accent: #e8d5a3;
+      --accent-dim: rgba(232,213,163,0.12);
+      --radius: 10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .header {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .main-name {
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .main-date {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 1s linear;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 2.5rem;
+    }
+
+    .unit {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 8px 14px;
+      text-align: center;
+    }
+
+    .unit-val {
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .unit-lbl {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 0 0 1.5rem;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .next-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .next-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 14px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .next-item:hover {
+      background: var(--surface);
+      border-color: var(--border-hover);
+    }
+
+    .next-item.active {
+      background: var(--accent-dim);
+      border-color: rgba(232,213,163,0.3);
+    }
+
+    .next-item-name {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .next-item-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .next-item-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .next-item-days {
+      font-size: 12px;
+      color: var(--accent);
+      min-width: 28px;
+      text-align: right;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="header">feriados nacionais — brasil</div>
+    <div class="main-name" id="hname">—</div>
+    <div class="main-date" id="hdate">—</div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="countdown">
+      <div class="unit"><div class="unit-val" id="days">--</div><div class="unit-lbl">dias</div></div>
+      <div class="unit"><div class="unit-val" id="hours">--</div><div class="unit-lbl">horas</div></div>
+      <div class="unit"><div class="unit-val" id="mins">--</div><div class="unit-lbl">min</div></div>
+      <div class="unit"><div class="unit-val" id="secs">--</div><div class="unit-lbl">seg</div></div>
+    </div>
+    <hr class="divider">
+    <div class="section-label">próximos feriados</div>
+    <div class="next-list" id="list"></div>
+  </div>
+
+  <script>
+    const feriados = [
+      { name: "Tiradentes", date: "2025-04-21" },
+      { name: "Dia do Trabalho", date: "2025-05-01" },
+      { name: "Corpus Christi", date: "2025-06-19" },
+      { name: "Independência do Brasil", date: "2025-09-07" },
+      { name: "Nossa Sra. Aparecida", date: "2025-10-12" },
+      { name: "Finados", date: "2025-11-02" },
+      { name: "Proclamação da República", date: "2025-11-15" },
+      { name: "Consciência Negra", date: "2025-11-20" },
+      { name: "Natal", date: "2025-12-25" },
+      { name: "Confraternização Universal", date: "2026-01-01" },
+      { name: "Carnaval", date: "2026-03-03" },
+      { name: "Paixão de Cristo", date: "2026-04-03" },
+      { name: "Tiradentes", date: "2026-04-21" },
+      { name: "Dia do Trabalho", date: "2026-05-01" },
+      { name: "Corpus Christi", date: "2026-06-04" },
+      { name: "Independência do Brasil", date: "2026-09-07" },
+      { name: "Nossa Sra. Aparecida", date: "2026-10-12" },
+      { name: "Finados", date: "2026-11-02" },
+      { name: "Proclamação da República", date: "2026-11-15" },
+      { name: "Consciência Negra", date: "2026-11-20" },
+      { name: "Natal", date: "2026-12-25" },
+    ];
+
+    const months = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+    const weekdays = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+    let selectedIdx = 0;
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function getTargetMs(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      return new Date(y, m - 1, d, 0, 0, 0, 0).getTime();
+    }
+
+    function formatDate(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      return `${weekdays[dt.getDay()]}, ${d} de ${months[m-1]} de ${y}`;
+    }
+
+    function getDaysUntil(dateStr) {
+      return Math.ceil((getTargetMs(dateStr) - Date.now()) / 86400000);
+    }
+
+    function getUpcoming() {
+      return feriados.filter(f => getTargetMs(f.date) > Date.now()).slice(0, 6);
+    }
+
+    function buildList(items) {
+      const list = document.getElementById("list");
+      list.innerHTML = "";
+      items.forEach((f, i) => {
+        const days = getDaysUntil(f.date);
+        const el = document.createElement("div");
+        el.className = "next-item" + (i === selectedIdx ? " active" : "");
+        el.innerHTML = `
+          <span class="next-item-name">${f.name}</span>
+          <span class="next-item-right">
+            <span class="next-item-date">${formatDate(f.date)}</span>
+            <span class="next-item-days">${days}d</span>
+          </span>`;
+        el.onclick = () => { selectedIdx = i; tick(); };
+        list.appendChild(el);
+      });
+    }
+
+    function tick() {
+      const upcoming = getUpcoming();
+      if (!upcoming.length) return;
+      const f = upcoming[selectedIdx] || upcoming[0];
+      const now = Date.now();
+      const target = getTargetMs(f.date);
+      const diff = Math.max(0, target - now);
+
+      const totalSec = Math.floor(diff / 1000);
+      document.getElementById("hname").textContent = f.name;
+      document.getElementById("hdate").textContent = formatDate(f.date);
+      document.getElementById("days").textContent = pad(Math.floor(totalSec / 86400));
+      document.getElementById("hours").textContent = pad(Math.floor((totalSec % 86400) / 3600));
+      document.getElementById("mins").textContent = pad(Math.floor((totalSec % 3600) / 60));
+      document.getElementById("secs").textContent = pad(totalSec % 60);
+
+      const prevTarget = selectedIdx > 0 ? getTargetMs(upcoming[selectedIdx - 1].date) : now - 30 * 86400000;
+      const total = target - prevTarget;
+      const pct = Math.min(100, Math.max(0, ((now - prevTarget) / total) * 100));
+      document.getElementById("prog").style.width = pct.toFixed(1) + "%";
+
+      buildList(upcoming);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
