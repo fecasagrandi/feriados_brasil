@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contagem regressiva para os próximos feriados nacionais do Brasil, calculados automaticamente para qualquer ano." />
+  <meta name="theme-color" content="#0d0d0d" />
   <title>Cronômetro — Feriados Nacionais do Brasil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,9 +18,10 @@
       --border: rgba(255,255,255,0.08);
       --border-hover: rgba(255,255,255,0.15);
       --text: #f0ede8;
-      --text-muted: rgba(240,237,232,0.45);
+      --text-muted: rgba(240,237,232,0.5);
       --accent: #e8d5a3;
       --accent-dim: rgba(232,213,163,0.12);
+      --accent-border: rgba(232,213,163,0.3);
       --radius: 10px;
     }
 
@@ -25,15 +31,14 @@
       font-family: 'DM Mono', 'Courier New', monospace;
       min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1rem;
     }
 
-    .container {
-      width: 100%;
-      max-width: 560px;
-    }
+    button { font: inherit; color: inherit; background: none; border: 0; }
+    :focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+    .container { width: 100%; max-width: 560px; }
 
     .header {
       font-size: 11px;
@@ -46,7 +51,6 @@
     .main-name {
       font-size: 32px;
       font-weight: 400;
-      color: var(--text);
       line-height: 1.15;
       margin-bottom: 6px;
       letter-spacing: -0.01em;
@@ -56,7 +60,23 @@
       font-size: 13px;
       color: var(--text-muted);
       margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border: 0.5px solid var(--border-hover);
+      border-radius: 4px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .tag.accent { color: var(--accent); border-color: var(--accent-border); }
 
     .progress-bar {
       height: 1px;
@@ -88,10 +108,10 @@
 
     .unit-val {
       font-size: 36px;
-      font-weight: 400;
       color: var(--accent);
       line-height: 1;
       letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
     }
 
     .unit-lbl {
@@ -102,10 +122,32 @@
       margin-top: 6px;
     }
 
+    .today {
+      display: none;
+      font-size: 20px;
+      color: var(--accent);
+      text-align: center;
+      padding: 22px 0;
+      margin-bottom: 2.5rem;
+      border: 0.5px solid var(--accent-border);
+      border-radius: var(--radius);
+      background: var(--accent-dim);
+    }
+    body.is-today .today { display: block; }
+    body.is-today .countdown { display: none; }
+
     .divider {
       border: none;
       border-top: 0.5px solid var(--border);
       margin: 0 0 1.5rem;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 12px;
     }
 
     .section-label {
@@ -113,173 +155,316 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 1rem;
     }
 
-    .next-list {
+    .toggle {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .toggle input { accent-color: var(--accent); }
+
+    .year-nav { display: flex; align-items: center; gap: 4px; }
+    .year-nav button {
+      font-size: 13px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .year-nav button:hover { color: var(--text); background: var(--surface); }
+    .year-nav span { font-size: 12px; min-width: 3.5em; text-align: center; }
+
+    .list {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      margin-bottom: 2.5rem;
     }
 
-    .next-item {
+    .item {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
       padding: 11px 14px;
       border: 0.5px solid var(--border);
       border-radius: var(--radius);
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
     }
+    .item:hover { background: var(--surface); border-color: var(--border-hover); }
+    .item.active { background: var(--accent-dim); border-color: var(--accent-border); }
+    .item:disabled { cursor: default; opacity: 0.4; }
+    .item:disabled:hover { background: none; border-color: var(--border); }
 
-    .next-item:hover {
-      background: var(--surface);
-      border-color: var(--border-hover);
-    }
-
-    .next-item.active {
-      background: var(--accent-dim);
-      border-color: rgba(232,213,163,0.3);
-    }
-
-    .next-item-name {
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .next-item-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .next-item-date {
+    .item-left { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+    .item-name { font-size: 13px; }
+    .item-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .item-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+    .item-days {
       font-size: 12px;
+      color: var(--accent);
+      min-width: 5.5em;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .footnote {
+      font-size: 11px;
+      line-height: 1.6;
       color: var(--text-muted);
     }
 
-    .next-item-days {
-      font-size: 12px;
-      color: var(--accent);
-      min-width: 28px;
-      text-align: right;
+    @media (max-width: 420px) {
+      .main-name { font-size: 26px; }
+      .unit-val { font-size: 28px; }
+      .item-date { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .progress-fill, .item { transition: none; }
     }
   </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <div class="header">feriados nacionais — brasil</div>
-    <div class="main-name" id="hname">—</div>
+
+    <h1 class="main-name" id="hname">—</h1>
     <div class="main-date" id="hdate">—</div>
-    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
-    <div class="countdown">
+
+    <div class="progress-bar" title="tempo decorrido desde o último feriado">
+      <div class="progress-fill" id="prog" style="width:0%"></div>
+    </div>
+
+    <div class="countdown" role="timer" aria-label="tempo restante">
       <div class="unit"><div class="unit-val" id="days">--</div><div class="unit-lbl">dias</div></div>
       <div class="unit"><div class="unit-val" id="hours">--</div><div class="unit-lbl">horas</div></div>
       <div class="unit"><div class="unit-val" id="mins">--</div><div class="unit-lbl">min</div></div>
       <div class="unit"><div class="unit-val" id="secs">--</div><div class="unit-lbl">seg</div></div>
     </div>
+    <div class="today">é hoje!</div>
+
     <hr class="divider">
-    <div class="section-label">próximos feriados</div>
-    <div class="next-list" id="list"></div>
-  </div>
 
+    <div class="section-head">
+      <h2 class="section-label">próximos</h2>
+      <label class="toggle">
+        <input type="checkbox" id="facultativos">
+        pontos facultativos
+      </label>
+    </div>
+    <div class="list" id="proximos"></div>
+
+    <div class="section-head">
+      <h2 class="section-label">calendário</h2>
+      <div class="year-nav">
+        <button type="button" id="ano-ant" aria-label="ano anterior">‹</button>
+        <span id="ano" aria-live="polite">—</span>
+        <button type="button" id="ano-prox" aria-label="próximo ano">›</button>
+      </div>
+    </div>
+    <div class="list" id="calendario"></div>
+
+    <p class="footnote">
+      Datas calculadas a partir da Páscoa (algoritmo de Meeus/Jones/Butcher), válidas para qualquer ano.
+      Pontos facultativos seguem a portaria federal e valem para o serviço público federal;
+      estados e municípios têm feriados próprios, não listados aqui.
+    </p>
+
+    <noscript><p class="footnote">Esta página precisa de JavaScript para calcular os feriados.</p></noscript>
+  </main>
+
+  <script src="feriados.js"></script>
   <script>
-    const feriados = [
-      { name: "Tiradentes", date: "2025-04-21" },
-      { name: "Dia do Trabalho", date: "2025-05-01" },
-      { name: "Corpus Christi", date: "2025-06-19" },
-      { name: "Independência do Brasil", date: "2025-09-07" },
-      { name: "Nossa Sra. Aparecida", date: "2025-10-12" },
-      { name: "Finados", date: "2025-11-02" },
-      { name: "Proclamação da República", date: "2025-11-15" },
-      { name: "Consciência Negra", date: "2025-11-20" },
-      { name: "Natal", date: "2025-12-25" },
-      { name: "Confraternização Universal", date: "2026-01-01" },
-      { name: "Carnaval", date: "2026-03-03" },
-      { name: "Paixão de Cristo", date: "2026-04-03" },
-      { name: "Tiradentes", date: "2026-04-21" },
-      { name: "Dia do Trabalho", date: "2026-05-01" },
-      { name: "Corpus Christi", date: "2026-06-04" },
-      { name: "Independência do Brasil", date: "2026-09-07" },
-      { name: "Nossa Sra. Aparecida", date: "2026-10-12" },
-      { name: "Finados", date: "2026-11-02" },
-      { name: "Proclamação da República", date: "2026-11-15" },
-      { name: "Consciência Negra", date: "2026-11-20" },
-      { name: "Natal", date: "2026-12-25" },
-    ];
+    (function () {
+      "use strict";
 
-    const months = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
-    const weekdays = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
-    let selectedIdx = 0;
+      const F = window.Feriados;
+      const $ = (id) => document.getElementById(id);
 
-    function pad(n) { return String(n).padStart(2, "0"); }
+      const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+      const SEMANA = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+      const QTD_PROXIMOS = 6;
+      const PREF_KEY = "feriados:facultativos";
 
-    function getTargetMs(dateStr) {
-      const [y, m, d] = dateStr.split("-").map(Number);
-      return new Date(y, m - 1, d, 0, 0, 0, 0).getTime();
-    }
+      const state = {
+        facultativos: lerPref(),
+        selecionado: null, // objeto do feriado; null = o próximo
+        ano: null,
+        dia: null,         // "hoje" usado no último render das listas
+        proximos: [],
+        ultimo: null,      // último feriado antes de hoje (base da barra de progresso)
+      };
 
-    function formatDate(dateStr) {
-      const [y, m, d] = dateStr.split("-").map(Number);
-      const dt = new Date(y, m - 1, d);
-      return `${weekdays[dt.getDay()]}, ${d} de ${months[m-1]} de ${y}`;
-    }
+      function lerPref() {
+        try { return localStorage.getItem(PREF_KEY) === "1"; } catch { return false; }
+      }
+      function salvarPref(v) {
+        try { localStorage.setItem(PREF_KEY, v ? "1" : "0"); } catch { /* modo privado etc. */ }
+      }
 
-    function getDaysUntil(dateStr) {
-      return Math.ceil((getTargetMs(dateStr) - Date.now()) / 86400000);
-    }
+      const opcoes = () => ({ facultativos: state.facultativos });
+      const mesmo = (a, b) => !!a && !!b && a.data === b.data && a.nome === b.nome;
+      const pad = (n) => String(n).padStart(2, "0");
 
-    function getUpcoming() {
-      return feriados.filter(f => getTargetMs(f.date) > Date.now()).slice(0, 6);
-    }
+      function hojeIso() {
+        const d = new Date();
+        return F.iso(d.getFullYear(), d.getMonth() + 1, d.getDate());
+      }
 
-    function buildList(items) {
-      const list = document.getElementById("list");
-      list.innerHTML = "";
-      items.forEach((f, i) => {
-        const days = getDaysUntil(f.date);
-        const el = document.createElement("div");
-        el.className = "next-item" + (i === selectedIdx ? " active" : "");
-        el.innerHTML = `
-          <span class="next-item-name">${f.name}</span>
-          <span class="next-item-right">
-            <span class="next-item-date">${formatDate(f.date)}</span>
-            <span class="next-item-days">${days}d</span>
-          </span>`;
-        el.onclick = () => { selectedIdx = i; tick(); };
-        list.appendChild(el);
+      // Meia-noite no fuso de quem está vendo a página.
+      function meiaNoiteLocal(data) {
+        const [a, m, d] = data.split("-").map(Number);
+        return new Date(a, m - 1, d).getTime();
+      }
+
+      function dataLonga(data) {
+        const [a, m, d] = data.split("-").map(Number);
+        return `${SEMANA[F.diaDaSemana(data)]}, ${d} de ${MESES[m - 1]} de ${a}`;
+      }
+
+      function dataCurta(data) {
+        const [, m, d] = data.split("-").map(Number);
+        return `${SEMANA[F.diaDaSemana(data)].slice(0, 3)}, ${pad(d)} ${MESES[m - 1]}`;
+      }
+
+      function quando(dias) {
+        if (dias === 0) return "hoje";
+        if (dias === 1) return "amanhã";
+        if (dias === -1) return "ontem";
+        return dias > 0 ? `${dias} dias` : `há ${-dias} dias`;
+      }
+
+      function tag(texto, accent) {
+        const s = document.createElement("span");
+        s.className = "tag" + (accent ? " accent" : "");
+        s.textContent = texto;
+        return s;
+      }
+
+      function tagsDe(f) {
+        const t = [];
+        if (f.tipo === "facultativo") t.push(tag(f.obs ? `facultativo ${f.obs}` : "facultativo"));
+        const c = F.classificar(f.data);
+        if (c === "feriadão" || c === "ponte") t.push(tag(c, true));
+        return t;
+      }
+
+      function alvo() {
+        return state.selecionado || state.proximos[0];
+      }
+
+      // --- listas: só re-renderizam quando algo muda (dia, seleção, filtro, ano) ---
+
+      function item(f, hoje) {
+        const dias = F.diasEntre(hoje, f.data);
+        const el = document.createElement("button");
+        el.type = "button";
+        el.className = "item" + (mesmo(f, alvo()) ? " active" : "");
+        el.disabled = dias < 0;
+        el.setAttribute("aria-pressed", String(mesmo(f, alvo())));
+
+        const left = document.createElement("span");
+        left.className = "item-left";
+        const nome = document.createElement("span");
+        nome.className = "item-name";
+        nome.textContent = f.nome;
+        left.append(nome, ...tagsDe(f));
+
+        const right = document.createElement("span");
+        right.className = "item-right";
+        const data = document.createElement("span");
+        data.className = "item-date";
+        data.textContent = dataCurta(f.data);
+        const d = document.createElement("span");
+        d.className = "item-days";
+        d.textContent = quando(dias);
+        right.append(data, d);
+
+        el.append(left, right);
+        el.addEventListener("click", () => {
+          state.selecionado = f;
+          render();
+        });
+        return el;
+      }
+
+      function render() {
+        const hoje = hojeIso();
+        const [anoHoje] = hoje.split("-").map(Number);
+        state.dia = hoje;
+        if (state.ano === null) state.ano = anoHoje;
+
+        // Janela de ~1 ano em cada direção: sempre contém ao menos um 1º de janeiro.
+        state.proximos = F.feriadosEntre(hoje, F.somaDias(hoje, 400), opcoes()).slice(0, QTD_PROXIMOS);
+        const passados = F.feriadosEntre(F.somaDias(hoje, -400), F.somaDias(hoje, -1), opcoes());
+        state.ultimo = passados[passados.length - 1] || null;
+
+        // Seleção inválida (já passou ou foi filtrada) volta para o próximo feriado.
+        const s = state.selecionado;
+        if (s && (s.data < hoje || (s.tipo === "facultativo" && !state.facultativos))) {
+          state.selecionado = null;
+        }
+
+        $("proximos").replaceChildren(...state.proximos.map((f) => item(f, hoje)));
+        $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f) => item(f, hoje)));
+        $("ano").textContent = state.ano;
+        $("facultativos").checked = state.facultativos;
+
+        const f = alvo();
+        $("hname").textContent = f.nome;
+        $("hdate").replaceChildren(document.createTextNode(dataLonga(f.data)), ...tagsDe(f));
+
+        const dias = F.diasEntre(hoje, f.data);
+        document.title = `${dias === 0 ? "hoje" : dias + "d"} · ${f.nome} — Feriados Nacionais`;
+
+        tick();
+      }
+
+      // --- contador: roda todo segundo, só mexe em texto ---
+
+      function tick() {
+        const hoje = hojeIso();
+        if (hoje !== state.dia) return render(); // virou o dia
+
+        const f = alvo();
+        const now = Date.now();
+        const target = meiaNoiteLocal(f.data);
+        const ehHoje = f.data === hoje;
+        document.body.classList.toggle("is-today", ehHoje);
+
+        const totalSec = Math.max(0, Math.floor((target - now) / 1000));
+        $("days").textContent = pad(Math.floor(totalSec / 86400));
+        $("hours").textContent = pad(Math.floor((totalSec % 86400) / 3600));
+        $("mins").textContent = pad(Math.floor((totalSec % 3600) / 60));
+        $("secs").textContent = pad(totalSec % 60);
+
+        let pct = 100;
+        if (!ehHoje && state.ultimo) {
+          const base = meiaNoiteLocal(state.ultimo.data);
+          pct = ((now - base) / (target - base)) * 100;
+        }
+        $("prog").style.width = Math.min(100, Math.max(0, pct)).toFixed(2) + "%";
+      }
+
+      $("facultativos").addEventListener("change", (e) => {
+        state.facultativos = e.target.checked;
+        salvarPref(state.facultativos);
+        render();
       });
-    }
+      $("ano-ant").addEventListener("click", () => { state.ano = Math.max(1583, state.ano - 1); render(); });
+      $("ano-prox").addEventListener("click", () => { state.ano = Math.min(9999, state.ano + 1); render(); });
 
-    function tick() {
-      const upcoming = getUpcoming();
-      if (!upcoming.length) return;
-      const f = upcoming[selectedIdx] || upcoming[0];
-      const now = Date.now();
-      const target = getTargetMs(f.date);
-      const diff = Math.max(0, target - now);
-
-      const totalSec = Math.floor(diff / 1000);
-      document.getElementById("hname").textContent = f.name;
-      document.getElementById("hdate").textContent = formatDate(f.date);
-      document.getElementById("days").textContent = pad(Math.floor(totalSec / 86400));
-      document.getElementById("hours").textContent = pad(Math.floor((totalSec % 86400) / 3600));
-      document.getElementById("mins").textContent = pad(Math.floor((totalSec % 3600) / 60));
-      document.getElementById("secs").textContent = pad(totalSec % 60);
-
-      const prevTarget = selectedIdx > 0 ? getTargetMs(upcoming[selectedIdx - 1].date) : now - 30 * 86400000;
-      const total = target - prevTarget;
-      const pct = Math.min(100, Math.max(0, ((now - prevTarget) / total) * 100));
-      document.getElementById("prog").style.width = pct.toFixed(1) + "%";
-
-      buildList(upcoming);
-    }
-
-    tick();
-    setInterval(tick, 1000);
+      render();
+      setInterval(tick, 1000);
+    })();
   </script>
 </body>
 </html>
