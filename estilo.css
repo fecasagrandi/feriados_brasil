@@ -1,0 +1,471 @@
+/* Fontes servidas pelo próprio site (OFL — licenças em fontes/). Só o subconjunto latino. */
+@font-face { font-family: 'Barlow Condensed'; font-weight: 600; font-display: swap; src: url(fontes/barlow-condensed-600.woff2) format('woff2'); }
+@font-face { font-family: 'DM Mono'; font-weight: 400; font-display: swap; src: url(fontes/dm-mono-400.woff2) format('woff2'); }
+@font-face { font-family: 'DM Mono'; font-weight: 500; font-display: swap; src: url(fontes/dm-mono-500.woff2) format('woff2'); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Claro: folhinha de parede sobre papel. Vermelho = "dia vermelho". */
+:root {
+  color-scheme: light;
+  --bg: #f2f1ed;
+  --paper: #ffffff;
+  --ink: #1b1a17;
+  --muted: #6b6860;
+  --line: #dcd9d1;
+  --red: #c41e1a;
+  --band: #c41e1a;
+  --hl: rgba(196, 30, 26, 0.06);
+  --mark: #d9d5cc;
+  --shadow: 0 1px 0 #d2cec5, 0 12px 24px -16px rgba(40, 30, 20, 0.45);
+
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --mono: 'DM Mono', ui-monospace, 'Courier New', monospace;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Escuro: a mesma folhinha, de noite. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #100f0e;
+    --paper: #1c1b19;
+    --ink: #ece8df;
+    --muted: #9b968b;
+    --line: #2a2825;
+    --red: #ff6456;
+    --band: #c9302a;
+    --hl: rgba(255, 100, 86, 0.07);
+    --mark: #2d2b28;
+    --shadow: 0 0 0 1px #2a2825, 0 18px 30px -18px rgba(0, 0, 0, 0.9);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #100f0e;
+  --paper: #1c1b19;
+  --ink: #ece8df;
+  --muted: #9b968b;
+  --line: #2a2825;
+  --red: #ff6456;
+  --band: #c9302a;
+  --hl: rgba(255, 100, 86, 0.07);
+  --mark: #2d2b28;
+  --shadow: 0 0 0 1px #2a2825, 0 18px 30px -18px rgba(0, 0, 0, 0.9);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem 4rem;
+  transition: background-color 0.35s, color 0.35s;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 2px; }
+
+.container { width: 100%; max-width: 600px; }
+
+.rotulo {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.link {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 2px 0;
+  border-bottom: 1px dashed currentColor;
+  transition: color 0.15s;
+}
+.link:hover { color: var(--ink); }
+
+/* ---------- topo ---------- */
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* ---------- herói: folhinha + nome ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 2.25rem;
+}
+
+.folha-wrap {
+  position: relative;
+  isolation: isolate;
+  perspective: 700px;
+}
+
+/* páginas de baixo do bloquinho */
+.folha-wrap::before,
+.folha-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  z-index: -1;
+}
+.folha-wrap::before { transform: translate(3px, 4px); opacity: 0.7; }
+.folha-wrap::after { transform: translate(6px, 8px); opacity: 0.4; }
+
+.folha {
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.35s;
+}
+
+/* borda picotada no topo, de onde a folha foi arrancada */
+.folha::before {
+  content: "";
+  display: block;
+  height: 6px;
+  background:
+    radial-gradient(circle at 4px 0, var(--bg) 2.4px, transparent 2.9px) 0 0 / 8px 6px repeat-x,
+    var(--band);
+}
+
+.folha-mes {
+  background: var(--band);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 2px 0 7px;
+}
+
+.folha-dia {
+  font: 600 84px/1 var(--display);
+  color: var(--red);
+  padding-top: 10px;
+  font-feature-settings: "tnum";
+}
+.folha.facultativo .folha-dia { color: var(--ink); }
+
+.folha-sem {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 0 14px;
+}
+
+.folha.caindo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
+.carimbo {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  z-index: 3;
+  font: 600 22px/1 var(--display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 2.5px solid currentColor;
+  border-radius: 4px;
+  padding: 4px 8px 2px 10px;
+  background: color-mix(in srgb, var(--paper) 75%, transparent);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  pointer-events: none;
+}
+body.is-today .carimbo { animation: carimbar 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) 0.15s both; }
+
+@keyframes carimbar {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(-14deg) scale(2.2); }
+  to   { opacity: 0.92; transform: translate(-50%, -50%) rotate(-14deg) scale(1); }
+}
+
+.hero-info { min-width: 0; }
+
+.hero-rotulo {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.hero-nome {
+  font: 600 46px/0.98 var(--display);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  margin-bottom: 12px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tag {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 5px 1px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tag.forte { color: var(--red); }
+
+/* ---------- contagem ---------- */
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+
+.unit { padding: 14px 0 12px 16px; border-left: 1px solid var(--line); }
+.unit:first-child { padding-left: 0; border-left: 0; }
+
+.clip { display: block; overflow: hidden; }
+
+.num {
+  display: block;
+  font: 600 66px/1 var(--display);
+  font-feature-settings: "tnum";
+  letter-spacing: 0.01em;
+}
+#days { color: var(--red); }
+
+.unit .rotulo { font-size: 10px; margin-top: 4px; }
+
+.hoje-msg {
+  display: none;
+  font: 600 44px/1 var(--display);
+  color: var(--red);
+  padding: 20px 0 16px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+body.is-today .hoje-msg { display: block; }
+body.is-today .countdown { display: none; }
+
+/* ---------- dias riscados ---------- */
+
+.dias { margin-bottom: 3rem; }
+
+.marcas {
+  display: flex;
+  gap: 2px;
+  height: 20px;
+  align-items: flex-end;
+}
+
+.marca {
+  flex: 1;
+  min-width: 1px;
+  height: 10px;
+  background: var(--mark);
+  border-radius: 1px;
+  transform-origin: 50% 100%;
+  transition: background-color 0.35s;
+}
+.marca.feita { background: var(--muted); opacity: 0.55; }
+.marca.hoje { background: var(--ink); height: 20px; }
+.marca.alvo { background: var(--red); height: 20px; }
+.marcas.anima .marca { animation: brotar 0.45s var(--ease-out) both; }
+
+@keyframes brotar {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+.barra { flex: 1; height: 4px; background: var(--mark); border-radius: 2px; overflow: hidden; align-self: center; }
+.barra-fill { height: 100%; background: var(--red); }
+
+.dias-legenda {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------- listas ---------- */
+
+.secao-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.controles { display: flex; align-items: center; gap: 16px; }
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.toggle input { accent-color: var(--red); cursor: pointer; }
+
+.ano-nav { display: flex; align-items: center; gap: 2px; }
+.ano-nav button {
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  color: var(--muted);
+  border-radius: 50%;
+  transition: background-color 0.15s, color 0.15s;
+}
+.ano-nav button:hover { color: var(--ink); background: var(--hl); }
+.ano-nav span { font: 600 20px/1 var(--display); min-width: 3ch; text-align: center; }
+
+.lista { border-top: 1px solid var(--line); margin-bottom: 3rem; }
+
+.linha {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px 9px 6px;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.15s;
+}
+.linha:hover:not(:disabled) { background: var(--hl); }
+.linha.ativa { background: var(--hl); }
+.linha:disabled { cursor: default; opacity: 0.38; }
+
+.l-data { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.l-dia { font: 600 28px/1 var(--display); color: var(--red); font-feature-settings: "tnum"; }
+.linha.facultativo .l-dia { color: var(--ink); }
+.l-mes { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+.l-meio { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 8px; min-width: 0; }
+.l-nome { font-size: 13px; }
+.linha.ativa .l-nome { font-weight: 500; }
+.l-sem { flex-basis: 100%; font-size: 11px; color: var(--muted); }
+
+.l-quando { font-size: 12px; white-space: nowrap; transition: color 0.15s; }
+.linha.ativa .l-quando { color: var(--red); }
+
+.nota { font-size: 11px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
+
+/* ---------- estado / localização ---------- */
+
+.local { margin: -1rem 0 2.25rem; }
+
+.local-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.local select {
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 5px 26px 5px 8px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: right 12px center, right 7px center;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  max-width: 100%;
+  transition: border-color 0.15s, background-color 0.35s;
+}
+.local select:hover { border-color: var(--muted); }
+
+.local-status {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.local-status.ok { color: var(--ink); }
+
+/* ---------- rodapé ---------- */
+
+.rodape { display: grid; gap: 1.25rem; }
+
+.privacidade { font-size: 11px; line-height: 1.7; color: var(--muted); max-width: 60ch; }
+.privacidade summary { display: inline-block; list-style: none; }
+.privacidade summary::-webkit-details-marker { display: none; }
+.privacidade ul { margin: 0.75rem 0 0 1.1rem; display: grid; gap: 0.5rem; }
+.privacidade strong { color: var(--ink); font-weight: 500; }
+.privacidade a { color: inherit; }
+.privacidade[open] ul { animation: subir 0.35s var(--ease-out) both; }
+
+/* ---------- entrada da página ---------- */
+
+.entrando .revela { animation: subir 0.6s var(--ease-out) both; animation-delay: calc(var(--d, 0) * 60ms); }
+
+@keyframes subir {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 480px) {
+  body { padding-top: 1.75rem; }
+  .hero { grid-template-columns: 100px 1fr; gap: 20px; }
+  .folha-dia { font-size: 64px; }
+  .hero-nome { font-size: 34px; }
+  .num { font-size: 46px; }
+  .unit { padding-left: 10px; }
+  .hoje-msg { font-size: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -113,3 +113,60 @@ test("paraIcs escapa caracteres especiais do iCalendar", () => {
   const ics = F.paraIcs([{ data: "2026-01-01", nome: "a,b;c\\d", tipo: "feriado" }], new Date(0));
   assert.ok(ics.includes(String.raw`SUMMARY:a\,b\;c\\d`));
 });
+
+// ---------- feriados estaduais ----------
+
+test("sem UF não entra nenhum feriado estadual", () => {
+  assert.ok(F.feriadosDoAno(2026).every((f) => f.abrangencia === "nacional"));
+});
+
+test("SP inclui 9 de julho só a partir de 1997", () => {
+  const tem = (ano) => F.feriadosDoAno(ano, { uf: "SP" }).some((f) => f.data === `${ano}-07-09`);
+  assert.equal(tem(1996), false);
+  assert.equal(tem(1997), true);
+  const f = F.feriadosDoAno(2026, { uf: "SP" }).find((x) => x.data === "2026-07-09");
+  assert.deepEqual(
+    { nome: f.nome, tipo: f.tipo, abrangencia: f.abrangencia, uf: f.uf },
+    { nome: "Revolução Constitucionalista", tipo: "feriado", abrangencia: "estadual", uf: "SP" }
+  );
+});
+
+test("ES: Nossa Senhora da Penha é móvel (Páscoa + 8)", () => {
+  const f = F.feriadosDoAno(2026, { uf: "ES" }).find((x) => x.nome === "Nossa Senhora da Penha");
+  assert.equal(f.data, "2026-04-13"); // Páscoa 05/04 + 8
+  assert.equal(F.diaDaSemana(f.data), 1); // sempre segunda
+});
+
+test("RJ: terça de Carnaval vira feriado estadual e some o ponto facultativo duplicado", () => {
+  const dia = F.feriadosDoAno(2026, { uf: "RJ" }).filter((f) => f.data === "2026-02-17");
+  assert.equal(dia.length, 1);
+  assert.equal(dia[0].tipo, "feriado");
+  assert.equal(dia[0].abrangencia, "estadual");
+});
+
+test("feriado estadual facultativo respeita o filtro (AC, Tratado de Petrópolis)", () => {
+  const nomes = (opts) => F.feriadosDoAno(2026, { uf: "AC", ...opts }).map((f) => f.nome);
+  assert.ok(nomes({}).includes("Tratado de Petrópolis"));
+  assert.ok(!nomes({ facultativos: false }).includes("Tratado de Petrópolis"));
+});
+
+test("todas as 27 UFs funcionam e nenhuma gera feriado duplicado", () => {
+  assert.equal(Object.keys(F.UFS).length, 27);
+  for (const uf of Object.keys(F.UFS)) {
+    const l = F.feriadosDoAno(2026, { uf });
+    const chaves = l.map((f) => f.data + f.nome);
+    assert.equal(new Set(chaves).size, chaves.length, uf);
+    for (let i = 1; i < l.length; i++) assert.ok(l[i - 1].data <= l[i].data, uf);
+  }
+});
+
+test("UF inválida lança RangeError", () => {
+  for (const ruim of ["XX", "sp", "", 35]) {
+    assert.throws(() => F.feriadosDoAno(2026, { uf: ruim }), RangeError);
+  }
+});
+
+test("paraIcs descreve feriado estadual com a UF", () => {
+  const ics = F.paraIcs(F.feriadosDoAno(2026, { uf: "SP" }), new Date(0));
+  assert.ok(ics.includes("SUMMARY:Revolução Constitucionalista\r\nDESCRIPTION:Feriado estadual (SP)"));
+});

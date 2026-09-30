@@ -1,5 +1,5 @@
 /*
- * Cálculo dos feriados nacionais do Brasil — sem dependências.
+ * Cálculo dos feriados nacionais e estaduais do Brasil — sem dependências.
  *
  * Datas são strings ISO "AAAA-MM-DD". Toda a aritmética de datas é feita em UTC,
  * então o resultado não depende do fuso nem de horário de verão do navegador.
@@ -31,6 +31,75 @@
     { offset: -2, nome: "Paixão de Cristo", tipo: "feriado" },
     { offset: 60, nome: "Corpus Christi", tipo: "facultativo" },
   ];
+
+  const UFS = {
+    AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará",
+    DF: "Distrito Federal", ES: "Espírito Santo", GO: "Goiás", MA: "Maranhão", MT: "Mato Grosso",
+    MS: "Mato Grosso do Sul", MG: "Minas Gerais", PA: "Pará", PB: "Paraíba", PR: "Paraná",
+    PE: "Pernambuco", PI: "Piauí", RJ: "Rio de Janeiro", RN: "Rio Grande do Norte",
+    RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima", SC: "Santa Catarina",
+    SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
+  };
+
+  /*
+   * Feriados estaduais. Entram só os que têm consenso entre as fontes consultadas
+   * (date-holidays, eh-dia-util e levantamentos de 2026); divergências estão no README.
+   * Sem entrada = sem feriado estadual em dia próprio (ex.: MG e DF têm o 21/04,
+   * que coincide com Tiradentes; MT tinha só a Consciência Negra, hoje nacional).
+   * `pascoa`: dias a partir do Domingo de Páscoa, no lugar de mes/dia.
+   */
+  const ESTADUAIS = {
+    AC: [
+      { mes: 3, dia: 8, nome: "Dia Internacional da Mulher", desde: 2001 },
+      { mes: 6, dia: 15, nome: "Aniversário do Acre", desde: 1964 },
+      { mes: 9, dia: 5, nome: "Dia da Amazônia", desde: 2004 },
+      { mes: 11, dia: 17, nome: "Tratado de Petrópolis", desde: 2012, tipo: "facultativo" },
+    ],
+    AL: [
+      { mes: 6, dia: 24, nome: "São João", desde: 1993, lei: "Lei 5.508/1993" },
+      { mes: 6, dia: 29, nome: "São Pedro", desde: 1993, lei: "Lei 5.509/1993" },
+      { mes: 9, dia: 16, nome: "Emancipação Política de Alagoas" },
+    ],
+    AM: [{ mes: 9, dia: 5, nome: "Elevação do Amazonas a Província", desde: 1977, lei: "Lei 25/1977" }],
+    AP: [
+      { mes: 3, dia: 19, nome: "Dia de São José", desde: 2002, lei: "Lei 667/2002" },
+      { mes: 9, dia: 13, nome: "Criação do Território Federal do Amapá", lei: "Constituição estadual, art. 335" },
+    ],
+    BA: [{ mes: 7, dia: 2, nome: "Independência da Bahia", lei: "Constituição estadual, art. 6º" }],
+    CE: [{ mes: 3, dia: 25, nome: "Data Magna do Ceará", desde: 2011, lei: "Constituição estadual, art. 18" }],
+    DF: [{ mes: 11, dia: 30, nome: "Dia do Evangélico", desde: 1995, lei: "Lei distrital 963/1995" }],
+    ES: [{ pascoa: 8, nome: "Nossa Senhora da Penha", desde: 2019, lei: "Lei 11.010/2019" }],
+    GO: [
+      { mes: 7, dia: 26, nome: "Fundação da Cidade de Goiás", lei: "Lei 20.756/2020" },
+      { mes: 10, dia: 24, nome: "Pedra Fundamental de Goiânia", lei: "Lei 20.756/2020" },
+    ],
+    MA: [{ mes: 7, dia: 28, nome: "Adesão do Maranhão à Independência", desde: 1964, lei: "Lei 2.457/1964" }],
+    MS: [{ mes: 10, dia: 11, nome: "Criação do Estado", desde: 1979, lei: "Lei 10/1979" }],
+    PA: [{ mes: 8, dia: 15, nome: "Adesão do Grão-Pará à Independência", desde: 1996, lei: "Lei 5.999/1996" }],
+    PB: [
+      { mes: 7, dia: 26, nome: "Homenagem a João Pessoa", desde: 1967, lei: "Lei 3.489/1967" },
+      { mes: 8, dia: 5, nome: "Fundação do Estado", desde: 1967, lei: "Lei 3.489/1967" },
+    ],
+    PI: [{ mes: 10, dia: 19, nome: "Dia do Piauí" }],
+    RJ: [
+      { pascoa: -47, nome: "Carnaval", desde: 2008 },
+      { mes: 4, dia: 23, nome: "Dia de São Jorge", desde: 2008 },
+    ],
+    RN: [{ mes: 10, dia: 3, nome: "Mártires de Cunhaú e Uruaçu", desde: 2006 }],
+    RO: [
+      { mes: 1, dia: 4, nome: "Criação do Estado", desde: 2010, lei: "Lei 2.291/2010" },
+      { mes: 6, dia: 18, nome: "Dia do Evangélico", desde: 2001, lei: "Lei 1.026/2001" },
+    ],
+    RR: [{ mes: 10, dia: 5, nome: "Criação do Estado" }],
+    RS: [{ mes: 9, dia: 20, nome: "Revolução Farroupilha" }],
+    SE: [{ mes: 7, dia: 8, nome: "Emancipação Política de Sergipe" }],
+    SP: [{ mes: 7, dia: 9, nome: "Revolução Constitucionalista", desde: 1997, lei: "Lei 9.497/1997" }],
+    TO: [
+      { mes: 3, dia: 18, nome: "Autonomia do Estado", desde: 1998, lei: "Lei 960/1998" },
+      { mes: 9, dia: 8, nome: "Nossa Senhora da Natividade", desde: 1993, lei: "Lei 627/1993" },
+      { mes: 10, dia: 5, nome: "Criação do Estado", desde: 1989, lei: "Lei 98/1989" },
+    ],
+  };
 
   const ANO_MIN = 1583; // primeiro ano completo do calendário gregoriano
   const ANO_MAX = 9999; // limite do formato AAAA
@@ -88,29 +157,60 @@
     return iso(ano, mes, dia);
   }
 
-  function feriadosDoAno(ano, { facultativos = true } = {}) {
+  function validarUf(uf) {
+    if (uf != null && !Object.prototype.hasOwnProperty.call(UFS, uf)) {
+      throw new RangeError(`UF inválida: ${uf}`);
+    }
+  }
+
+  const PESO_TIPO = { feriado: 0, facultativo: 1 };
+  const PESO_ABRANGENCIA = { nacional: 0, estadual: 1 };
+
+  // `uf`: sigla (ex.: "SP") para incluir os feriados estaduais; null/omitido = só nacionais.
+  function feriadosDoAno(ano, { facultativos = true, uf = null } = {}) {
     validarAno(ano);
-    const lista = [];
+    validarUf(uf);
+    const p = pascoa(ano);
+    let lista = [];
 
     for (const f of FIXOS) {
       if (f.desde && ano < f.desde) continue;
-      lista.push({ data: iso(ano, f.mes, f.dia), nome: f.nome, tipo: "feriado" });
+      lista.push({ data: iso(ano, f.mes, f.dia), nome: f.nome, tipo: "feriado", abrangencia: "nacional" });
     }
 
-    const p = pascoa(ano);
     for (const f of MOVEIS) {
-      if (f.tipo === "facultativo" && !facultativos) continue;
-      const item = { data: somaDias(p, f.offset), nome: f.nome, tipo: f.tipo };
+      const item = { data: somaDias(p, f.offset), nome: f.nome, tipo: f.tipo, abrangencia: "nacional" };
       if (f.obs) item.obs = f.obs;
       lista.push(item);
     }
 
+    if (uf) {
+      for (const f of ESTADUAIS[uf] || []) {
+        if (f.desde && ano < f.desde) continue;
+        const data = f.pascoa != null ? somaDias(p, f.pascoa) : iso(ano, f.mes, f.dia);
+        const item = { data, nome: f.nome, tipo: f.tipo || "feriado", abrangencia: "estadual", uf };
+        if (f.lei) item.lei = f.lei;
+        lista.push(item);
+      }
+      // Onde o estado decreta feriado, o ponto facultativo nacional do mesmo dia deixa
+      // de fazer sentido (ex.: terça de Carnaval no RJ).
+      const feriadosEstaduais = new Set(
+        lista.filter((f) => f.abrangencia === "estadual" && f.tipo === "feriado").map((f) => f.data)
+      );
+      lista = lista.filter(
+        (f) => !(f.abrangencia === "nacional" && f.tipo === "facultativo" && feriadosEstaduais.has(f.data))
+      );
+    }
+
+    if (!facultativos) lista = lista.filter((f) => f.tipo === "feriado");
+
     // Datas podem coincidir (Paixão de Cristo caiu em 21/04 em 2000, junto com Tiradentes).
-    // Desempate: feriado antes de facultativo, depois nome — ordenação determinística.
+    // Desempate: feriado antes de facultativo, nacional antes de estadual, depois nome.
     return lista.sort(
       (x, y) =>
         x.data.localeCompare(y.data) ||
-        (x.tipo === y.tipo ? 0 : x.tipo === "feriado" ? -1 : 1) ||
+        PESO_TIPO[x.tipo] - PESO_TIPO[y.tipo] ||
+        PESO_ABRANGENCIA[x.abrangencia] - PESO_ABRANGENCIA[y.abrangencia] ||
         x.nome.localeCompare(y.nome)
     );
   }
@@ -162,7 +262,10 @@
       "METHOD:PUBLISH",
     ];
     for (const f of lista) {
-      const desc = f.tipo === "feriado" ? "Feriado nacional" : `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`;
+      const desc =
+        f.tipo === "feriado"
+          ? f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional"
+          : `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`;
       linhas.push(
         "BEGIN:VEVENT",
         `UID:${f.data}-${slug(f.nome)}@feriados-brasil`,
@@ -180,6 +283,7 @@
   }
 
   const api = {
+    UFS,
     pascoa,
     paraIcs,
     feriadosDoAno,

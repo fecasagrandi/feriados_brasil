@@ -1,0 +1,396 @@
+(function () {
+  "use strict";
+
+  const F = window.Feriados;
+  const $ = (id) => document.getElementById(id);
+
+  const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  const MESES_LONGOS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const SEMANA = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+  const TEMAS = ["auto", "claro", "escuro"];
+  const QTD_PROXIMOS = 6;
+  const MAX_MARCAS = 150;
+  const K_FAC = "feriados:facultativos";
+  const K_TEMA = "feriados:tema";
+  const K_UF = "feriados:uf";
+
+  const state = {
+    facultativos: ler(K_FAC) === "1",
+    uf: Object.prototype.hasOwnProperty.call(F.UFS, ler(K_UF) || "") ? ler(K_UF) : null,
+    tema: TEMAS.includes(ler(K_TEMA)) ? ler(K_TEMA) : "auto",
+    selecionado: null, // objeto do feriado; null = o próximo
+    ano: null,
+    dia: null,         // "hoje" usado no último render
+    proximos: [],
+    ultimo: null,      // último feriado antes de hoje
+    alvoAnterior: null,
+  };
+
+  function ler(k) { try { return localStorage.getItem(k); } catch { return null; } }
+  function gravar(k, v) { try { localStorage.setItem(k, v); } catch { /* modo privado etc. */ } }
+  function apagar(k) { try { localStorage.removeItem(k); } catch { /* idem */ } }
+
+  const reduzMovimento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const opcoes = () => ({ facultativos: state.facultativos, uf: state.uf });
+  const mesmo = (a, b) => !!a && !!b && a.data === b.data && a.nome === b.nome;
+  const pad = (n) => String(n).padStart(2, "0");
+  const partes = (data) => data.split("-").map(Number);
+
+  function el(tag, cls, texto) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (texto != null) e.textContent = texto;
+    return e;
+  }
+
+  function hojeIso() {
+    const d = new Date();
+    return F.iso(d.getFullYear(), d.getMonth() + 1, d.getDate());
+  }
+
+  // Meia-noite no fuso de quem está vendo a página.
+  function meiaNoiteLocal(data) {
+    const [a, m, d] = partes(data);
+    return new Date(a, m - 1, d).getTime();
+  }
+
+  function quando(dias) {
+    if (dias === 0) return "hoje";
+    if (dias === 1) return "amanhã";
+    if (dias === -1) return "ontem";
+    return dias > 0 ? `em ${dias} dias` : `há ${-dias} dias`;
+  }
+
+  function tagsDe(f) {
+    const t = [];
+    if (f.abrangencia === "estadual") t.push(el("span", "tag", `estadual · ${f.uf}`));
+    if (f.tipo === "facultativo") t.push(el("span", "tag", f.obs ? `facultativo ${f.obs}` : "facultativo"));
+    const c = F.classificar(f.data);
+    if (c === "feriadão" || c === "ponte") t.push(el("span", "tag forte", c));
+    else if (c === "fim de semana") t.push(el("span", "tag", "cai no fim de semana"));
+    return t;
+  }
+
+  const alvo = () => state.selecionado || state.proximos[0];
+
+  // ---------- listas ----------
+
+  function linha(f, hoje, i) {
+    const [, m, d] = partes(f.data);
+    const dias = F.diasEntre(hoje, f.data);
+    const ativa = mesmo(f, alvo());
+
+    const b = el("button", "linha revela" + (f.tipo === "facultativo" ? " facultativo" : "") + (ativa ? " ativa" : ""));
+    b.type = "button";
+    b.disabled = dias < 0;
+    b.setAttribute("aria-pressed", String(ativa));
+    b.style.setProperty("--d", 7 + Math.min(i, 8));
+
+    const data = el("span", "l-data");
+    data.append(el("span", "l-dia", String(d)), el("span", "l-mes", MESES[m - 1]));
+
+    const meio = el("span", "l-meio");
+    meio.append(el("span", "l-nome", f.nome), ...tagsDe(f), el("span", "l-sem", SEMANA[F.diaDaSemana(f.data)]));
+
+    b.append(data, meio, el("span", "l-quando", quando(dias)));
+    b.addEventListener("click", () => {
+      state.selecionado = f;
+      render();
+    });
+    return b;
+  }
+
+  // ---------- folhinha ----------
+
+  function arrancarFolha() {
+    if (reduzMovimento()) return;
+    const folha = $("folha");
+    const copia = folha.cloneNode(true);
+    copia.removeAttribute("id");
+    copia.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
+    copia.classList.add("caindo");
+    folha.parentNode.append(copia);
+    copia
+      .animate(
+        [
+          { transform: "none", opacity: 1 },
+          { transform: "translateY(10px) rotateX(-18deg) rotate(4deg)", opacity: 1, offset: 0.3 },
+          { transform: "translateY(130px) rotateX(-40deg) rotate(16deg)", opacity: 0 },
+        ],
+        { duration: 700, easing: "cubic-bezier(0.5, 0, 0.75, 0)", fill: "forwards" }
+      )
+      .finished.then(() => copia.remove(), () => copia.remove());
+  }
+
+  function preencherHeroi(f, hoje) {
+    const [a, m, d] = partes(f.data);
+    $("folha").classList.toggle("facultativo", f.tipo === "facultativo");
+    $("f-mes").textContent = `${MESES[m - 1]} ${a}`;
+    $("f-dia").textContent = String(d);
+    $("f-sem").textContent = SEMANA[F.diaDaSemana(f.data)].split("-")[0];
+
+    const escolhido = state.selecionado && !mesmo(state.selecionado, state.proximos[0]);
+    $("hrotulo").textContent = f.data === hoje ? "hoje é feriado" : escolhido ? "selecionado" : "próximo feriado";
+    $("voltar").hidden = !escolhido;
+
+    $("hnome").textContent = f.nome;
+    $("hmeta").replaceChildren(
+      document.createTextNode(`${d} de ${MESES_LONGOS[m - 1]}, ${SEMANA[F.diaDaSemana(f.data)]}`),
+      ...tagsDe(f)
+    );
+  }
+
+  // Uma marca por dia entre o último feriado e o alvo: dá para "riscar" os dias.
+  function renderMarcas(f, hoje, animar) {
+    const box = $("marcas");
+    const ult = state.ultimo;
+    if (!ult) { box.replaceChildren(); return; }
+
+    const total = F.diasEntre(ult.data, f.data);
+    const passados = F.diasEntre(ult.data, hoje); // a marca i representa o dia ult+i+1
+    box.className = "marcas" + (animar && !reduzMovimento() ? " anima" : "");
+
+    if (total <= MAX_MARCAS) {
+      const marcas = [];
+      for (let i = 0; i < total; i++) {
+        const mk = el("span", "marca");
+        if (i === total - 1) mk.classList.add("alvo");
+        else if (i === passados - 1) mk.classList.add("hoje");
+        else if (i < passados - 1) mk.classList.add("feita");
+        mk.style.animationDelay = Math.min(i * 7, 700) + "ms";
+        marcas.push(mk);
+      }
+      box.replaceChildren(...marcas);
+    } else {
+      const barra = el("span", "barra");
+      const fill = el("span", "barra-fill");
+      fill.style.display = "block";
+      fill.style.width = ((passados / total) * 100).toFixed(1) + "%";
+      barra.append(fill);
+      box.replaceChildren(barra);
+    }
+
+    const [, um, ud] = partes(ult.data);
+    $("leg-desde").textContent = `desde ${ult.nome.toLowerCase()} (${ud} ${MESES[um - 1]})`;
+    $("leg-conta").textContent = f.data === hoje ? "chegou" : `dia ${passados} de ${total}`;
+  }
+
+  // ---------- render: só quando algo muda (dia, seleção, filtro, ano) ----------
+
+  function render() {
+    const hoje = hojeIso();
+    const primeiro = state.dia === null;
+    state.dia = hoje;
+    if (state.ano === null) state.ano = partes(hoje)[0];
+
+    // Janela de ~1 ano em cada direção: sempre contém ao menos um 1º de janeiro.
+    state.proximos = F.feriadosEntre(hoje, F.somaDias(hoje, 400), opcoes()).slice(0, QTD_PROXIMOS);
+    const passados = F.feriadosEntre(F.somaDias(hoje, -400), F.somaDias(hoje, -1), opcoes());
+    state.ultimo = passados[passados.length - 1] || null;
+
+    const s = state.selecionado;
+    const filtrado = (s && s.tipo === "facultativo" && !state.facultativos) || (s && s.uf && s.uf !== state.uf);
+    if (s && (s.data < hoje || filtrado)) {
+      state.selecionado = null;
+    }
+
+    $("proximos").replaceChildren(...state.proximos.map((f, i) => linha(f, hoje, i)));
+    $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f, i) => linha(f, hoje, i)));
+    $("ano").textContent = state.ano;
+    $("facultativos").checked = state.facultativos;
+
+    const f = alvo();
+    const mudou = !primeiro && !mesmo(state.alvoAnterior, f);
+    if (mudou) arrancarFolha();
+    preencherHeroi(f, hoje);
+    renderMarcas(f, hoje, primeiro || mudou);
+    state.alvoAnterior = f;
+
+    const dias = F.diasEntre(hoje, f.data);
+    document.title = `${dias === 0 ? "hoje" : dias + "d"} · ${f.nome} — Feriados Nacionais`;
+
+    tick();
+  }
+
+  // ---------- contador: todo segundo, só mexe em texto ----------
+
+  function setNum(id, valor) {
+    const n = $(id);
+    if (n.textContent === valor) return;
+    const antes = n.textContent;
+    n.textContent = valor;
+    if (antes !== "--" && !reduzMovimento()) {
+      n.animate(
+        [{ transform: "translateY(-60%)", opacity: 0 }, { transform: "none", opacity: 1 }],
+        { duration: 360, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)" }
+      );
+    }
+  }
+
+  function tick() {
+    const hoje = hojeIso();
+    if (hoje !== state.dia) return render(); // virou o dia
+
+    const f = alvo();
+    const ehHoje = f.data === hoje;
+    document.body.classList.toggle("is-today", ehHoje);
+    if (ehHoje) return;
+
+    const totalSec = Math.max(0, Math.floor((meiaNoiteLocal(f.data) - Date.now()) / 1000));
+    setNum("days", pad(Math.floor(totalSec / 86400)));
+    setNum("hours", pad(Math.floor((totalSec % 86400) / 3600)));
+    setNum("mins", pad(Math.floor((totalSec % 3600) / 60)));
+    setNum("secs", pad(totalSec % 60));
+  }
+
+  // ---------- tema ----------
+
+  const coresOriginais = [...document.querySelectorAll('meta[name="theme-color"]')].map((m) => m.content);
+
+  function aplicarTema() {
+    const r = document.documentElement;
+    if (state.tema === "auto") delete r.dataset.theme;
+    else r.dataset.theme = state.tema === "claro" ? "light" : "dark";
+    $("tema").textContent = `tema: ${state.tema}`;
+
+    const metas = document.querySelectorAll('meta[name="theme-color"]');
+    const bg = getComputedStyle(r).getPropertyValue("--bg").trim();
+    metas.forEach((m, i) => { m.content = state.tema === "auto" ? coresOriginais[i] : bg; });
+  }
+
+  $("tema").addEventListener("click", () => {
+    state.tema = TEMAS[(TEMAS.indexOf(state.tema) + 1) % TEMAS.length];
+    gravar(K_TEMA, state.tema);
+    if (document.startViewTransition && !reduzMovimento()) document.startViewTransition(aplicarTema);
+    else aplicarTema();
+  });
+
+  // ---------- demais controles ----------
+
+  $("facultativos").addEventListener("change", (e) => {
+    state.facultativos = e.target.checked;
+    gravar(K_FAC, state.facultativos ? "1" : "0");
+    render();
+  });
+
+  $("voltar").addEventListener("click", () => {
+    state.selecionado = null;
+    render();
+  });
+
+  function mudarAno(delta) {
+    const novo = Math.min(9999, Math.max(1583, state.ano + delta));
+    if (novo === state.ano) return;
+    state.ano = novo;
+    render();
+    if (!reduzMovimento()) {
+      $("calendario").animate(
+        [{ transform: `translateX(${delta * 16}px)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+        { duration: 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }
+      );
+    }
+  }
+  $("ano-ant").addEventListener("click", () => mudarAno(-1));
+  $("ano-prox").addEventListener("click", () => mudarAno(1));
+
+  $("ics").addEventListener("click", () => {
+    const ics = F.paraIcs(F.feriadosDoAno(state.ano, opcoes()));
+    const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+    const a = el("a");
+    a.href = url;
+    a.download = `feriados-${state.ano}${state.uf ? "-" + state.uf : ""}.ics`;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  // ---------- estado (UF) e localização ----------
+
+  const selUf = $("uf");
+  for (const [sigla, nome] of Object.entries(F.UFS).sort((a, b) => a[1].localeCompare(b[1]))) {
+    selUf.append(new Option(`${nome} (${sigla})`, sigla));
+  }
+
+  function status(msg, ok) {
+    const s = $("geo-status");
+    s.textContent = msg;
+    s.classList.toggle("ok", !!ok);
+  }
+
+  function definirUf(uf) {
+    state.uf = uf || null;
+    if (state.uf) gravar(K_UF, state.uf);
+    else apagar(K_UF);
+    selUf.value = state.uf || "";
+    $("esquecer").hidden = !state.uf;
+    render();
+  }
+
+  selUf.addEventListener("change", () => {
+    definirUf(selUf.value);
+    status(state.uf ? `mostrando feriados de ${F.UFS[state.uf]}. só a sigla fica salva neste navegador.` : "mostrando só os feriados nacionais.", !!state.uf);
+  });
+
+  $("esquecer").addEventListener("click", () => {
+    definirUf(null);
+    status("estado apagado deste navegador.");
+  });
+
+  // Os contornos das UFs (~70 KB) só são baixados se a pessoa pedir a localização.
+  function carregarMapa() {
+    if (window.UFS_GEO) return Promise.resolve();
+    return new Promise((ok, falha) => {
+      const s = document.createElement("script");
+      s.src = "ufs-geo.js";
+      s.onload = ok;
+      s.onerror = () => falha(new Error("mapa"));
+      document.head.append(s);
+    });
+  }
+
+  function pedirPosicao() {
+    return new Promise((ok, falha) =>
+      navigator.geolocation.getCurrentPosition(ok, falha, {
+        enableHighAccuracy: false, // precisão de estado basta; poupa bateria e é menos invasivo
+        timeout: 15000,
+        maximumAge: 60 * 60 * 1000,
+      })
+    );
+  }
+
+  $("geo").addEventListener("click", async () => {
+    if (!("geolocation" in navigator) || !window.isSecureContext) {
+      status("este navegador não oferece localização aqui. escolha o estado na lista.");
+      return;
+    }
+    status("aguardando sua permissão…");
+    try {
+      const [pos] = await Promise.all([pedirPosicao(), carregarMapa()]);
+      // A coordenada vive só nesta função: vira sigla e é descartada.
+      const uf = window.Localizacao.ufDoPonto(pos.coords.latitude, pos.coords.longitude, window.UFS_GEO);
+      if (!uf) {
+        status("parece que você está fora do Brasil. escolha o estado na lista.");
+        return;
+      }
+      definirUf(uf);
+      status(`localização aponta ${F.UFS[uf]}. não é aí? é só trocar na lista.`, true);
+    } catch (e) {
+      const porCodigo = {
+        1: "permissão negada. tudo bem: escolha o estado na lista.",
+        2: "não foi possível obter a localização. escolha o estado na lista.",
+        3: "a localização demorou demais. escolha o estado na lista.",
+      };
+      status(porCodigo[e && e.code] || "não deu para descobrir o estado. escolha na lista.");
+    }
+  });
+
+  selUf.value = state.uf || "";
+  $("esquecer").hidden = !state.uf;
+  if (state.uf) status(`mostrando feriados de ${F.UFS[state.uf]}.`, true);
+
+  aplicarTema();
+  render();
+  setInterval(tick, 1000);
+  setTimeout(() => document.body.classList.remove("entrando"), 1800);
+})();
