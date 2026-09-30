@@ -20,31 +20,31 @@
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
   <script src="tema.js?v=e69a144e"></script>
 
-  <link rel="stylesheet" href="estilo.css?v=1c6996ba">
+  <link rel="stylesheet" href="estilo.css?v=f736c562">
 </head>
 <body class="entrando">
   <main class="container">
     <header class="topo revela">
       <span class="rotulo">feriados do brasil</span>
-      <button type="button" class="link" id="tema">tema: auto</button>
+      <div class="topo-acoes">
+        <div class="local" id="local">
+          <button type="button" class="geo" id="geo"
+                  aria-label="usar minha localização para incluir os feriados do meu estado"
+                  title="incluir os feriados do seu estado (a localização não sai do aparelho)">
+            <span class="geo-uf" id="geo-uf"></span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21.5s-6.5-5.9-6.5-11.2a6.5 6.5 0 0 1 13 0c0 5.3-6.5 11.2-6.5 11.2z" />
+              <circle cx="12" cy="10.2" r="2.3" />
+            </svg>
+          </button>
+          <button type="button" class="geo-x" id="esquecer" hidden aria-label="esquecer estado" title="esquecer estado">×</button>
+        </div>
+        <button type="button" class="link" id="tema">tema: auto</button>
+      </div>
     </header>
 
-    <section class="local revela" style="--d:1" aria-label="seu estado">
-      <div class="local-linha">
-        <label class="rotulo" for="uf">estado</label>
-        <select id="uf">
-          <option value="">nenhum — só nacionais</option>
-        </select>
-        <button type="button" class="link" id="geo">usar minha localização</button>
-        <button type="button" class="link" id="esquecer" hidden>esquecer</button>
-      </div>
-      <p class="local-status" id="geo-status" aria-live="polite">
-        A localização só é usada neste aparelho para descobrir o estado. Nada é enviado.
-      </p>
-    </section>
-
     <section class="hero" aria-labelledby="hnome">
-      <div class="folha-wrap revela" style="--d:2">
+      <div class="folha-wrap revela" style="--d:1">
         <div class="folha" id="folha" aria-hidden="true">
           <div class="folha-mes" id="f-mes">—</div>
           <div class="folha-dia" id="f-dia">--</div>
@@ -54,16 +54,16 @@
       </div>
 
       <div class="hero-info">
-        <div class="hero-rotulo revela" style="--d:3">
+        <div class="hero-rotulo revela" style="--d:2">
           <span class="rotulo" id="hrotulo">próximo feriado</span>
           <button type="button" class="link" id="voltar" hidden>voltar ao próximo</button>
         </div>
-        <h1 class="hero-nome revela" id="hnome" style="--d:3">—</h1>
-        <div class="hero-meta revela" id="hmeta" style="--d:4">—</div>
+        <h1 class="hero-nome revela" id="hnome" style="--d:2">—</h1>
+        <div class="hero-meta revela" id="hmeta" style="--d:3">—</div>
       </div>
     </section>
 
-    <div class="countdown revela" style="--d:5" role="timer" aria-label="tempo restante">
+    <div class="countdown revela" style="--d:4" role="timer" aria-label="tempo restante">
       <div class="unit"><span class="clip"><span class="num" id="days">--</span></span><div class="rotulo">dias</div></div>
       <div class="unit"><span class="clip"><span class="num" id="hours">--</span></span><div class="rotulo">horas</div></div>
       <div class="unit"><span class="clip"><span class="num" id="mins">--</span></span><div class="rotulo">min</div></div>
@@ -71,13 +71,13 @@
     </div>
     <div class="hoje-msg">é hoje. bom descanso.</div>
 
-    <div class="dias revela" style="--d:6">
+    <div class="dias revela" style="--d:5">
       <div class="marcas" id="marcas" aria-hidden="true"></div>
       <div class="dias-legenda"><span id="leg-desde"></span><span id="leg-conta"></span></div>
     </div>
 
     <section aria-labelledby="t-proximos">
-      <div class="secao-topo revela" style="--d:7">
+      <div class="secao-topo revela" style="--d:6">
         <h2 class="rotulo" id="t-proximos">próximos</h2>
         <label class="toggle">
           <input type="checkbox" id="facultativos">
@@ -114,13 +114,13 @@
         <ul>
           <li><strong>Sem cookies, sem analytics, sem rastreadores.</strong></li>
           <li>
-            <strong>Localização:</strong> só é pedida quando você clica em “usar minha localização”, e o navegador
+            <strong>Localização:</strong> só é pedida quando você toca no ícone de localização, e o navegador
             pede sua permissão. A coordenada é convertida em estado aqui mesmo, no seu aparelho, e descartada em seguida.
             Ela não é enviada nem guardada.
           </li>
           <li>
             <strong>O que fica guardado no seu navegador</strong> (localStorage, nunca enviado): a sigla do estado,
-            o tema e a preferência de pontos facultativos. “esquecer” apaga o estado; limpar os dados do site apaga tudo.
+            o tema e a preferência de pontos facultativos. o “×” ao lado do estado apaga a sigla; limpar os dados do site apaga tudo.
           </li>
           <li>
             Fontes e scripts vêm deste mesmo site, e a política de segurança da página bloqueia qualquer conexão
@@ -134,11 +134,13 @@
       </details>
     </footer>
 
+    <div class="toast" id="geo-status" role="status" aria-live="polite" hidden></div>
+
     <noscript><p class="nota">Esta página precisa de JavaScript para calcular os feriados.</p></noscript>
   </main>
 
   <script src="feriados.js?v=9583b3e1"></script>
   <script src="localizacao.js?v=a5b0384e"></script>
-  <script src="app.js?v=0d63871a"></script>
+  <script src="app.js?v=2b8f306c"></script>
 </body>
 </html>

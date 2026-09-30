@@ -312,36 +312,40 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
-  // ---------- estado (UF) e localização ----------
+  // ---------- estado (UF) pela localização ----------
 
-  const selUf = $("uf");
-  for (const [sigla, nome] of Object.entries(F.UFS).sort((a, b) => a[1].localeCompare(b[1]))) {
-    selUf.append(new Option(`${nome} (${sigla})`, sigla));
+  let timerToast = null;
+  function avisar(msg) {
+    const t = $("geo-status");
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(timerToast);
+    timerToast = setTimeout(() => { t.hidden = true; }, 5000);
   }
 
-  function status(msg, ok) {
-    const s = $("geo-status");
-    s.textContent = msg;
-    s.classList.toggle("ok", !!ok);
+  function mostrarUf() {
+    $("local").classList.toggle("ativo", !!state.uf);
+    $("geo-uf").textContent = state.uf || "";
+    $("esquecer").hidden = !state.uf;
+    $("geo").setAttribute(
+      "aria-label",
+      state.uf
+        ? `estado: ${F.UFS[state.uf]}. toque para atualizar pela localização`
+        : "usar minha localização para incluir os feriados do meu estado"
+    );
   }
 
   function definirUf(uf) {
     state.uf = uf || null;
     if (state.uf) gravar(K_UF, state.uf);
     else apagar(K_UF);
-    selUf.value = state.uf || "";
-    $("esquecer").hidden = !state.uf;
+    mostrarUf();
     render();
   }
 
-  selUf.addEventListener("change", () => {
-    definirUf(selUf.value);
-    status(state.uf ? `mostrando feriados de ${F.UFS[state.uf]}. só a sigla fica salva neste navegador.` : "mostrando só os feriados nacionais.", !!state.uf);
-  });
-
   $("esquecer").addEventListener("click", () => {
     definirUf(null);
-    status("estado apagado deste navegador.");
+    avisar("estado apagado deste navegador. mostrando só os feriados nacionais.");
   });
 
   // Os contornos das UFs (~70 KB) só são baixados se a pessoa pedir a localização.
@@ -368,33 +372,35 @@
 
   $("geo").addEventListener("click", async () => {
     if (!("geolocation" in navigator) || !window.isSecureContext) {
-      status("este navegador não oferece localização aqui. escolha o estado na lista.");
+      avisar("este navegador não oferece localização aqui.");
       return;
     }
-    status("aguardando sua permissão…");
+    const local = $("local");
+    if (local.classList.contains("buscando")) return;
+    local.classList.add("buscando");
     try {
       const [pos] = await Promise.all([pedirPosicao(), carregarMapa()]);
       // A coordenada vive só nesta função: vira sigla e é descartada.
       const uf = window.Localizacao.ufDoPonto(pos.coords.latitude, pos.coords.longitude, window.UFS_GEO);
       if (!uf) {
-        status("parece que você está fora do Brasil. escolha o estado na lista.");
+        avisar("parece que você está fora do Brasil. mostrando só os feriados nacionais.");
         return;
       }
       definirUf(uf);
-      status(`localização aponta ${F.UFS[uf]}. não é aí? é só trocar na lista.`, true);
+      avisar(`${F.UFS[uf]}: feriados estaduais incluídos. só a sigla fica salva neste navegador.`);
     } catch (e) {
       const porCodigo = {
-        1: "permissão negada. tudo bem: escolha o estado na lista.",
-        2: "não foi possível obter a localização. escolha o estado na lista.",
-        3: "a localização demorou demais. escolha o estado na lista.",
+        1: "permissão negada. para liberar, use o ícone de cadeado ao lado do endereço.",
+        2: "não foi possível obter a localização agora.",
+        3: "a localização demorou demais. tente de novo.",
       };
-      status(porCodigo[e && e.code] || "não deu para descobrir o estado. escolha na lista.");
+      avisar(porCodigo[e && e.code] || "não deu para descobrir o estado.");
+    } finally {
+      local.classList.remove("buscando");
     }
   });
 
-  selUf.value = state.uf || "";
-  $("esquecer").hidden = !state.uf;
-  if (state.uf) status(`mostrando feriados de ${F.UFS[state.uf]}.`, true);
+  mostrarUf();
 
   aplicarTema();
   render();
