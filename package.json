@@ -1,0 +1,7 @@
+{
+  "name": "feriados-brasil",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}
