@@ -41,13 +41,13 @@ Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça 
 
 ## Detecção do estado pela localização
 
-Opcional, e só quando a pessoa clica em "usar minha localização":
+Opcional, e só quando a pessoa toca no ícone de localização (canto superior direito). Não há pedido de permissão ao abrir a página:
 
 1. O navegador pede permissão (Geolocation API, precisão baixa).
 2. A coordenada vira UF **no próprio navegador**, por point-in-polygon sobre contornos simplificados das UFs (`ufs-geo.js`, ~70 KB com gzip, baixado só nessa hora).
 3. A coordenada é descartada; fica salva só a sigla.
 
-Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o único erro é Dores do Rio Preto/ES, colado na divisa com MG). A UF detectada sempre aparece no seletor, e dá para trocar.
+Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o único erro é Dores do Rio Preto/ES, colado na divisa com MG). A UF detectada aparece ao lado do ícone. Se a permissão for negada, a página segue só com os feriados nacionais.
 
 `ufs-geo.js` é gerado por `scripts/gerar-ufs-geo.js` a partir do [geodata-br-states](https://github.com/giuliano-oliveira/geodata-br-states) (MIT, derivado da camada "Estados do Brasil" do LAGEAMB/UFPR).
 
@@ -55,7 +55,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 
 - **Sem cookies, sem analytics, sem rastreadores.** Não há banner de cookies porque não há cookies.
 - A localização nunca sai do aparelho (ver acima).
-- No `localStorage` ficam só: `feriados:uf` (sigla), `feriados:tema` e `feriados:facultativos`. O botão "esquecer" apaga a UF.
+- No `localStorage` ficam só: `feriados:uf` (sigla), `feriados:tema` e `feriados:facultativos`. O "×" ao lado da sigla apaga a UF.
 - Fontes servidas pelo próprio site (antes vinham do Google Fonts, que recebe o IP de cada visitante).
 - A página declara uma **Content-Security-Policy** com `connect-src 'none'` e todos os recursos em `'self'`: o próprio navegador impede que qualquer script envie dados para fora. É uma garantia verificável, não só uma promessa.
 - A hospedagem (GitHub Pages) pode registrar IPs de acesso, como qualquer servidor web.

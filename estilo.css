@@ -393,43 +393,90 @@ body.is-today .countdown { display: none; }
 
 .nota { font-size: 11px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
 
-/* ---------- estado / localização ---------- */
+/* ---------- localização (ícone no canto) ---------- */
 
-.local { margin: -1rem 0 2.25rem; }
+.topo-acoes { display: flex; align-items: center; gap: 18px; }
 
-.local-linha {
-  display: flex;
-  flex-wrap: wrap;
+/* row-reverse: o pino fica parado e "SP ×" cresce para a esquerda,
+   para o "×" nunca surgir embaixo do cursor logo após o clique. */
+.local { display: flex; flex-direction: row-reverse; align-items: center; }
+
+.geo {
+  display: inline-flex;
   align-items: center;
-  gap: 8px 14px;
+  gap: 5px;
+  height: 30px;
+  min-width: 30px;
+  padding: 0 7px;
+  border-radius: 15px;
+  color: var(--muted);
+  transition: color 0.15s, background-color 0.15s;
+}
+.geo:hover { color: var(--ink); background: var(--hl); }
+
+.geo svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linejoin: round;
+  transform-origin: 50% 100%;
 }
 
-.local select {
-  font: inherit;
+.geo-uf {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.geo-uf:empty { display: none; }
+
+/* estado detectado: pino preenchido de vermelho, como o "dia vermelho" */
+.local.ativo .geo { color: var(--red); }
+.local.ativo .geo svg path { fill: currentColor; }
+.local.ativo .geo svg circle { fill: var(--paper); stroke: var(--paper); }
+
+/* procurando: o pino "quica" */
+.local.buscando .geo svg { animation: quicar 0.7s var(--ease-out) infinite alternate; }
+@keyframes quicar {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+.geo-x {
+  width: 20px;
+  height: 20px;
+  margin-right: -2px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--muted);
+  transition: color 0.15s, background-color 0.15s;
+}
+.geo-x:hover { color: var(--ink); background: var(--hl); }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 10;
+  max-width: min(92vw, 420px);
+  padding: 10px 14px;
   font-size: 12px;
+  line-height: 1.5;
   color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 3px;
-  padding: 5px 26px 5px 8px;
-  appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position: right 12px center, right 7px center;
-  background-size: 5px 5px;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  max-width: 100%;
-  transition: border-color 0.15s, background-color 0.35s;
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+  animation: toast-entra 0.3s var(--ease-out) both;
 }
-.local select:hover { border-color: var(--muted); }
-
-.local-status {
-  margin-top: 8px;
-  font-size: 11px;
-  line-height: 1.5;
-  color: var(--muted);
+.toast[hidden] { display: none; }
+@keyframes toast-entra {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
 }
-.local-status.ok { color: var(--ink); }
 
 /* ---------- rodapé ---------- */
 
