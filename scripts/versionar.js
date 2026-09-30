@@ -19,7 +19,7 @@ const RAIZ = path.join(__dirname, "..");
 // Ordem importa: app.js referencia ufs-geo.js, então ele é carimbado antes de ter o próprio hash calculado.
 const ALVOS = [
   { arquivo: "app.js", assets: ["ufs-geo.js"] },
-  { arquivo: "index.html", assets: ["tema.js", "estilo.css", "bandeira.svg", "feriados.js", "localizacao.js", "app.js"] },
+  { arquivo: "index.html", assets: ["favicon.svg", "apple-touch-icon.png", "tema.js", "estilo.css", "bandeira.svg", "feriados.js", "localizacao.js", "app.js"] },
 ];
 
 const hash = (arquivo) =>

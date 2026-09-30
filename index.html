@@ -10,22 +10,28 @@
   -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="description" content="Contagem regressiva para os próximos feriados nacionais e estaduais do Brasil, calculados automaticamente para qualquer ano." />
+  <meta name="description" content="Feriadou: quanto falta para o próximo feriado nacional ou do seu estado, calculado automaticamente para qualquer ano." />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#f2f1ed" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#100f0e" media="(prefers-color-scheme: dark)" />
-  <title>Contagem Regressiva — Feriados do Brasil</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='4' width='26' height='25' rx='3' fill='%23fff' stroke='%231b1a17' stroke-width='2'/%3E%3Cpath d='M4 12V7a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v5z' fill='%23c41e1a'/%3E%3Ctext x='16' y='26' font-family='Arial Narrow,Arial' font-weight='700' font-size='13' text-anchor='middle' fill='%23c41e1a'%3E21%3C/text%3E%3C/svg%3E" />
+  <title>Feriadou — quanto falta para o próximo feriado</title>
+  <meta name="application-name" content="Feriadou" />
+  <meta name="apple-mobile-web-app-title" content="Feriadou" />
+  <link rel="icon" href="favicon.svg?v=be58fcd2" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=dffbfc73" />
 
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
   <script src="tema.js?v=e69a144e"></script>
 
-  <link rel="stylesheet" href="estilo.css?v=5939ee39">
+  <link rel="stylesheet" href="estilo.css?v=4205bee7">
 </head>
 <body class="entrando">
   <main class="container">
     <header class="topo revela">
-      <span class="rotulo">feriados do brasil</span>
+      <span class="logo">
+        <img src="favicon.svg?v=be58fcd2" width="20" height="20" alt="">
+        <span class="rotulo">feriadou</span>
+      </span>
       <div class="topo-acoes">
         <div class="local" id="local">
           <button type="button" class="geo" id="geo"
@@ -111,8 +117,8 @@
     <div class="rodape-grade">
       <div class="rodape-marca">
         <img class="bandeira" src="bandeira.svg?v=1c93bc83" width="50" height="35" alt="Bandeira do Brasil">
-        <p class="rodape-nome">feriados do brasil</p>
-        <p>Contagem regressiva para os feriados nacionais e estaduais, calculada no seu navegador para qualquer ano.</p>
+        <p class="rodape-nome">feriadou</p>
+        <p>Quanto falta para o próximo feriado, nacional ou do seu estado. Calculado no seu navegador, para qualquer ano.</p>
       </div>
 
       <nav aria-labelledby="r-dados">
@@ -160,6 +166,6 @@
 
   <script src="feriados.js?v=9583b3e1"></script>
   <script src="localizacao.js?v=a5b0384e"></script>
-  <script src="app.js?v=2b8f306c"></script>
+  <script src="app.js?v=6de3d029"></script>
 </body>
 </html>

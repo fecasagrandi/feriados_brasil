@@ -1,6 +1,6 @@
-# Contagem Regressiva — Feriados do Brasil
+# Feriadou
 
-Contagem regressiva para os próximos feriados nacionais e estaduais, com visual de folhinha de parede (o feriado é o "dia vermelho"). Página estática, sem build e sem dependências: abra o `index.html` no navegador (funciona até via `file://`).
+Quanto falta para o próximo feriado: contagem regressiva para os feriados nacionais e estaduais, com visual de folhinha de parede (o feriado é o "dia vermelho"). Página estática, sem build e sem dependências: abra o `index.html` no navegador (funciona até via `file://`).
 
 ## Feriados nacionais
 
