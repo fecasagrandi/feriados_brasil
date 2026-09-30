@@ -214,7 +214,7 @@
     state.alvoAnterior = f;
 
     const dias = F.diasEntre(hoje, f.data);
-    document.title = `${dias === 0 ? "hoje" : dias + "d"} · ${f.nome} — Feriados Nacionais`;
+    document.title = `${dias === 0 ? "hoje" : dias + "d"} · ${f.nome} · Feriadou`;
 
     tick();
   }

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Feriadou: folhinha de parede com o "F" em vermelho ("dia vermelho"). -->
+  <style>
+    .borda { stroke: #1b1a17; }
+    .argola { fill: #1b1a17; }
+    @media (prefers-color-scheme: dark) {
+      .borda { stroke: #ece8df; }
+      .argola { fill: #ece8df; }
+    }
+  </style>
+  <!-- página -->
+  <rect x="6" y="9" width="52" height="50" rx="7" fill="#fff" class="borda" stroke-width="3.5" />
+  <!-- faixa do mês -->
+  <path d="M7.75 21V16a5.25 5.25 0 0 1 5.25-5.25h38A5.25 5.25 0 0 1 56.25 16v5z" fill="#c41e1a" />
+  <!-- argolas -->
+  <rect x="17" y="3" width="6" height="12" rx="3" class="argola" />
+  <rect x="41" y="3" width="6" height="12" rx="3" class="argola" />
+  <!-- F -->
+  <path d="M22 27h21v7H30v4h11v6.5H30V54h-8z" fill="#c41e1a" />
+</svg>
