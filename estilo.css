@@ -397,9 +397,38 @@ body.is-today .countdown { display: none; }
 
 .nota { font-size: 11px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
 
+/* ---------- botão de tema ---------- */
+
+.icone {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--muted);
+  transition: color 0.15s, background-color 0.15s;
+}
+.icone:hover { color: var(--ink); background: var(--hl); }
+
+.icone svg {
+  grid-area: 1 / 1;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.45s var(--ease-out), opacity 0.25s;
+}
+
+/* mostra para onde o clique leva: lua no claro, sol no escuro */
+:root[data-theme="light"] .icone .sol,
+:root[data-theme="dark"] .icone .lua { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+
 /* ---------- localização (ícone no canto) ---------- */
 
-.topo-acoes { display: flex; align-items: center; gap: 18px; }
+.topo-acoes { display: flex; align-items: center; gap: 6px; }
 
 /* row-reverse: o pino fica parado e "SP ×" cresce para a esquerda,
    para o "×" nunca surgir embaixo do cursor logo após o clique. */

@@ -66,7 +66,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 - Marcas de "dias riscados" desde o último feriado.
 - Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
 - Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
-- Tema claro e escuro (segue o sistema ou escolha manual, salvo no navegador).
+- Tema claro e escuro num botão (sol/lua). A primeira visita abre no tema do sistema; depois vale a escolha, salva no navegador.
 - Animações respeitam `prefers-reduced-motion`.
 
 ## Estrutura

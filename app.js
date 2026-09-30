@@ -14,7 +14,6 @@
   const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
   const MESES_LONGOS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
   const SEMANA = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
-  const TEMAS = ["auto", "claro", "escuro"];
   const QTD_PROXIMOS = 6;
   const MAX_MARCAS = 150;
   const K_FAC = "feriados:facultativos";
@@ -24,7 +23,7 @@
   const state = {
     facultativos: ler(K_FAC) === "1",
     uf: Object.prototype.hasOwnProperty.call(F.UFS, ler(K_UF) || "") ? ler(K_UF) : null,
-    tema: TEMAS.includes(ler(K_TEMA)) ? ler(K_TEMA) : "auto",
+    tema: document.documentElement.dataset.theme === "dark" ? "escuro" : "claro", // definido por tema.js
     selecionado: null, // objeto do feriado; null = o próximo
     ano: null,
     dia: null,         // "hoje" usado no último render
@@ -252,21 +251,20 @@
 
   // ---------- tema ----------
 
-  const coresOriginais = [...document.querySelectorAll('meta[name="theme-color"]')].map((m) => m.content);
-
   function aplicarTema() {
     const r = document.documentElement;
-    if (state.tema === "auto") delete r.dataset.theme;
-    else r.dataset.theme = state.tema === "claro" ? "light" : "dark";
-    $("tema").textContent = `tema: ${state.tema}`;
+    const escuro = state.tema === "escuro";
+    r.dataset.theme = escuro ? "dark" : "light";
+    const proximo = escuro ? "claro" : "escuro";
+    $("tema").setAttribute("aria-label", `mudar para tema ${proximo}`);
+    $("tema").title = `tema ${proximo}`;
 
-    const metas = document.querySelectorAll('meta[name="theme-color"]');
     const bg = getComputedStyle(r).getPropertyValue("--bg").trim();
-    metas.forEach((m, i) => { m.content = state.tema === "auto" ? coresOriginais[i] : bg; });
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = bg; });
   }
 
   $("tema").addEventListener("click", () => {
-    state.tema = TEMAS[(TEMAS.indexOf(state.tema) + 1) % TEMAS.length];
+    state.tema = state.tema === "escuro" ? "claro" : "escuro";
     gravar(K_TEMA, state.tema);
     if (document.startViewTransition && !reduzMovimento()) document.startViewTransition(aplicarTema);
     else aplicarTema();
