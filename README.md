@@ -79,9 +79,18 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `app.js`, `tema.js`, `estilo.css`, `index.html` | Interface. |
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
+| `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
 | `test/` | Testes com o runner nativo do Node (`node:test`). |
 
 Os arquivos `.js` funcionam como `<script>` clássico e como módulo CommonJS, por isso dá para testar no Node sem build.
+
+## Ao alterar qualquer `.js` ou `.css`
+
+```sh
+node scripts/versionar.js
+```
+
+O GitHub Pages serve cada arquivo com cache de 10 minutos, e cada um expira numa hora diferente. Sem versão na URL, logo após um deploy o navegador pode juntar um `app.js` novo com um `feriados.js` antigo e a página quebra. O script coloca o hash do conteúdo em cada URL; um teste falha no CI se alguém esquecer.
 
 ## Testes
 

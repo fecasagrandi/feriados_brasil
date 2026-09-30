@@ -4,6 +4,13 @@
   const F = window.Feriados;
   const $ = (id) => document.getElementById(id);
 
+  // Arquivos de versões diferentes (cache logo após um deploy): avisar em vez de quebrar em silêncio.
+  if (!F || !F.UFS || !window.Localizacao) {
+    $("hnome").textContent = "página desatualizada";
+    $("hmeta").textContent = "recarregue com Ctrl+Shift+R (ou Cmd+Shift+R no Mac).";
+    return;
+  }
+
   const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
   const MESES_LONGOS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
   const SEMANA = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
@@ -342,7 +349,7 @@
     if (window.UFS_GEO) return Promise.resolve();
     return new Promise((ok, falha) => {
       const s = document.createElement("script");
-      s.src = "ufs-geo.js";
+      s.src = "ufs-geo.js?v=416dd7dd";
       s.onload = ok;
       s.onerror = () => falha(new Error("mapa"));
       document.head.append(s);
