@@ -1,5 +1,10 @@
-try {
-  var t = localStorage.getItem("feriados:tema");
-  if (t === "claro") document.documentElement.dataset.theme = "light";
-  if (t === "escuro") document.documentElement.dataset.theme = "dark";
-} catch (e) {}
+// Aplica o tema antes do primeiro paint (evita piscar).
+// Sempre explícito: o salvo pela pessoa ou, na primeira visita, o do sistema.
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("feriados:tema"); } catch (e) {}
+  if (t !== "claro" && t !== "escuro") {
+    t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "escuro" : "claro";
+  }
+  document.documentElement.dataset.theme = t === "escuro" ? "dark" : "light";
+})();
