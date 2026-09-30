@@ -1,6 +1,6 @@
-# Feriados Nacionais do Brasil
+# Contagem Regressiva — Feriados Nacionais do Brasil
 
-Contagem regressiva para os próximos feriados nacionais. Página estática, sem build e sem dependências: abra o `index.html` no navegador (funciona até via `file://`).
+Contagem regressiva para os próximos feriados nacionais, com visual de folhinha de parede (o feriado é o "dia vermelho"). Página estática, sem build e sem dependências: abra o `index.html` no navegador (funciona até via `file://`).
 
 ## Como as datas são obtidas
 
@@ -14,6 +14,15 @@ Nada é digitado à mão — as datas são **calculadas** para qualquer ano entr
   - Corpus Christi = Páscoa + 60 dias (**ponto facultativo**)
 
 Carnaval e Corpus Christi **não são feriados nacionais por lei**: são pontos facultativos definidos na portaria anual do governo federal. Por isso aparecem só com a opção "pontos facultativos" ligada. Feriados estaduais e municipais não estão incluídos.
+
+## Recursos
+
+- Contagem regressiva até o feriado escolhido (clique em qualquer um da lista).
+- Marcas de "dias riscados" desde o último feriado.
+- Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
+- Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
+- Tema claro e escuro (segue o sistema ou escolha manual, salvo no navegador).
+- Animações respeitam `prefers-reduced-motion`.
 
 ## Estrutura
 

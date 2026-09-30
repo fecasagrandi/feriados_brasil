@@ -137,8 +137,51 @@
     return null; // quarta
   }
 
+  function slug(s) {
+    return s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
+  function escaparIcs(s) {
+    return s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  }
+
+  // iCalendar (RFC 5545). Eventos de dia inteiro: DTEND é exclusivo, então é o dia seguinte.
+  function paraIcs(lista, agora = new Date()) {
+    const stamp = agora.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    const compacta = (d) => d.replace(/-/g, "");
+    const linhas = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//feriados_brasil//PT-BR",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+    ];
+    for (const f of lista) {
+      const desc = f.tipo === "feriado" ? "Feriado nacional" : `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`;
+      linhas.push(
+        "BEGIN:VEVENT",
+        `UID:${f.data}-${slug(f.nome)}@feriados-brasil`,
+        `DTSTAMP:${stamp}`,
+        `DTSTART;VALUE=DATE:${compacta(f.data)}`,
+        `DTEND;VALUE=DATE:${compacta(somaDias(f.data, 1))}`,
+        `SUMMARY:${escaparIcs(f.nome)}`,
+        `DESCRIPTION:${escaparIcs(desc)}`,
+        "TRANSP:TRANSPARENT",
+        "END:VEVENT"
+      );
+    }
+    linhas.push("END:VCALENDAR");
+    return linhas.join("\r\n") + "\r\n";
+  }
+
   const api = {
     pascoa,
+    paraIcs,
     feriadosDoAno,
     feriadosEntre,
     classificar,

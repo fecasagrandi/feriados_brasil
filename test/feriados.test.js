@@ -92,3 +92,24 @@ test("ano inválido lança RangeError", () => {
     assert.throws(() => F.feriadosDoAno(ruim), RangeError);
   }
 });
+
+test("paraIcs gera iCalendar válido (CRLF, DTEND exclusivo, linhas ≤ 75 octetos)", () => {
+  const lista = F.feriadosDoAno(2026);
+  const ics = F.paraIcs(lista, new Date("2026-09-30T18:25:11.123Z"));
+  assert.ok(ics.startsWith("BEGIN:VCALENDAR\r\n"));
+  assert.ok(ics.endsWith("END:VCALENDAR\r\n"));
+  assert.ok(!/[^\r]\n/.test(ics), "toda quebra de linha deve ser CRLF");
+  assert.equal(ics.match(/BEGIN:VEVENT/g).length, lista.length);
+  assert.ok(ics.includes("DTSTAMP:20260930T182511Z"));
+  assert.ok(ics.includes("DTSTART;VALUE=DATE:20261225\r\nDTEND;VALUE=DATE:20261226"));
+  assert.ok(ics.includes("UID:2026-02-18-quarta-feira-de-cinzas@feriados-brasil"));
+  assert.ok(ics.includes("DESCRIPTION:Ponto facultativo (até 14h)"));
+  for (const linha of ics.split("\r\n")) {
+    assert.ok(Buffer.byteLength(linha) <= 75, `linha longa demais: ${linha}`);
+  }
+});
+
+test("paraIcs escapa caracteres especiais do iCalendar", () => {
+  const ics = F.paraIcs([{ data: "2026-01-01", nome: "a,b;c\\d", tipo: "feriado" }], new Date(0));
+  assert.ok(ics.includes(String.raw`SUMMARY:a\,b\;c\\d`));
+});
