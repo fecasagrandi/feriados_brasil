@@ -3,454 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Contagem regressiva para os próximos feriados nacionais do Brasil, calculados automaticamente para qualquer ano." />
+  <!--
+    Privacidade garantida pelo navegador, não só por promessa:
+    connect-src 'none' impede a página de enviar dados para qualquer servidor,
+    e todo script, estilo e fonte vem deste mesmo site.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="description" content="Contagem regressiva para os próximos feriados nacionais e estaduais do Brasil, calculados automaticamente para qualquer ano." />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#f2f1ed" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#100f0e" media="(prefers-color-scheme: dark)" />
-  <title>Contagem Regressiva — Feriados Nacionais do Brasil</title>
+  <title>Contagem Regressiva — Feriados do Brasil</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='4' width='26' height='25' rx='3' fill='%23fff' stroke='%231b1a17' stroke-width='2'/%3E%3Cpath d='M4 12V7a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v5z' fill='%23c41e1a'/%3E%3Ctext x='16' y='26' font-family='Arial Narrow,Arial' font-weight='700' font-size='13' text-anchor='middle' fill='%23c41e1a'%3E21%3C/text%3E%3C/svg%3E" />
 
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
-  <script>
-    try {
-      var t = localStorage.getItem("feriados:tema");
-      if (t === "claro") document.documentElement.dataset.theme = "light";
-      if (t === "escuro") document.documentElement.dataset.theme = "dark";
-    } catch (e) {}
-  </script>
+  <script src="tema.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* Claro: folhinha de parede sobre papel. Vermelho = "dia vermelho". */
-    :root {
-      color-scheme: light;
-      --bg: #f2f1ed;
-      --paper: #ffffff;
-      --ink: #1b1a17;
-      --muted: #6b6860;
-      --line: #dcd9d1;
-      --red: #c41e1a;
-      --band: #c41e1a;
-      --hl: rgba(196, 30, 26, 0.06);
-      --mark: #d9d5cc;
-      --shadow: 0 1px 0 #d2cec5, 0 12px 24px -16px rgba(40, 30, 20, 0.45);
-
-      --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-      --mono: 'DM Mono', ui-monospace, 'Courier New', monospace;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    /* Escuro: a mesma folhinha, de noite. */
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        color-scheme: dark;
-        --bg: #100f0e;
-        --paper: #1c1b19;
-        --ink: #ece8df;
-        --muted: #9b968b;
-        --line: #2a2825;
-        --red: #ff6456;
-        --band: #c9302a;
-        --hl: rgba(255, 100, 86, 0.07);
-        --mark: #2d2b28;
-        --shadow: 0 0 0 1px #2a2825, 0 18px 30px -18px rgba(0, 0, 0, 0.9);
-      }
-    }
-    :root[data-theme="dark"] {
-      color-scheme: dark;
-      --bg: #100f0e;
-      --paper: #1c1b19;
-      --ink: #ece8df;
-      --muted: #9b968b;
-      --line: #2a2825;
-      --red: #ff6456;
-      --band: #c9302a;
-      --hl: rgba(255, 100, 86, 0.07);
-      --mark: #2d2b28;
-      --shadow: 0 0 0 1px #2a2825, 0 18px 30px -18px rgba(0, 0, 0, 0.9);
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 13px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 2.5rem 1rem 4rem;
-      transition: background-color 0.35s, color 0.35s;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-    :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 2px; }
-
-    .container { width: 100%; max-width: 600px; }
-
-    .rotulo {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .link {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 2px 0;
-      border-bottom: 1px dashed currentColor;
-      transition: color 0.15s;
-    }
-    .link:hover { color: var(--ink); }
-
-    /* ---------- topo ---------- */
-
-    .topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-
-    /* ---------- herói: folhinha + nome ---------- */
-
-    .hero {
-      display: grid;
-      grid-template-columns: 128px 1fr;
-      gap: 28px;
-      align-items: center;
-      margin-bottom: 2.25rem;
-    }
-
-    .folha-wrap {
-      position: relative;
-      isolation: isolate;
-      perspective: 700px;
-    }
-
-    /* páginas de baixo do bloquinho */
-    .folha-wrap::before,
-    .folha-wrap::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--paper);
-      border-radius: 4px;
-      box-shadow: var(--shadow);
-      z-index: -1;
-    }
-    .folha-wrap::before { transform: translate(3px, 4px); opacity: 0.7; }
-    .folha-wrap::after { transform: translate(6px, 8px); opacity: 0.4; }
-
-    .folha {
-      background: var(--paper);
-      border-radius: 4px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      overflow: hidden;
-      position: relative;
-      transition: background-color 0.35s;
-    }
-
-    /* borda picotada no topo, de onde a folha foi arrancada */
-    .folha::before {
-      content: "";
-      display: block;
-      height: 6px;
-      background:
-        radial-gradient(circle at 4px 0, var(--bg) 2.4px, transparent 2.9px) 0 0 / 8px 6px repeat-x,
-        var(--band);
-    }
-
-    .folha-mes {
-      background: var(--band);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 2px 0 7px;
-    }
-
-    .folha-dia {
-      font: 600 84px/1 var(--display);
-      color: var(--red);
-      padding-top: 10px;
-      font-feature-settings: "tnum";
-    }
-    .folha.facultativo .folha-dia { color: var(--ink); }
-
-    .folha-sem {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 4px 0 14px;
-    }
-
-    .folha.caindo {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      transform-origin: 50% 0;
-      pointer-events: none;
-    }
-
-    .carimbo {
-      position: absolute;
-      left: 50%;
-      top: 56%;
-      z-index: 3;
-      font: 600 22px/1 var(--display);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--red);
-      border: 2.5px solid currentColor;
-      border-radius: 4px;
-      padding: 4px 8px 2px 10px;
-      background: color-mix(in srgb, var(--paper) 75%, transparent);
-      opacity: 0;
-      transform: translate(-50%, -50%) rotate(-14deg);
-      pointer-events: none;
-    }
-    body.is-today .carimbo { animation: carimbar 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) 0.15s both; }
-
-    @keyframes carimbar {
-      from { opacity: 0; transform: translate(-50%, -50%) rotate(-14deg) scale(2.2); }
-      to   { opacity: 0.92; transform: translate(-50%, -50%) rotate(-14deg) scale(1); }
-    }
-
-    .hero-info { min-width: 0; }
-
-    .hero-rotulo {
-      display: flex;
-      gap: 12px;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-
-    .hero-nome {
-      font: 600 46px/0.98 var(--display);
-      letter-spacing: -0.005em;
-      text-wrap: balance;
-      margin-bottom: 12px;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 10px;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .tag {
-      font-size: 9.5px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 2px 5px 1px;
-      border: 1px solid currentColor;
-      border-radius: 2px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .tag.forte { color: var(--red); }
-
-    /* ---------- contagem ---------- */
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 1.25rem;
-    }
-
-    .unit { padding: 14px 0 12px 16px; border-left: 1px solid var(--line); }
-    .unit:first-child { padding-left: 0; border-left: 0; }
-
-    .clip { display: block; overflow: hidden; }
-
-    .num {
-      display: block;
-      font: 600 66px/1 var(--display);
-      font-feature-settings: "tnum";
-      letter-spacing: 0.01em;
-    }
-    #days { color: var(--red); }
-
-    .unit .rotulo { font-size: 10px; margin-top: 4px; }
-
-    .hoje-msg {
-      display: none;
-      font: 600 44px/1 var(--display);
-      color: var(--red);
-      padding: 20px 0 16px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 1.25rem;
-    }
-    body.is-today .hoje-msg { display: block; }
-    body.is-today .countdown { display: none; }
-
-    /* ---------- dias riscados ---------- */
-
-    .dias { margin-bottom: 3rem; }
-
-    .marcas {
-      display: flex;
-      gap: 2px;
-      height: 20px;
-      align-items: flex-end;
-    }
-
-    .marca {
-      flex: 1;
-      min-width: 1px;
-      height: 10px;
-      background: var(--mark);
-      border-radius: 1px;
-      transform-origin: 50% 100%;
-      transition: background-color 0.35s;
-    }
-    .marca.feita { background: var(--muted); opacity: 0.55; }
-    .marca.hoje { background: var(--ink); height: 20px; }
-    .marca.alvo { background: var(--red); height: 20px; }
-    .marcas.anima .marca { animation: brotar 0.45s var(--ease-out) both; }
-
-    @keyframes brotar {
-      from { transform: scaleY(0); }
-      to   { transform: scaleY(1); }
-    }
-
-    .barra { flex: 1; height: 4px; background: var(--mark); border-radius: 2px; overflow: hidden; align-self: center; }
-    .barra-fill { height: 100%; background: var(--red); }
-
-    .dias-legenda {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* ---------- listas ---------- */
-
-    .secao-topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .controles { display: flex; align-items: center; gap: 16px; }
-
-    .toggle {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--muted);
-      cursor: pointer;
-    }
-    .toggle input { accent-color: var(--red); cursor: pointer; }
-
-    .ano-nav { display: flex; align-items: center; gap: 2px; }
-    .ano-nav button {
-      width: 28px;
-      height: 28px;
-      font-size: 16px;
-      color: var(--muted);
-      border-radius: 50%;
-      transition: background-color 0.15s, color 0.15s;
-    }
-    .ano-nav button:hover { color: var(--ink); background: var(--hl); }
-    .ano-nav span { font: 600 20px/1 var(--display); min-width: 3ch; text-align: center; }
-
-    .lista { border-top: 1px solid var(--line); margin-bottom: 3rem; }
-
-    .linha {
-      display: grid;
-      grid-template-columns: 44px 1fr auto;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      text-align: left;
-      padding: 9px 10px 9px 6px;
-      border-bottom: 1px solid var(--line);
-      transition: background-color 0.15s;
-    }
-    .linha:hover:not(:disabled) { background: var(--hl); }
-    .linha.ativa { background: var(--hl); }
-    .linha:disabled { cursor: default; opacity: 0.38; }
-
-    .l-data { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-    .l-dia { font: 600 28px/1 var(--display); color: var(--red); font-feature-settings: "tnum"; }
-    .linha.facultativo .l-dia { color: var(--ink); }
-    .l-mes { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
-
-    .l-meio { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 8px; min-width: 0; }
-    .l-nome { font-size: 13px; }
-    .linha.ativa .l-nome { font-weight: 500; }
-    .l-sem { flex-basis: 100%; font-size: 11px; color: var(--muted); }
-
-    .l-quando { font-size: 12px; white-space: nowrap; transition: color 0.15s; }
-    .linha.ativa .l-quando { color: var(--red); }
-
-    .nota { font-size: 11px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
-
-    /* ---------- entrada da página ---------- */
-
-    .entrando .revela { animation: subir 0.6s var(--ease-out) both; animation-delay: calc(var(--d, 0) * 60ms); }
-
-    @keyframes subir {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    @media (max-width: 480px) {
-      body { padding-top: 1.75rem; }
-      .hero { grid-template-columns: 100px 1fr; gap: 20px; }
-      .folha-dia { font-size: 64px; }
-      .hero-nome { font-size: 34px; }
-      .num { font-size: 46px; }
-      .unit { padding-left: 10px; }
-      .hoje-msg { font-size: 34px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-delay: 0ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="estilo.css">
 </head>
 <body class="entrando">
   <main class="container">
     <header class="topo revela">
-      <span class="rotulo">feriados nacionais do brasil</span>
+      <span class="rotulo">feriados do brasil</span>
       <button type="button" class="link" id="tema">tema: auto</button>
     </header>
 
+    <section class="local revela" style="--d:1" aria-label="seu estado">
+      <div class="local-linha">
+        <label class="rotulo" for="uf">estado</label>
+        <select id="uf">
+          <option value="">nenhum — só nacionais</option>
+        </select>
+        <button type="button" class="link" id="geo">usar minha localização</button>
+        <button type="button" class="link" id="esquecer" hidden>esquecer</button>
+      </div>
+      <p class="local-status" id="geo-status" aria-live="polite">
+        A localização só é usada neste aparelho para descobrir o estado. Nada é enviado.
+      </p>
+    </section>
+
     <section class="hero" aria-labelledby="hnome">
-      <div class="folha-wrap revela" style="--d:1">
+      <div class="folha-wrap revela" style="--d:2">
         <div class="folha" id="folha" aria-hidden="true">
           <div class="folha-mes" id="f-mes">—</div>
           <div class="folha-dia" id="f-dia">--</div>
@@ -460,16 +54,16 @@
       </div>
 
       <div class="hero-info">
-        <div class="hero-rotulo revela" style="--d:2">
+        <div class="hero-rotulo revela" style="--d:3">
           <span class="rotulo" id="hrotulo">próximo feriado</span>
           <button type="button" class="link" id="voltar" hidden>voltar ao próximo</button>
         </div>
-        <h1 class="hero-nome revela" id="hnome" style="--d:2">—</h1>
-        <div class="hero-meta revela" id="hmeta" style="--d:3">—</div>
+        <h1 class="hero-nome revela" id="hnome" style="--d:3">—</h1>
+        <div class="hero-meta revela" id="hmeta" style="--d:4">—</div>
       </div>
     </section>
 
-    <div class="countdown revela" style="--d:4" role="timer" aria-label="tempo restante">
+    <div class="countdown revela" style="--d:5" role="timer" aria-label="tempo restante">
       <div class="unit"><span class="clip"><span class="num" id="days">--</span></span><div class="rotulo">dias</div></div>
       <div class="unit"><span class="clip"><span class="num" id="hours">--</span></span><div class="rotulo">horas</div></div>
       <div class="unit"><span class="clip"><span class="num" id="mins">--</span></span><div class="rotulo">min</div></div>
@@ -477,13 +71,13 @@
     </div>
     <div class="hoje-msg">é hoje. bom descanso.</div>
 
-    <div class="dias revela" style="--d:5">
+    <div class="dias revela" style="--d:6">
       <div class="marcas" id="marcas" aria-hidden="true"></div>
       <div class="dias-legenda"><span id="leg-desde"></span><span id="leg-conta"></span></div>
     </div>
 
     <section aria-labelledby="t-proximos">
-      <div class="secao-topo revela" style="--d:6">
+      <div class="secao-topo revela" style="--d:7">
         <h2 class="rotulo" id="t-proximos">próximos</h2>
         <label class="toggle">
           <input type="checkbox" id="facultativos">
@@ -508,324 +102,43 @@
       <div class="lista" id="calendario"></div>
     </section>
 
-    <p class="nota">
-      Datas calculadas a partir da Páscoa (algoritmo de Meeus/Jones/Butcher), válidas para qualquer ano.
-      Pontos facultativos seguem a portaria federal e valem para o serviço público federal;
-      feriados estaduais e municipais não estão aqui.
-    </p>
+    <footer class="rodape">
+      <p class="nota">
+        Feriados nacionais calculados a partir da Páscoa (algoritmo de Meeus/Jones/Butcher), válidos para qualquer ano.
+        Pontos facultativos seguem a portaria federal. Feriados estaduais vêm de um levantamento cruzado de fontes
+        e podem mudar por lei — na dúvida, confira com o governo do seu estado. Feriados municipais não estão aqui.
+      </p>
+
+      <details class="privacidade">
+        <summary class="link">privacidade</summary>
+        <ul>
+          <li><strong>Sem cookies, sem analytics, sem rastreadores.</strong></li>
+          <li>
+            <strong>Localização:</strong> só é pedida quando você clica em “usar minha localização”, e o navegador
+            pede sua permissão. A coordenada é convertida em estado aqui mesmo, no seu aparelho, e descartada em seguida.
+            Ela não é enviada nem guardada.
+          </li>
+          <li>
+            <strong>O que fica guardado no seu navegador</strong> (localStorage, nunca enviado): a sigla do estado,
+            o tema e a preferência de pontos facultativos. “esquecer” apaga o estado; limpar os dados do site apaga tudo.
+          </li>
+          <li>
+            Fontes e scripts vêm deste mesmo site, e a política de segurança da página bloqueia qualquer conexão
+            com outros servidores.
+          </li>
+          <li>
+            A hospedagem (GitHub Pages), como qualquer servidor web, pode registrar o endereço IP de acesso —
+            veja a <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">declaração de privacidade do GitHub</a>.
+          </li>
+        </ul>
+      </details>
+    </footer>
 
     <noscript><p class="nota">Esta página precisa de JavaScript para calcular os feriados.</p></noscript>
   </main>
 
   <script src="feriados.js"></script>
-  <script>
-    (function () {
-      "use strict";
-
-      const F = window.Feriados;
-      const $ = (id) => document.getElementById(id);
-
-      const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
-      const MESES_LONGOS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-      const SEMANA = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
-      const TEMAS = ["auto", "claro", "escuro"];
-      const QTD_PROXIMOS = 6;
-      const MAX_MARCAS = 150;
-      const K_FAC = "feriados:facultativos";
-      const K_TEMA = "feriados:tema";
-
-      const state = {
-        facultativos: ler(K_FAC) === "1",
-        tema: TEMAS.includes(ler(K_TEMA)) ? ler(K_TEMA) : "auto",
-        selecionado: null, // objeto do feriado; null = o próximo
-        ano: null,
-        dia: null,         // "hoje" usado no último render
-        proximos: [],
-        ultimo: null,      // último feriado antes de hoje
-        alvoAnterior: null,
-      };
-
-      function ler(k) { try { return localStorage.getItem(k); } catch { return null; } }
-      function gravar(k, v) { try { localStorage.setItem(k, v); } catch { /* modo privado etc. */ } }
-
-      const reduzMovimento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const opcoes = () => ({ facultativos: state.facultativos });
-      const mesmo = (a, b) => !!a && !!b && a.data === b.data && a.nome === b.nome;
-      const pad = (n) => String(n).padStart(2, "0");
-      const partes = (data) => data.split("-").map(Number);
-
-      function el(tag, cls, texto) {
-        const e = document.createElement(tag);
-        if (cls) e.className = cls;
-        if (texto != null) e.textContent = texto;
-        return e;
-      }
-
-      function hojeIso() {
-        const d = new Date();
-        return F.iso(d.getFullYear(), d.getMonth() + 1, d.getDate());
-      }
-
-      // Meia-noite no fuso de quem está vendo a página.
-      function meiaNoiteLocal(data) {
-        const [a, m, d] = partes(data);
-        return new Date(a, m - 1, d).getTime();
-      }
-
-      function quando(dias) {
-        if (dias === 0) return "hoje";
-        if (dias === 1) return "amanhã";
-        if (dias === -1) return "ontem";
-        return dias > 0 ? `em ${dias} dias` : `há ${-dias} dias`;
-      }
-
-      function tagsDe(f) {
-        const t = [];
-        if (f.tipo === "facultativo") t.push(el("span", "tag", f.obs ? `facultativo ${f.obs}` : "facultativo"));
-        const c = F.classificar(f.data);
-        if (c === "feriadão" || c === "ponte") t.push(el("span", "tag forte", c));
-        else if (c === "fim de semana") t.push(el("span", "tag", "cai no fim de semana"));
-        return t;
-      }
-
-      const alvo = () => state.selecionado || state.proximos[0];
-
-      // ---------- listas ----------
-
-      function linha(f, hoje, i) {
-        const [, m, d] = partes(f.data);
-        const dias = F.diasEntre(hoje, f.data);
-        const ativa = mesmo(f, alvo());
-
-        const b = el("button", "linha revela" + (f.tipo === "facultativo" ? " facultativo" : "") + (ativa ? " ativa" : ""));
-        b.type = "button";
-        b.disabled = dias < 0;
-        b.setAttribute("aria-pressed", String(ativa));
-        b.style.setProperty("--d", 7 + Math.min(i, 8));
-
-        const data = el("span", "l-data");
-        data.append(el("span", "l-dia", String(d)), el("span", "l-mes", MESES[m - 1]));
-
-        const meio = el("span", "l-meio");
-        meio.append(el("span", "l-nome", f.nome), ...tagsDe(f), el("span", "l-sem", SEMANA[F.diaDaSemana(f.data)]));
-
-        b.append(data, meio, el("span", "l-quando", quando(dias)));
-        b.addEventListener("click", () => {
-          state.selecionado = f;
-          render();
-        });
-        return b;
-      }
-
-      // ---------- folhinha ----------
-
-      function arrancarFolha() {
-        if (reduzMovimento()) return;
-        const folha = $("folha");
-        const copia = folha.cloneNode(true);
-        copia.removeAttribute("id");
-        copia.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
-        copia.classList.add("caindo");
-        folha.parentNode.append(copia);
-        copia
-          .animate(
-            [
-              { transform: "none", opacity: 1 },
-              { transform: "translateY(10px) rotateX(-18deg) rotate(4deg)", opacity: 1, offset: 0.3 },
-              { transform: "translateY(130px) rotateX(-40deg) rotate(16deg)", opacity: 0 },
-            ],
-            { duration: 700, easing: "cubic-bezier(0.5, 0, 0.75, 0)", fill: "forwards" }
-          )
-          .finished.then(() => copia.remove(), () => copia.remove());
-      }
-
-      function preencherHeroi(f, hoje) {
-        const [a, m, d] = partes(f.data);
-        $("folha").classList.toggle("facultativo", f.tipo === "facultativo");
-        $("f-mes").textContent = `${MESES[m - 1]} ${a}`;
-        $("f-dia").textContent = String(d);
-        $("f-sem").textContent = SEMANA[F.diaDaSemana(f.data)].split("-")[0];
-
-        const escolhido = state.selecionado && !mesmo(state.selecionado, state.proximos[0]);
-        $("hrotulo").textContent = f.data === hoje ? "hoje é feriado" : escolhido ? "selecionado" : "próximo feriado";
-        $("voltar").hidden = !escolhido;
-
-        $("hnome").textContent = f.nome;
-        $("hmeta").replaceChildren(
-          document.createTextNode(`${d} de ${MESES_LONGOS[m - 1]}, ${SEMANA[F.diaDaSemana(f.data)]}`),
-          ...tagsDe(f)
-        );
-      }
-
-      // Uma marca por dia entre o último feriado e o alvo: dá para "riscar" os dias.
-      function renderMarcas(f, hoje, animar) {
-        const box = $("marcas");
-        const ult = state.ultimo;
-        if (!ult) { box.replaceChildren(); return; }
-
-        const total = F.diasEntre(ult.data, f.data);
-        const passados = F.diasEntre(ult.data, hoje); // a marca i representa o dia ult+i+1
-        box.className = "marcas" + (animar && !reduzMovimento() ? " anima" : "");
-
-        if (total <= MAX_MARCAS) {
-          const marcas = [];
-          for (let i = 0; i < total; i++) {
-            const mk = el("span", "marca");
-            if (i === total - 1) mk.classList.add("alvo");
-            else if (i === passados - 1) mk.classList.add("hoje");
-            else if (i < passados - 1) mk.classList.add("feita");
-            mk.style.animationDelay = Math.min(i * 7, 700) + "ms";
-            marcas.push(mk);
-          }
-          box.replaceChildren(...marcas);
-        } else {
-          const barra = el("span", "barra");
-          const fill = el("span", "barra-fill");
-          fill.style.display = "block";
-          fill.style.width = ((passados / total) * 100).toFixed(1) + "%";
-          barra.append(fill);
-          box.replaceChildren(barra);
-        }
-
-        const [, um, ud] = partes(ult.data);
-        $("leg-desde").textContent = `desde ${ult.nome.toLowerCase()} (${ud} ${MESES[um - 1]})`;
-        $("leg-conta").textContent = f.data === hoje ? "chegou" : `dia ${passados} de ${total}`;
-      }
-
-      // ---------- render: só quando algo muda (dia, seleção, filtro, ano) ----------
-
-      function render() {
-        const hoje = hojeIso();
-        const primeiro = state.dia === null;
-        state.dia = hoje;
-        if (state.ano === null) state.ano = partes(hoje)[0];
-
-        // Janela de ~1 ano em cada direção: sempre contém ao menos um 1º de janeiro.
-        state.proximos = F.feriadosEntre(hoje, F.somaDias(hoje, 400), opcoes()).slice(0, QTD_PROXIMOS);
-        const passados = F.feriadosEntre(F.somaDias(hoje, -400), F.somaDias(hoje, -1), opcoes());
-        state.ultimo = passados[passados.length - 1] || null;
-
-        const s = state.selecionado;
-        if (s && (s.data < hoje || (s.tipo === "facultativo" && !state.facultativos))) {
-          state.selecionado = null;
-        }
-
-        $("proximos").replaceChildren(...state.proximos.map((f, i) => linha(f, hoje, i)));
-        $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f, i) => linha(f, hoje, i)));
-        $("ano").textContent = state.ano;
-        $("facultativos").checked = state.facultativos;
-
-        const f = alvo();
-        const mudou = !primeiro && !mesmo(state.alvoAnterior, f);
-        if (mudou) arrancarFolha();
-        preencherHeroi(f, hoje);
-        renderMarcas(f, hoje, primeiro || mudou);
-        state.alvoAnterior = f;
-
-        const dias = F.diasEntre(hoje, f.data);
-        document.title = `${dias === 0 ? "hoje" : dias + "d"} · ${f.nome} — Feriados Nacionais`;
-
-        tick();
-      }
-
-      // ---------- contador: todo segundo, só mexe em texto ----------
-
-      function setNum(id, valor) {
-        const n = $(id);
-        if (n.textContent === valor) return;
-        const antes = n.textContent;
-        n.textContent = valor;
-        if (antes !== "--" && !reduzMovimento()) {
-          n.animate(
-            [{ transform: "translateY(-60%)", opacity: 0 }, { transform: "none", opacity: 1 }],
-            { duration: 360, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)" }
-          );
-        }
-      }
-
-      function tick() {
-        const hoje = hojeIso();
-        if (hoje !== state.dia) return render(); // virou o dia
-
-        const f = alvo();
-        const ehHoje = f.data === hoje;
-        document.body.classList.toggle("is-today", ehHoje);
-        if (ehHoje) return;
-
-        const totalSec = Math.max(0, Math.floor((meiaNoiteLocal(f.data) - Date.now()) / 1000));
-        setNum("days", pad(Math.floor(totalSec / 86400)));
-        setNum("hours", pad(Math.floor((totalSec % 86400) / 3600)));
-        setNum("mins", pad(Math.floor((totalSec % 3600) / 60)));
-        setNum("secs", pad(totalSec % 60));
-      }
-
-      // ---------- tema ----------
-
-      const coresOriginais = [...document.querySelectorAll('meta[name="theme-color"]')].map((m) => m.content);
-
-      function aplicarTema() {
-        const r = document.documentElement;
-        if (state.tema === "auto") delete r.dataset.theme;
-        else r.dataset.theme = state.tema === "claro" ? "light" : "dark";
-        $("tema").textContent = `tema: ${state.tema}`;
-
-        const metas = document.querySelectorAll('meta[name="theme-color"]');
-        const bg = getComputedStyle(r).getPropertyValue("--bg").trim();
-        metas.forEach((m, i) => { m.content = state.tema === "auto" ? coresOriginais[i] : bg; });
-      }
-
-      $("tema").addEventListener("click", () => {
-        state.tema = TEMAS[(TEMAS.indexOf(state.tema) + 1) % TEMAS.length];
-        gravar(K_TEMA, state.tema);
-        if (document.startViewTransition && !reduzMovimento()) document.startViewTransition(aplicarTema);
-        else aplicarTema();
-      });
-
-      // ---------- demais controles ----------
-
-      $("facultativos").addEventListener("change", (e) => {
-        state.facultativos = e.target.checked;
-        gravar(K_FAC, state.facultativos ? "1" : "0");
-        render();
-      });
-
-      $("voltar").addEventListener("click", () => {
-        state.selecionado = null;
-        render();
-      });
-
-      function mudarAno(delta) {
-        const novo = Math.min(9999, Math.max(1583, state.ano + delta));
-        if (novo === state.ano) return;
-        state.ano = novo;
-        render();
-        if (!reduzMovimento()) {
-          $("calendario").animate(
-            [{ transform: `translateX(${delta * 16}px)`, opacity: 0 }, { transform: "none", opacity: 1 }],
-            { duration: 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }
-          );
-        }
-      }
-      $("ano-ant").addEventListener("click", () => mudarAno(-1));
-      $("ano-prox").addEventListener("click", () => mudarAno(1));
-
-      $("ics").addEventListener("click", () => {
-        const ics = F.paraIcs(F.feriadosDoAno(state.ano, opcoes()));
-        const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-        const a = el("a");
-        a.href = url;
-        a.download = `feriados-${state.ano}.ics`;
-        document.body.append(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      });
-
-      aplicarTema();
-      render();
-      setInterval(tick, 1000);
-      setTimeout(() => document.body.classList.remove("entrando"), 1800);
-    })();
-  </script>
+  <script src="localizacao.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
