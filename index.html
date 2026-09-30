@@ -20,7 +20,7 @@
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
   <script src="tema.js?v=e69a144e"></script>
 
-  <link rel="stylesheet" href="estilo.css?v=f736c562">
+  <link rel="stylesheet" href="estilo.css?v=5939ee39">
 </head>
 <body class="entrando">
   <main class="container">
@@ -102,42 +102,61 @@
       <div class="lista" id="calendario"></div>
     </section>
 
-    <footer class="rodape">
-      <p class="nota">
-        Feriados nacionais calculados a partir da Páscoa (algoritmo de Meeus/Jones/Butcher), válidos para qualquer ano.
-        Pontos facultativos seguem a portaria federal. Feriados estaduais vêm de um levantamento cruzado de fontes
-        e podem mudar por lei — na dúvida, confira com o governo do seu estado. Feriados municipais não estão aqui.
-      </p>
-
-      <details class="privacidade">
-        <summary class="link">privacidade</summary>
-        <ul>
-          <li><strong>Sem cookies, sem analytics, sem rastreadores.</strong></li>
-          <li>
-            <strong>Localização:</strong> só é pedida quando você toca no ícone de localização, e o navegador
-            pede sua permissão. A coordenada é convertida em estado aqui mesmo, no seu aparelho, e descartada em seguida.
-            Ela não é enviada nem guardada.
-          </li>
-          <li>
-            <strong>O que fica guardado no seu navegador</strong> (localStorage, nunca enviado): a sigla do estado,
-            o tema e a preferência de pontos facultativos. o “×” ao lado do estado apaga a sigla; limpar os dados do site apaga tudo.
-          </li>
-          <li>
-            Fontes e scripts vêm deste mesmo site, e a política de segurança da página bloqueia qualquer conexão
-            com outros servidores.
-          </li>
-          <li>
-            A hospedagem (GitHub Pages), como qualquer servidor web, pode registrar o endereço IP de acesso —
-            veja a <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">declaração de privacidade do GitHub</a>.
-          </li>
-        </ul>
-      </details>
-    </footer>
-
     <div class="toast" id="geo-status" role="status" aria-live="polite" hidden></div>
 
     <noscript><p class="nota">Esta página precisa de JavaScript para calcular os feriados.</p></noscript>
   </main>
+
+  <footer class="rodape">
+    <div class="rodape-grade">
+      <div class="rodape-marca">
+        <img class="bandeira" src="bandeira.svg?v=1c93bc83" width="50" height="35" alt="Bandeira do Brasil">
+        <p class="rodape-nome">feriados do brasil</p>
+        <p>Contagem regressiva para os feriados nacionais e estaduais, calculada no seu navegador para qualquer ano.</p>
+      </div>
+
+      <nav aria-labelledby="r-dados">
+        <h2 class="rotulo" id="r-dados">de onde vêm as datas</h2>
+        <ul>
+          <li>Nacionais: Lei 662/1949 (redação da Lei 10.607/2002), Lei 6.802/1980 e Lei 14.759/2023</li>
+          <li>Datas móveis: Páscoa pelo algoritmo de Meeus/Jones/Butcher</li>
+          <li>Pontos facultativos: portaria anual do governo federal</li>
+          <li><a href="https://github.com/fecasagrandi/feriados_brasil#feriados-estaduais" rel="noopener">Estaduais: fontes e divergências</a></li>
+          <li><a href="https://github.com/giuliano-oliveira/geodata-br-states" rel="noopener">Contornos das UFs: geodata-br-states</a></li>
+        </ul>
+      </nav>
+
+      <section aria-labelledby="r-privacidade">
+        <h2 class="rotulo" id="r-privacidade">privacidade</h2>
+        <ul>
+          <li>Sem cookies, analytics ou rastreadores.</li>
+          <li>A localização vira estado no seu aparelho e é descartada. Nada é enviado.</li>
+          <li>No navegador ficam só a sigla do estado, o tema e suas preferências.</li>
+          <li>A política de segurança da página bloqueia conexões com outros servidores.</li>
+          <li>A hospedagem pode registrar IPs, como qualquer servidor: <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">política do GitHub</a>.</li>
+        </ul>
+      </section>
+
+      <nav aria-labelledby="r-projeto">
+        <h2 class="rotulo" id="r-projeto">projeto</h2>
+        <ul>
+          <li>
+            <a class="com-icone" href="https://github.com/fecasagrandi/feriados_brasil" rel="noopener">
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656" /></svg>
+              código no GitHub
+            </a>
+          </li>
+          <li><a href="https://github.com/fecasagrandi/feriados_brasil/issues" rel="noopener">reportar um erro de data</a></li>
+          <li>Tipografia: Barlow Condensed e DM Mono (SIL OFL)</li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="rodape-base">
+      <span>Feriados municipais não estão incluídos. Na dúvida, confira com o seu estado ou município.</span>
+      <span>calculado no seu navegador</span>
+    </div>
+  </footer>
 
   <script src="feriados.js?v=9583b3e1"></script>
   <script src="localizacao.js?v=a5b0384e"></script>
