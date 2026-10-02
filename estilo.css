@@ -511,6 +511,27 @@ body.is-today .countdown { display: none; }
   to   { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* ---------- planejador de folgas ---------- */
+
+.secao-nota { font-size: 11px; color: var(--muted); }
+
+.linha.folga { cursor: default; }
+.linha.folga:hover { background: none; }
+.linha.folga .l-quando { color: var(--red); }
+
+.lista-nota, .lista-vazia {
+  margin: -2.25rem 0 3rem;
+  padding-top: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.lista-vazia { margin: 0; padding: 12px 6px; }
+
+@media (max-width: 480px) {
+  .linha.folga .l-quando { white-space: normal; text-align: right; max-width: 6.5em; }
+}
+
 /* ---------- rodapé ---------- */
 
 .rodape {

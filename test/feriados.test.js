@@ -179,3 +179,33 @@ test("divergências resolvidas: AC 23/01 (Lei 1.538/2004), PE 06/03 desde 2017, 
   assert.deepEqual(de("PR", 2026), []);
   assert.deepEqual(de("SC", 2026), []);
 });
+
+// ---------- planejador de folgas ----------
+
+test("planejador: sugestões de 30/09/2026 a 30/09/2027 (conferidas à mão)", () => {
+  const r = F.oportunidades("2026-09-30", "2027-09-30").map((o) => [o.inicio, o.fim, o.dias, o.ferias.length]);
+  assert.deepEqual(r, [
+    ["2026-12-25", "2027-01-03", 10, 4], // Natal (sex) + Ano-Novo (sex): 28 a 31/12 de férias
+    ["2027-04-17", "2027-04-21", 5, 2], // Tiradentes (qua): 19 e 20/04
+    ["2027-09-04", "2027-09-07", 4, 1], // Independência (ter): 06/09
+  ]);
+});
+
+test("planejador: férias só em dias úteis, bloco começa e termina em folga", () => {
+  for (const o of F.oportunidades("2026-01-01", "2030-12-31", { uf: "SP" })) {
+    for (const d of o.ferias) {
+      const dow = F.diaDaSemana(d);
+      assert.ok(dow >= 1 && dow <= 5, `${d} não é dia útil`);
+    }
+    assert.ok(o.feriados.length > 0);
+    assert.equal(o.dias, F.diasEntre(o.inicio, o.fim) + 1);
+    assert.ok(o.dias / o.ferias.length >= 2.5);
+  }
+});
+
+test("planejador: ponto facultativo não conta como folga, mas feriado estadual conta", () => {
+  // Carnaval 2027: terça 09/02 é facultativo no país, mas feriado estadual no RJ
+  const temCarnaval = (opts) => F.oportunidades("2027-01-15", "2027-03-01", opts).some((o) => o.inicio <= "2027-02-09" && o.fim >= "2027-02-09");
+  assert.equal(temCarnaval({}), false);
+  assert.equal(temCarnaval({ uf: "RJ" }), true); // segunda 08/02 de férias: sáb 06 a ter 09
+});

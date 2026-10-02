@@ -151,3 +151,18 @@ test("prévia de link: meta tags Open Graph e imagem 1200x630 servida pelo site"
   const png = await resposta.body();
   expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]); // largura e altura do cabeçalho IHDR
 });
+
+test("planejador mostra as emendas dos próximos 12 meses", async ({ page }) => {
+  await abrir(page);
+  const linhas = page.locator("#folgas .folga");
+  await expect(linhas).toHaveCount(3);
+  await expect(linhas.nth(0)).toContainText("Natal + Confraternização Universal");
+  await expect(linhas.nth(0)).toContainText("25 dez a 3 jan · férias em 28, 29, 30 e 31 dez");
+  await expect(linhas.nth(0)).toContainText("4 dias de férias");
+  await expect(linhas.nth(2)).toContainText("1 dia de férias");
+});
+
+test("planejador não repete o mês quando a emenda cabe num mês só", async ({ page }) => {
+  await abrir(page);
+  await expect(page.locator("#folgas .folga").nth(1)).toContainText("17 a 21 abr · férias em 19 e 20 abr");
+});

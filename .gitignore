@@ -1,3 +1,8 @@
 node_modules/
 test-results/
 playwright-report/
+
+# prints soltos de testes manuais; só estes PNGs da raiz são do projeto
+/*.png
+!/og.png
+!/apple-touch-icon.png
