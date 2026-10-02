@@ -44,12 +44,15 @@
   /*
    * Feriados estaduais. Entram só os que têm consenso entre as fontes consultadas
    * (date-holidays, eh-dia-util e levantamentos de 2026); divergências estão no README.
-   * Sem entrada = sem feriado estadual em dia próprio (ex.: MG e DF têm o 21/04,
-   * que coincide com Tiradentes; MT tinha só a Consciência Negra, hoje nacional).
+   * Critério: duas fontes independentes concordando e citando a lei.
+   * Sem entrada = sem feriado estadual em dia útil próprio: MG e DF (21/04 coincide com
+   * Tiradentes), MT (só tinha a Consciência Negra, hoje nacional), PR (19/12 revogado pela
+   * Lei 18.384/2014), SC (Lei 12.906/2004 transfere as datas para o domingo).
    * `pascoa`: dias a partir do Domingo de Páscoa, no lugar de mes/dia.
    */
   const ESTADUAIS = {
     AC: [
+      { mes: 1, dia: 23, nome: "Dia do Evangélico", desde: 2004, lei: "Lei 1.538/2004" },
       { mes: 3, dia: 8, nome: "Dia Internacional da Mulher", desde: 2001 },
       { mes: 6, dia: 15, nome: "Aniversário do Acre", desde: 1964 },
       { mes: 9, dia: 5, nome: "Dia da Amazônia", desde: 2004 },
@@ -80,6 +83,7 @@
       { mes: 7, dia: 26, nome: "Homenagem a João Pessoa", desde: 1967, lei: "Lei 3.489/1967" },
       { mes: 8, dia: 5, nome: "Fundação do Estado", desde: 1967, lei: "Lei 3.489/1967" },
     ],
+    PE: [{ mes: 3, dia: 6, nome: "Data Magna de Pernambuco", desde: 2017, lei: "Lei 16.059/2017" }],
     PI: [{ mes: 10, dia: 19, nome: "Dia do Piauí" }],
     RJ: [
       { pascoa: -47, nome: "Carnaval", desde: 2008 },

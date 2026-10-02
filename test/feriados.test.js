@@ -170,3 +170,12 @@ test("paraIcs descreve feriado estadual com a UF", () => {
   const ics = F.paraIcs(F.feriadosDoAno(2026, { uf: "SP" }), new Date(0));
   assert.ok(ics.includes("SUMMARY:Revolução Constitucionalista\r\nDESCRIPTION:Feriado estadual (SP)"));
 });
+
+test("divergências resolvidas: AC 23/01 (Lei 1.538/2004), PE 06/03 desde 2017, PR e SC sem feriado útil", () => {
+  const de = (uf, ano) => F.feriadosDoAno(ano, { uf, facultativos: false }).filter((f) => f.abrangencia === "estadual");
+  assert.ok(de("AC", 2026).some((f) => f.data === "2026-01-23" && f.nome === "Dia do Evangélico"));
+  assert.ok(de("PE", 2026).some((f) => f.data === "2026-03-06"));
+  assert.ok(!de("PE", 2016).some((f) => f.data === "2016-03-06"));
+  assert.deepEqual(de("PR", 2026), []);
+  assert.deepEqual(de("SC", 2026), []);
+});

@@ -23,17 +23,19 @@ A tabela `ESTADUAIS` em `feriados.js` foi montada **cruzando fontes**, porque n�
 - [`@lfreneda/eh-dia-util`](https://www.npmjs.com/package/@lfreneda/eh-dia-util) (dados com lei citada),
 - levantamentos de feriados estaduais de 2026.
 
-Entrou só o que tem **consenso**. Ficaram de fora, até alguém confirmar na legislação estadual:
+Critério: entra quando **duas fontes independentes concordam e citam a lei**. As divergências encontradas e como foram resolvidas:
 
-| UF | Divergência |
+| UF | Situação |
 |---|---|
-| AC | Dia do Evangélico: 12/01 numa fonte, 23/01 em outra. |
-| CE | São José (19/03): listado como estadual numa fonte, ausente em outra. |
-| PE | Data Magna: 6 de março ou 1º domingo de março; São João (24/06): estadual ou municipal (Recife). |
-| PR | Emancipação (19/12): listada pelas bibliotecas, mas levantamentos recentes dizem que o PR não tem feriado estadual. |
-| SC | 11/08 e 25/11 são transferidos para o domingo seguinte por lei — não afetam dia útil. |
+| AC | Dia do Evangélico em **23/01** (Lei 1.538/2004). Uma biblioteca tinha 12/01 com vigência a partir de 29/01/2004 — a data da própria lei, provável erro de digitação. **Incluído.** |
+| PE | Data Magna em **6 de março**, data fixa desde a Lei 16.059/2017 (a regra antiga era o 1º domingo de março). **Incluído a partir de 2017.** São João (24/06) é municipal (Recife): fora. |
+| PR | 19/12 foi **revogado** como feriado pela Lei 18.384/2014 (virou só data comemorativa). Fora. |
+| SC | 11/08 e 25/11 são **transferidos para o domingo** (Lei 12.906/2004): não afetam dia útil. Fora. |
+| CE | São José (19/03): só encontrada como data comemorativa (Lei 18.390/2023), sem lei clara de feriado. **Fora, pendente de confirmação.** |
 
 Sem feriado estadual em dia próprio: MG e DF (o 21/04 coincide com Tiradentes) e MT (tinha só a Consciência Negra, hoje nacional).
+
+Ressalva honesta: as leis acima foram localizadas por busca, não lidas no texto original. Quem tiver acesso aos portais das assembleias pode confirmar e abrir uma issue.
 
 Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça de Carnaval no RJ), vale o feriado.
 
