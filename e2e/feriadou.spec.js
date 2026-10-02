@@ -137,3 +137,17 @@ test("bandeira do rodapé mantém a proporção oficial 10:7", async ({ page }) 
   const caixa = await page.locator(".bandeira").boundingBox();
   expect(caixa.width / caixa.height).toBeCloseTo(10 / 7, 2);
 });
+
+test("prévia de link: meta tags Open Graph e imagem 1200x630 servida pelo site", async ({ page, request }) => {
+  await abrir(page);
+  const meta = (p) => page.locator(`meta[property="${p}"]`).getAttribute("content");
+  expect(await meta("og:title")).toContain("Feriadou");
+  const imagem = new URL(await meta("og:image"));
+  expect(imagem.protocol).toBe("https:"); // WhatsApp exige URL absoluta
+  expect(imagem.searchParams.get("v")).toMatch(/^[0-9a-f]{8}$/);
+
+  const resposta = await request.get(imagem.pathname.replace(/^\/feriados_brasil/, "") + imagem.search);
+  expect(resposta.status()).toBe(200);
+  const png = await resposta.body();
+  expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]); // largura e altura do cabeçalho IHDR
+});

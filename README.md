@@ -82,6 +82,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
 | `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
+| `scripts/gerar-og.js`, `og.png` | Imagem da prévia de link (1200×630). A URL absoluta dela está no `index.html`: atualize se o endereço do site mudar. |
 | `test/` | Testes de unidade (`node:test`). |
 | `e2e/`, `playwright.config.js` | Testes de ponta a ponta (Playwright). |
 | `scripts/servidor.js` | Servidor estático local, sem dependências. |
