@@ -1,7 +1,12 @@
 {
-  "name": "feriados-brasil",
+  "name": "feriadou",
   "private": true,
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "test:e2e": "playwright test",
+    "servir": "node scripts/servidor.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
   }
 }

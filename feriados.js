@@ -44,12 +44,15 @@
   /*
    * Feriados estaduais. Entram só os que têm consenso entre as fontes consultadas
    * (date-holidays, eh-dia-util e levantamentos de 2026); divergências estão no README.
-   * Sem entrada = sem feriado estadual em dia próprio (ex.: MG e DF têm o 21/04,
-   * que coincide com Tiradentes; MT tinha só a Consciência Negra, hoje nacional).
+   * Critério: duas fontes independentes concordando e citando a lei.
+   * Sem entrada = sem feriado estadual em dia útil próprio: MG e DF (21/04 coincide com
+   * Tiradentes), MT (só tinha a Consciência Negra, hoje nacional), PR (19/12 revogado pela
+   * Lei 18.384/2014), SC (Lei 12.906/2004 transfere as datas para o domingo).
    * `pascoa`: dias a partir do Domingo de Páscoa, no lugar de mes/dia.
    */
   const ESTADUAIS = {
     AC: [
+      { mes: 1, dia: 23, nome: "Dia do Evangélico", desde: 2004, lei: "Lei 1.538/2004" },
       { mes: 3, dia: 8, nome: "Dia Internacional da Mulher", desde: 2001 },
       { mes: 6, dia: 15, nome: "Aniversário do Acre", desde: 1964 },
       { mes: 9, dia: 5, nome: "Dia da Amazônia", desde: 2004 },
@@ -80,6 +83,7 @@
       { mes: 7, dia: 26, nome: "Homenagem a João Pessoa", desde: 1967, lei: "Lei 3.489/1967" },
       { mes: 8, dia: 5, nome: "Fundação do Estado", desde: 1967, lei: "Lei 3.489/1967" },
     ],
+    PE: [{ mes: 3, dia: 6, nome: "Data Magna de Pernambuco", desde: 2017, lei: "Lei 16.059/2017" }],
     PI: [{ mes: 10, dia: 19, nome: "Dia do Piauí" }],
     RJ: [
       { pascoa: -47, nome: "Carnaval", desde: 2008 },
@@ -228,6 +232,70 @@
     return res;
   }
 
+  /*
+   * Planejador de folgas: blocos de descanso que juntam fim de semana, feriados e
+   * poucos dias de férias. Considera trabalho de segunda a sexta; ponto facultativo
+   * conta como dia útil (não é folga garantida).
+   *
+   * Um bloco começa e termina em dia de folga e é maximal (dia útil antes e depois),
+   * contém ao menos um feriado e pede de 1 a `maxFerias` dias de férias.
+   * Para cada feriado fica o bloco de melhor rendimento (dias de folga ÷ dias de férias).
+   */
+  function oportunidades(inicio, fim, { uf = null, maxFerias = 4, rendimentoMinimo = 2.5 } = {}) {
+    const margem = 10;
+    const de = somaDias(inicio, -margem);
+    const ate = somaDias(fim, margem);
+    const feriadosPorData = new Map();
+    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
+      if (!feriadosPorData.has(f.data)) feriadosPorData.set(f.data, []);
+      feriadosPorData.get(f.data).push(f);
+    }
+
+    const n = diasEntre(de, ate) + 1;
+    const dias = Array.from({ length: n }, (_, i) => somaDias(de, i));
+    const folga = dias.map((d) => {
+      const dow = diaDaSemana(d);
+      return dow === 0 || dow === 6 || feriadosPorData.has(d);
+    });
+
+    const melhorPorFeriado = new Map();
+    for (let s = 1; s < n; s++) {
+      if (!folga[s] || folga[s - 1]) continue; // começa numa folga logo após um dia útil
+      const ferias = [];
+      for (let e = s; e < n - 1; e++) {
+        if (!folga[e]) {
+          ferias.push(dias[e]);
+          if (ferias.length > maxFerias) break;
+          continue;
+        }
+        if (folga[e + 1] || ferias.length === 0) continue; // ainda não terminou / feriadão natural
+        if (dias[s] < inicio || dias[e] > fim) continue;
+        const total = e - s + 1;
+        const rendimento = total / ferias.length;
+        if (rendimento < rendimentoMinimo) continue;
+        const bloco = { inicio: dias[s], fim: dias[e], dias: total, ferias: [...ferias], rendimento };
+        for (let k = s; k <= e; k++) {
+          if (!feriadosPorData.has(dias[k])) continue;
+          const atual = melhorPorFeriado.get(dias[k]);
+          if (!atual || rendimento > atual.rendimento || (rendimento === atual.rendimento && total > atual.dias)) {
+            melhorPorFeriado.set(dias[k], bloco);
+          }
+        }
+      }
+    }
+
+    // Um mesmo bloco pode ser o melhor de vários feriados (Natal + Ano-Novo): junta.
+    const unicos = new Map();
+    for (const bloco of melhorPorFeriado.values()) unicos.set(bloco.inicio + bloco.fim, bloco);
+    return [...unicos.values()]
+      .map((b) => {
+        const feriados = [];
+        for (let d = b.inicio; d <= b.fim; d = somaDias(d, 1)) feriados.push(...(feriadosPorData.get(d) || []));
+        return { ...b, feriados };
+      })
+      .sort((x, y) => x.inicio.localeCompare(y.inicio));
+  }
+
   // Impacto no calendário de quem trabalha de segunda a sexta.
   function classificar(data) {
     const dow = diaDaSemana(data);
@@ -285,6 +353,7 @@
   const api = {
     UFS,
     pascoa,
+    oportunidades,
     paraIcs,
     feriadosDoAno,
     feriadosEntre,

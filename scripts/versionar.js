@@ -19,7 +19,7 @@ const RAIZ = path.join(__dirname, "..");
 // Ordem importa: app.js referencia ufs-geo.js, então ele é carimbado antes de ter o próprio hash calculado.
 const ALVOS = [
   { arquivo: "app.js", assets: ["ufs-geo.js"] },
-  { arquivo: "index.html", assets: ["favicon.svg", "apple-touch-icon.png", "tema.js", "estilo.css", "bandeira.svg", "feriados.js", "localizacao.js", "app.js"] },
+  { arquivo: "index.html", assets: ["favicon.svg", "apple-touch-icon.png", "tema.js", "estilo.css", "bandeira.svg", "og.png", "feriados.js", "localizacao.js", "app.js"] },
 ];
 
 const hash = (arquivo) =>
@@ -34,10 +34,10 @@ function versionar({ escrever }) {
     const antes = fs.readFileSync(caminho, "utf8");
     let depois = antes;
     for (const asset of assets) {
-      // Casa "asset" ou "asset?v=xxxx" entre aspas.
-      const re = new RegExp(`(["'])${escapar(asset)}(\\?v=[0-9a-f]+)?\\1`, "g");
+      // Casa "asset", "asset?v=xxxx" ou uma URL terminando no asset (".../og.png"), entre aspas.
+      const re = new RegExp(`(["'])((?:[^"'\\s]*/)?)${escapar(asset)}(\\?v=[0-9a-f]+)?\\1`, "g");
       if (!re.test(depois)) throw new Error(`${arquivo} não referencia ${asset}`);
-      depois = depois.replace(re, `$1${asset}?v=${hash(asset)}$1`);
+      depois = depois.replace(re, `$1$2${asset}?v=${hash(asset)}$1`);
     }
     if (depois !== antes) {
       alterados.push(arquivo);

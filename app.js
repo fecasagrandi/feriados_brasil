@@ -60,6 +60,50 @@
     return new Date(a, m - 1, d).getTime();
   }
 
+  // ["2026-12-28", "2026-12-29", "2027-01-04"] → "28 e 29 dez, 4 jan"
+  function listaDatas(datas) {
+    const grupos = [];
+    for (const d of datas) {
+      const [, m, dia] = partes(d);
+      const ultimo = grupos[grupos.length - 1];
+      if (ultimo && ultimo.m === m) ultimo.dias.push(dia);
+      else grupos.push({ m, dias: [dia] });
+    }
+    const juntar = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}` : String(xs[0]));
+    return grupos.map((g) => `${juntar(g.dias)} ${MESES[g.m - 1]}`).join(", ");
+  }
+
+  function folga(o) {
+    const [, mi, di] = partes(o.inicio);
+    const [, mf, df] = partes(o.fim);
+    const nomes = [...new Set(o.feriados.map((f) => f.nome))].join(" + ");
+    const n = o.ferias.length;
+
+    const el = document.createElement("div");
+    el.className = "linha folga revela";
+
+    const total = el.appendChild(document.createElement("span"));
+    total.className = "l-data";
+    total.append(Object.assign(document.createElement("span"), { className: "l-dia", textContent: String(o.dias) }),
+      Object.assign(document.createElement("span"), { className: "l-mes", textContent: "dias" }));
+
+    const meio = el.appendChild(document.createElement("span"));
+    meio.className = "l-meio";
+    meio.append(
+      Object.assign(document.createElement("span"), { className: "l-nome", textContent: nomes }),
+      Object.assign(document.createElement("span"), {
+        className: "l-sem",
+        textContent: `${mi === mf ? di : `${di} ${MESES[mi - 1]}`} a ${df} ${MESES[mf - 1]} · férias em ${listaDatas(o.ferias)}`,
+      })
+    );
+
+    el.append(Object.assign(document.createElement("span"), {
+      className: "l-quando",
+      textContent: `${n} dia${n > 1 ? "s" : ""} de férias`,
+    }));
+    return el;
+  }
+
   function quando(dias) {
     if (dias === 0) return "hoje";
     if (dias === 1) return "amanhã";
@@ -202,6 +246,10 @@
 
     $("proximos").replaceChildren(...state.proximos.map((f, i) => linha(f, hoje, i)));
     $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f, i) => linha(f, hoje, i)));
+    const emendas = F.oportunidades(hoje, F.somaDias(hoje, 365), { uf: state.uf });
+    $("folgas").replaceChildren(
+      ...(emendas.length ? emendas.map(folga) : [Object.assign(document.createElement("p"), { className: "lista-vazia", textContent: "nenhuma emenda boa nos próximos 12 meses." })])
+    );
     $("ano").textContent = state.ano;
     $("facultativos").checked = state.facultativos;
 
