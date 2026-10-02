@@ -82,7 +82,9 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
 | `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
-| `test/` | Testes com o runner nativo do Node (`node:test`). |
+| `test/` | Testes de unidade (`node:test`). |
+| `e2e/`, `playwright.config.js` | Testes de ponta a ponta (Playwright). |
+| `scripts/servidor.js` | Servidor estático local, sem dependências. |
 
 Os arquivos `.js` funcionam como `<script>` clássico e como módulo CommonJS, por isso dá para testar no Node sem build.
 
@@ -97,7 +99,11 @@ O GitHub Pages serve cada arquivo com cache de 10 minutos, e cada um expira numa
 ## Testes
 
 ```sh
-npm test   # ou: node --test
+npm test            # unidade: datas, UFs, .ics, cache busting (node:test, sem dependências)
+npm ci && npm run test:e2e   # ponta a ponta: a página num Chromium de verdade (Playwright)
+npm run servir      # servidor local em http://localhost:4173
 ```
 
-Requer Node 18+. Sem dependências para instalar.
+Os testes de ponta a ponta (`e2e/`) cobrem o que já quebrou ou o que a página promete: nenhuma requisição externa, mapa das UFs só sob demanda, "é hoje", virada do ano, aviso de versões misturadas, localização (SP, negada, fora do Brasil, esquecer), tema, rolagem horizontal em 3 larguras, logo do topo e proporção da bandeira. Foram validados reintroduzindo bugs antigos e conferindo que falham.
+
+O CI roda os dois em todo PR. Requer Node 18+.
