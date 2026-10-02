@@ -1,7 +1,7 @@
 // Cada teste aqui corresponde a algo que já quebrou ou a uma promessa feita na página.
 const { test, expect } = require("@playwright/test");
 
-const ORIGEM = "http://localhost:4173/";
+const ORIGEM = "http://127.0.0.1:4173/";
 
 // Abre a página com relógio controlado e registra requisições externas e erros.
 async function abrir(page, { quando = "2026-09-30T14:00:00", antes } = {}) {

@@ -103,7 +103,7 @@ O GitHub Pages serve cada arquivo com cache de 10 minutos, e cada um expira numa
 ```sh
 npm test            # unidade: datas, UFs, .ics, cache busting (node:test, sem dependências)
 npm ci && npm run test:e2e   # ponta a ponta: a página num Chromium de verdade (Playwright)
-npm run servir      # servidor local em http://localhost:4173
+npm run servir      # servidor local em http://127.0.0.1:4173
 ```
 
 Os testes de ponta a ponta (`e2e/`) cobrem o que já quebrou ou o que a página promete: nenhuma requisição externa, mapa das UFs só sob demanda, "é hoje", virada do ano, aviso de versões misturadas, localização (SP, negada, fora do Brasil, esquecer), tema, rolagem horizontal em 3 larguras, logo do topo e proporção da bandeira. Foram validados reintroduzindo bugs antigos e conferindo que falham.
