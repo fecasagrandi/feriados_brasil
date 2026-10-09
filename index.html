@@ -34,10 +34,18 @@
   <link rel="icon" href="favicon.svg?v=be58fcd2" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=dffbfc73" />
 
+  <!-- CSS primeiro: um script bloqueante antes dele atrasaria a descoberta do CSS. -->
+  <link rel="stylesheet" href="estilo.css?v=aa06c2ac">
+  <!-- Fontes antes do primeiro render do JS: sem isso, a troca de fonte faz a página pular. -->
+  <link rel="preload" href="fontes/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fontes/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
-  <script src="tema.js?v=3e4a001d"></script>
-
-  <link rel="stylesheet" href="estilo.css?v=598a8786">
+  <script src="tema.js?v=228cee21"></script>
+  <!-- defer no <head>: baixam em paralelo com o CSS e rodam na ordem, depois do HTML. -->
+  <script defer src="feriados.js?v=30af2803"></script>
+  <script defer src="sobre.js?v=343693e5"></script>
+  <script defer src="localizacao.js?v=a5b0384e"></script>
+  <script defer src="app.js?v=e8181f84"></script>
 </head>
 <body class="entrando">
   <main class="container">
@@ -199,9 +207,5 @@
     </div>
   </footer>
 
-  <script src="feriados.js?v=30af2803"></script>
-  <script src="sobre.js?v=343693e5"></script>
-  <script src="localizacao.js?v=a5b0384e"></script>
-  <script src="app.js?v=ee35545e"></script>
 </body>
 </html>

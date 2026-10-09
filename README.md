@@ -105,6 +105,25 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 
 Os arquivos `.js` funcionam como `<script>` clássico e como módulo CommonJS, por isso dá para testar no Node sem build.
 
+## Desempenho
+
+Medido no Chromium com rede 4G lenta simulada (150 ms de latência, 1,6 Mbps), CPU 4× mais lenta, HTTP/2 e gzip como no GitHub Pages; mediana de 15 carregamentos:
+
+| | Antes | Depois |
+|---|---|---|
+| FCP | 740 ms | 652 ms |
+| LCP | 3.344 ms | 996 ms |
+| CLS | 0,71 | 0 |
+
+O que fez diferença:
+
+- **CSS antes de qualquer script** e scripts no `<head>` com `defer`: no fim do `<body>`, o Chrome os baixava um depois do outro, com prioridade baixa, atrás das fontes.
+- **Conteúdo calculado invisível até o primeiro render** (classe `carregando`, posta pelo `tema.js` e tirada pelo `app.js`): a página pintava traços e listas vazias e pulava quando o JS preenchia. Se o `app.js` falhar, a animação CSS mostra tudo depois de 4 s.
+- **Preload das duas fontes principais**, para estarem prontas no primeiro render (sem troca de fonte, sem pulo).
+- **Animação de entrada a partir de opacidade 0,01**, não 0: o Chrome ignora elemento invisível no LCP.
+
+O que não vale a pena aqui: minificar (o gzip do GitHub Pages já reduz os scripts a ~1/3; a economia seria menos de 1 KB e exigiria build) e cabeçalhos de cache longos (o GitHub Pages fixa `max-age=600`; depois disso o navegador só revalida e recebe `304`, sem baixar de novo).
+
 ## Ao alterar qualquer `.js` ou `.css`
 
 ```sh
