@@ -186,3 +186,38 @@ test("sem sobre.js (cache misturado) a página segue, só sem o texto", async ({
   await expect(page.locator("#hsobre")).toBeHidden();
   expect(erros).toEqual([]);
 });
+
+// Contraste WCAG AA (4,5:1) do texto nas linhas da lista, inclusive feriados que já passaram.
+for (const tema of ["light", "dark"]) {
+  test(`contraste mínimo de 4,5:1 nas listas (tema ${tema})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: tema });
+    await abrir(page, { quando: "2026-12-20T10:00:00" }); // quase todo o calendário do ano já passou
+    const piores = await page.evaluate(() => {
+      const rgb = (s) => s.match(/[\d.]+/g).map(Number);
+      const lum = ([r, g, b]) => [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+        .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+      const fundo = rgb(getComputedStyle(document.body).backgroundColor);
+      const res = [];
+      for (const n of document.querySelectorAll("#calendario .linha :is(.l-dia, .l-mes, .l-nome, .l-sem, .l-quando)")) {
+        let a = 1;
+        for (let e = n; e; e = e.parentElement) a *= +getComputedStyle(e).opacity;
+        const c = rgb(getComputedStyle(n).color);
+        const visto = c.slice(0, 3).map((v, i) => a * (c[3] ?? 1) * v + (1 - a * (c[3] ?? 1)) * fundo[i]);
+        const [x, y] = [lum(visto), lum(fundo)].sort((p, q) => q - p);
+        res.push([(x + 0.05) / (y + 0.05), n.className]);
+      }
+      return res.sort((p, q) => p[0] - q[0]).slice(0, 3);
+    });
+    expect(piores[0][0], JSON.stringify(piores)).toBeGreaterThanOrEqual(4.5);
+  });
+}
+
+test("nada pula ao carregar: conteúdo calculado só aparece depois do primeiro render", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__cls = 0;
+    new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__cls += e.value; }).observe({ type: "layout-shift", buffered: true });
+  });
+  await abrir(page);
+  await expect(page.locator("html")).not.toHaveClass(/carregando/);
+  expect(await page.evaluate(() => window.__cls)).toBeLessThan(0.05);
+});

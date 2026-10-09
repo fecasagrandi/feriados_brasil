@@ -8,6 +8,7 @@
   if (!F || !F.UFS || !window.Localizacao) {
     $("hnome").textContent = "página desatualizada";
     $("hmeta").textContent = "recarregue com Ctrl+Shift+R (ou Cmd+Shift+R no Mac).";
+    document.documentElement.classList.remove("carregando");
     return;
   }
 
@@ -461,6 +462,7 @@
 
   aplicarTema();
   render();
+  document.documentElement.classList.remove("carregando");
   setInterval(tick, 1000);
   setTimeout(() => document.body.classList.remove("entrando"), 1800);
 })();
