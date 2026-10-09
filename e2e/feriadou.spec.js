@@ -196,15 +196,26 @@ for (const tema of ["light", "dark"]) {
       const rgb = (s) => s.match(/[\d.]+/g).map(Number);
       const lum = ([r, g, b]) => [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
         .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
-      const fundo = rgb(getComputedStyle(document.body).backgroundColor);
+      // Fundo real: o do body, coberto pelos fundos (às vezes translúcidos) dos ancestrais.
+      const fundoDe = (n) => {
+        const camadas = [];
+        for (let e = n; e && e !== document.body; e = e.parentElement) camadas.push(rgb(getComputedStyle(e).backgroundColor));
+        let f = rgb(getComputedStyle(document.body).backgroundColor).slice(0, 3);
+        for (const c of camadas.reverse()) {
+          const a = c[3] ?? 1;
+          f = f.map((v, i) => a * c[i] + (1 - a) * v);
+        }
+        return f;
+      };
       const res = [];
       for (const n of document.querySelectorAll("#calendario .linha :is(.l-dia, .l-mes, .l-nome, .l-sem, .l-quando)")) {
+        const fundo = fundoDe(n);
         let a = 1;
         for (let e = n; e; e = e.parentElement) a *= +getComputedStyle(e).opacity;
         const c = rgb(getComputedStyle(n).color);
         const visto = c.slice(0, 3).map((v, i) => a * (c[3] ?? 1) * v + (1 - a * (c[3] ?? 1)) * fundo[i]);
         const [x, y] = [lum(visto), lum(fundo)].sort((p, q) => q - p);
-        res.push([(x + 0.05) / (y + 0.05), n.className]);
+        res.push([(x + 0.05) / (y + 0.05), n.className + (n.closest(".ativa") ? " (linha ativa)" : "")]);
       }
       return res.sort((p, q) => p[0] - q[0]).slice(0, 3);
     });
