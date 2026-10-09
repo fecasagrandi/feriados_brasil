@@ -12,6 +12,7 @@ Nada é digitado à mão — as datas são **calculadas** para qualquer ano entr
   - Carnaval = Páscoa − 48 e − 47 dias (**ponto facultativo**)
   - Quarta-feira de Cinzas = Páscoa − 46 dias (**ponto facultativo**, até 14h)
   - Corpus Christi = Páscoa + 60 dias (**ponto facultativo**)
+- **Vésperas**: 24/12 e 31/12, **ponto facultativo a partir das 14h** (repetido todo ano na portaria federal).
 
 Carnaval e Corpus Christi **não são feriados nacionais por lei**: são pontos facultativos definidos na portaria anual do governo federal. Por isso aparecem só com a opção "pontos facultativos" ligada.
 
@@ -32,6 +33,14 @@ Critério: entra quando **duas fontes independentes concordam e citam a lei**. A
 | PR | 19/12 foi **revogado** como feriado pela Lei 18.384/2014 (virou só data comemorativa). Fora. |
 | SC | 11/08 e 25/11 são **transferidos para o domingo** (Lei 12.906/2004): não afetam dia útil. Fora. |
 | CE | São José (19/03): só encontrada como data comemorativa (Lei 18.390/2023), sem lei clara de feriado. **Fora, pendente de confirmação.** |
+| AC | Tratado de Petrópolis (17/11): `date-holidays` marca como facultativo, mas os calendários oficiais citam **feriado estadual, Lei 57/1965**. **Feriado.** Ele e o Dia da Amazônia (Lei 243/1968) seguem com vigência a partir de 2012 e 2004, como no `date-holidays`, porque não foi possível confirmar se valiam antes. |
+| AL | Emancipação Política (16/09): os decretos anuais citam em bloco as Leis 5.247/1991, 5.508/1993, 5.509/1993 e 5.724/1995. As outras três são de São João, São Pedro e Zumbi; a **Lei 5.247/1991** foi atribuída ao 16/09 por eliminação. |
+| RJ | Terça de Carnaval: a Lei 5.243 é de 14/05/2008, depois do Carnaval daquele ano. **Vale a partir de 2009.** |
+| RR, RS, SE | A base é a própria Constituição estadual (art. 9º, art. 6º e art. 269), não uma lei ordinária. |
+
+**Consciência Negra (20/11) antes de 2024.** Antes da lei nacional, seis estados já tinham o feriado: AL (Lei 5.724/1995), RJ (Lei 4.007/2002), MT (Lei 7.879/2002, de 27/12, então a partir de 2003), AP (Lei 1.169/2007, a partir de 2008 porque a data da lei não foi confirmada), AM (Lei 84/2010) e SP (Lei 17.746/2023, só 2023). Calendários de anos passados desses estados incluem a data; de 2024 em diante ela aparece uma vez só, como nacional.
+
+Todo feriado estadual cita a lei (ou o artigo da Constituição estadual), e um teste falha se aparecer um sem citação.
 
 Sem feriado estadual em dia próprio: MG e DF (o 21/04 coincide com Tiradentes) e MT (tinha só a Consciência Negra, hoje nacional).
 

@@ -46,7 +46,7 @@ test("Carnaval e Corpus Christi são ponto facultativo; Paixão de Cristo é fer
 test("facultativos: false remove só os pontos facultativos", () => {
   const todos = F.feriadosDoAno(2026);
   const soFeriados = F.feriadosDoAno(2026, { facultativos: false });
-  assert.equal(todos.length, 14);
+  assert.equal(todos.length, 16);
   assert.equal(soFeriados.length, 10);
   assert.ok(soFeriados.every((f) => f.tipo === "feriado"));
 });
@@ -144,10 +144,48 @@ test("RJ: terça de Carnaval vira feriado estadual e some o ponto facultativo du
   assert.equal(dia[0].abrangencia, "estadual");
 });
 
-test("feriado estadual facultativo respeita o filtro (AC, Tratado de Petrópolis)", () => {
-  const nomes = (opts) => F.feriadosDoAno(2026, { uf: "AC", ...opts }).map((f) => f.nome);
-  assert.ok(nomes({}).includes("Tratado de Petrópolis"));
-  assert.ok(!nomes({ facultativos: false }).includes("Tratado de Petrópolis"));
+test("24/12 e 31/12 são ponto facultativo a partir das 14h", () => {
+  const l = F.feriadosDoAno(2026).filter((f) => f.data === "2026-12-24" || f.data === "2026-12-31");
+  assert.deepEqual(l.map((f) => [f.data, f.tipo, f.obs]), [
+    ["2026-12-24", "facultativo", "a partir das 14h"],
+    ["2026-12-31", "facultativo", "a partir das 14h"],
+  ]);
+  const ics = F.paraIcs(l, new Date(0));
+  assert.ok(ics.includes("DESCRIPTION:Ponto facultativo (a partir das 14h)"));
+});
+
+test("todo feriado estadual cita a lei (1990 a 2030)", () => {
+  for (const uf of Object.keys(F.UFS)) {
+    for (let ano = 1990; ano <= 2030; ano++) {
+      for (const f of F.feriadosDoAno(ano, { uf }).filter((f) => f.abrangencia === "estadual")) {
+        assert.ok(f.lei, `${uf} ${f.data} ${f.nome}`);
+      }
+    }
+  }
+});
+
+test("AC: Tratado de Petrópolis é feriado (Lei 57/1965)", () => {
+  const f = F.feriadosDoAno(2026, { uf: "AC", facultativos: false }).find((f) => f.nome === "Tratado de Petrópolis");
+  assert.equal(f.data, "2026-11-17");
+  assert.equal(f.lei, "Lei 57/1965");
+});
+
+test("Consciência Negra estadual antes de 2024, só nacional depois", () => {
+  const vinteNov = (uf, ano) =>
+    F.feriadosDoAno(ano, { uf }).filter((f) => f.data === `${ano}-11-20`).map((f) => f.abrangencia);
+  assert.deepEqual(vinteNov("RJ", 2020), ["estadual"]);
+  assert.deepEqual(vinteNov("MT", 2002), []); // lei de 27/12/2002
+  assert.deepEqual(vinteNov("MT", 2003), ["estadual"]);
+  assert.deepEqual(vinteNov("SP", 2022), []);
+  assert.deepEqual(vinteNov("SP", 2023), ["estadual"]);
+  assert.deepEqual(vinteNov("BA", 2020), []);
+  for (const uf of ["AL", "AM", "AP", "MT", "RJ", "SP"]) assert.deepEqual(vinteNov(uf, 2026), ["nacional"], uf);
+});
+
+test("RJ: terça de Carnaval só é feriado a partir de 2009 (lei de 14/05/2008)", () => {
+  const terca = (ano) => F.feriadosDoAno(ano, { uf: "RJ" }).find((f) => f.nome.startsWith("Carnaval") && f.data === F.somaDias(F.pascoa(ano), -47));
+  assert.equal(terca(2008).abrangencia, "nacional");
+  assert.equal(terca(2009).abrangencia, "estadual");
 });
 
 test("todas as 27 UFs funcionam e nenhuma gera feriado duplicado", () => {
