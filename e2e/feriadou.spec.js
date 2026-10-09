@@ -166,3 +166,23 @@ test("planejador não repete o mês quando a emenda cabe num mês só", async ({
   await abrir(page);
   await expect(page.locator("#folgas .folga").nth(1)).toContainText("17 a 21 abr · férias em 19 e 20 abr");
 });
+
+test("mostra o que o feriado comemora, com link para a fonte, e troca ao escolher outro", async ({ page }) => {
+  await abrir(page);
+  const sobre = page.locator("#hsobre");
+  await expect(sobre).toContainText("três pescadores");
+  const fonte = sobre.locator("a.fonte");
+  await expect(fonte).toHaveAttribute("href", /\.gov\.br\//);
+  await expect(fonte).toHaveAttribute("rel", "noopener noreferrer");
+
+  await page.locator("#proximos .linha", { hasText: "Finados" }).click();
+  await expect(sobre).toContainText("cemitérios");
+});
+
+test("sem sobre.js (cache misturado) a página segue, só sem o texto", async ({ page }) => {
+  await page.route("**/sobre.js*", (r) => r.fulfill({ contentType: "text/javascript", body: "" }));
+  const { erros } = await abrir(page);
+  await expect(page.locator("#hnome")).toHaveText("Nossa Senhora Aparecida");
+  await expect(page.locator("#hsobre")).toBeHidden();
+  expect(erros).toEqual([]);
+});
