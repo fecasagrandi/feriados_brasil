@@ -33,9 +33,10 @@
   ];
 
   // Pontos facultativos de data fixa, repetidos todo ano na portaria do governo federal.
+  // O horário muda conforme a portaria: 14h até 2024, 13h em 2025 e 2026.
   const FACULTATIVOS_FIXOS = [
-    { mes: 12, dia: 24, nome: "Véspera de Natal", obs: "a partir das 14h" },
-    { mes: 12, dia: 31, nome: "Véspera de Ano-Novo", obs: "a partir das 14h" },
+    { mes: 12, dia: 24, nome: "Véspera de Natal", obs: "a partir das 13h" },
+    { mes: 12, dia: 31, nome: "Véspera de Ano-Novo", obs: "a partir das 13h" },
   ];
 
   const UFS = {
@@ -108,7 +109,8 @@
     RN: [{ mes: 10, dia: 3, nome: "Mártires de Cunhaú e Uruaçu", desde: 2006, lei: "Lei 8.913/2006" }],
     RO: [
       { mes: 1, dia: 4, nome: "Criação do Estado", desde: 2010, lei: "Lei 2.291/2010" },
-      { mes: 6, dia: 18, nome: "Dia do Evangélico", desde: 2001, lei: "Lei 1.026/2001" },
+      // Declarada inconstitucional pelo STF (ADI 3940, publicada em 2020).
+      { mes: 6, dia: 18, nome: "Dia do Evangélico", desde: 2002, ate: 2019, lei: "Lei 1.026/2001" },
     ],
     RR: [{ mes: 10, dia: 5, nome: "Criação do Estado", lei: "Constituição estadual, art. 9º" }],
     RS: [{ mes: 9, dia: 20, nome: "Revolução Farroupilha", lei: "Constituição estadual, art. 6º" }],

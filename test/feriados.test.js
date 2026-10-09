@@ -144,14 +144,14 @@ test("RJ: terça de Carnaval vira feriado estadual e some o ponto facultativo du
   assert.equal(dia[0].abrangencia, "estadual");
 });
 
-test("24/12 e 31/12 são ponto facultativo a partir das 14h", () => {
+test("24/12 e 31/12 são ponto facultativo a partir das 13h", () => {
   const l = F.feriadosDoAno(2026).filter((f) => f.data === "2026-12-24" || f.data === "2026-12-31");
   assert.deepEqual(l.map((f) => [f.data, f.tipo, f.obs]), [
-    ["2026-12-24", "facultativo", "a partir das 14h"],
-    ["2026-12-31", "facultativo", "a partir das 14h"],
+    ["2026-12-24", "facultativo", "a partir das 13h"],
+    ["2026-12-31", "facultativo", "a partir das 13h"],
   ]);
   const ics = F.paraIcs(l, new Date(0));
-  assert.ok(ics.includes("DESCRIPTION:Ponto facultativo (a partir das 14h)"));
+  assert.ok(ics.includes("DESCRIPTION:Ponto facultativo (a partir das 13h)"));
 });
 
 test("todo feriado estadual cita a lei (1990 a 2030)", () => {
@@ -246,4 +246,36 @@ test("planejador: ponto facultativo não conta como folga, mas feriado estadual 
   const temCarnaval = (opts) => F.oportunidades("2027-01-15", "2027-03-01", opts).some((o) => o.inicio <= "2027-02-09" && o.fim >= "2027-02-09");
   assert.equal(temCarnaval({}), false);
   assert.equal(temCarnaval({ uf: "RJ" }), true); // segunda 08/02 de férias: sáb 06 a ter 09
+});
+
+// ---------- o que cada feriado comemora ----------
+
+const S = require("../sobre.js");
+
+test("todo feriado, nacional ou estadual, tem texto e fonte (1990 a 2030)", () => {
+  const vistos = new Set();
+  for (const uf of [null, ...Object.keys(F.UFS)]) {
+    for (let ano = 1990; ano <= 2030; ano++) {
+      for (const f of F.feriadosDoAno(ano, { uf })) {
+        const chave = `${f.uf || ""}:${f.nome}`;
+        if (vistos.has(chave)) continue;
+        vistos.add(chave);
+        const s = S.sobre(f);
+        assert.ok(s, `sem texto: ${chave}`);
+        assert.ok(s.texto.length > 40, chave);
+        assert.match(s.fonte.url, /^https?:\/\/[^/]*\.(gov|leg)\.br\/|^https?:\/\/[^/]*ebc\.com\.br\//, chave);
+      }
+    }
+  }
+});
+
+test("estadual com nome igual ao nacional usa o texto nacional (Consciência Negra antes de 2024)", () => {
+  const f = F.feriadosDoAno(2020, { uf: "RJ" }).find((f) => f.data === "2020-11-20");
+  assert.equal(S.sobre(f), S.sobre({ nome: "Consciência Negra" }));
+});
+
+test("RO: Dia do Evangélico (18/06) só até 2019, derrubado pelo STF", () => {
+  const tem = (ano) => F.feriadosDoAno(ano, { uf: "RO" }).some((f) => f.nome === "Dia do Evangélico");
+  assert.equal(tem(2019), true);
+  assert.equal(tem(2020), false);
 });

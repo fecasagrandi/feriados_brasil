@@ -188,6 +188,17 @@
       document.createTextNode(`${d} de ${MESES_LONGOS[m - 1]}, ${SEMANA[F.diaDaSemana(f.data)]}`),
       ...tagsDe(f)
     );
+
+    // Opcional: sem sobre.js (cache misturado), a página segue sem o texto.
+    const s = window.SobreFeriados && window.SobreFeriados.sobre(f);
+    $("hsobre").hidden = !s;
+    if (s) {
+      const a = el("a", "fonte", `fonte: ${s.fonte.nome}`);
+      a.href = s.fonte.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      $("hsobre").replaceChildren(document.createTextNode(s.texto + " "), a);
+    }
   }
 
   // Uma marca por dia entre o último feriado e o alvo: dá para "riscar" os dias.

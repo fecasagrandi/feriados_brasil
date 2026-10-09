@@ -12,7 +12,7 @@ Nada é digitado à mão — as datas são **calculadas** para qualquer ano entr
   - Carnaval = Páscoa − 48 e − 47 dias (**ponto facultativo**)
   - Quarta-feira de Cinzas = Páscoa − 46 dias (**ponto facultativo**, até 14h)
   - Corpus Christi = Páscoa + 60 dias (**ponto facultativo**)
-- **Vésperas**: 24/12 e 31/12, **ponto facultativo a partir das 14h** (repetido todo ano na portaria federal).
+- **Vésperas**: 24/12 e 31/12, **ponto facultativo à tarde** (repetido todo ano na portaria federal; a partir das 13h em 2025 e 2026, 14h antes disso).
 
 Carnaval e Corpus Christi **não são feriados nacionais por lei**: são pontos facultativos definidos na portaria anual do governo federal. Por isso aparecem só com a opção "pontos facultativos" ligada.
 
@@ -37,6 +37,7 @@ Critério: entra quando **duas fontes independentes concordam e citam a lei**. A
 | AL | Emancipação Política (16/09): os decretos anuais citam em bloco as Leis 5.247/1991, 5.508/1993, 5.509/1993 e 5.724/1995. As outras três são de São João, São Pedro e Zumbi; a **Lei 5.247/1991** foi atribuída ao 16/09 por eliminação. |
 | RJ | Terça de Carnaval: a Lei 5.243 é de 14/05/2008, depois do Carnaval daquele ano. **Vale a partir de 2009.** |
 | RR, RS, SE | A base é a própria Constituição estadual (art. 9º, art. 6º e art. 269), não uma lei ordinária. |
+| RO | Dia do Evangélico (18/06, Lei 1.026/2001): o STF declarou a lei inconstitucional (ADI 3940, publicada em 2020), e o decreto estadual de 2026 já não traz a data. **Vale de 2002 a 2019.** |
 
 **Consciência Negra (20/11) antes de 2024.** Antes da lei nacional, seis estados já tinham o feriado: AL (Lei 5.724/1995), RJ (Lei 4.007/2002), MT (Lei 7.879/2002, de 27/12, então a partir de 2003), AP (Lei 1.169/2007, a partir de 2008 porque a data da lei não foi confirmada), AM (Lei 84/2010) e SP (Lei 17.746/2023, só 2023). Calendários de anos passados desses estados incluem a data; de 2024 em diante ela aparece uma vez só, como nacional.
 
@@ -49,6 +50,10 @@ Ressalva honesta: as leis acima foram localizadas por busca, não lidas no texto
 Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça de Carnaval no RJ), vale o feriado.
 
 **Achou um erro?** Abra uma issue com o link da lei — é a única coisa que resolve a dúvida.
+
+## O que cada feriado comemora
+
+Ao escolher um feriado, aparece um parágrafo curto sobre o que ele lembra, com link para a fonte. Os textos ficam em `sobre.js` e as fontes são sempre de órgãos públicos (governos, assembleias, Senado, Câmara, Arquivo Nacional, Agência Brasil). Um teste garante que todo feriado, nacional ou estadual, tem texto e fonte.
 
 ## Detecção do estado pela localização
 
@@ -87,6 +92,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 |---|---|
 | `feriados.js` | Cálculo das datas (nacionais e estaduais) e exportação `.ics`. Lógica pura. |
 | `localizacao.js` | Coordenada → UF (point-in-polygon). Lógica pura. |
+| `sobre.js` | O que cada feriado comemora, com a fonte. Só conteúdo. |
 | `ufs-geo.js` | Contornos das UFs (gerado). |
 | `app.js`, `tema.js`, `estilo.css`, `index.html` | Interface. |
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
