@@ -232,3 +232,12 @@ test("nada pula ao carregar: conteúdo calculado só aparece depois do primeiro 
   await expect(page.locator("html")).not.toHaveClass(/carregando/);
   expect(await page.evaluate(() => window.__cls)).toBeLessThan(0.05);
 });
+
+test("rodapé e metadados creditam o autor", async ({ page }) => {
+  await abrir(page);
+  await expect(page.locator('meta[name="author"]')).toHaveAttribute("content", "Felipe Moreira Casagrandi");
+  const link = page.locator('.rodape a[rel~="author"]');
+  await expect(link).toHaveText("Felipe Moreira Casagrandi");
+  await expect(link).toHaveAttribute("href", "https://github.com/fecasagrandi");
+  await expect(page.locator(".rodape-base")).toContainText("© 2026 Felipe Moreira Casagrandi");
+});

@@ -143,3 +143,7 @@ npm run servir      # servidor local em http://127.0.0.1:4173
 Os testes de ponta a ponta (`e2e/`) cobrem o que já quebrou ou o que a página promete: nenhuma requisição externa, mapa das UFs só sob demanda, "é hoje", virada do ano, aviso de versões misturadas, localização (SP, negada, fora do Brasil, esquecer), tema, rolagem horizontal em 3 larguras, logo do topo e proporção da bandeira. Foram validados reintroduzindo bugs antigos e conferindo que falham.
 
 O CI roda os dois em todo PR. Requer Node 18+.
+
+## Autor
+
+Feito por **Felipe Moreira Casagrandi** ([@fecasagrandi](https://github.com/fecasagrandi)).
