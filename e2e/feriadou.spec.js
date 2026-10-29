@@ -241,3 +241,9 @@ test("rodapé e metadados creditam o autor", async ({ page }) => {
   await expect(link).toHaveAttribute("href", "https://github.com/fecasagrandi");
   await expect(page.locator(".rodape-base")).toContainText("© 2026 Felipe Moreira Casagrandi");
 });
+
+test("'reportar um erro de data' abre o formulário de issue com a lei obrigatória", async ({ page }) => {
+  await abrir(page);
+  const link = page.locator(".rodape a", { hasText: "reportar um erro de data" });
+  await expect(link).toHaveAttribute("href", /\/issues\/new\?template=erro-de-data\.yml$/);
+});
