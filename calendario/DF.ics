@@ -10,6 +10,7 @@ BEGIN:VEVENT
 UID:2025-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250101
 DTEND;VALUE=DATE:20250102
 SUMMARY:Confraternização Universal
@@ -19,6 +20,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-03-03-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250303
 DTEND;VALUE=DATE:20250304
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -28,6 +30,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-03-04-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250304
 DTEND;VALUE=DATE:20250305
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -38,6 +41,7 @@ BEGIN:VEVENT
 UID:2025-03-05-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250305
 DTEND;VALUE=DATE:20250306
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -47,6 +51,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-04-18-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250418
 DTEND;VALUE=DATE:20250419
 SUMMARY:Paixão de Cristo
@@ -56,6 +61,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250421
 DTEND;VALUE=DATE:20250422
 SUMMARY:Tiradentes
@@ -65,6 +71,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250501
 DTEND;VALUE=DATE:20250502
 SUMMARY:Dia do Trabalho
@@ -74,6 +81,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-06-19-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250619
 DTEND;VALUE=DATE:20250620
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -84,6 +92,7 @@ BEGIN:VEVENT
 UID:2025-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20250907
 DTEND;VALUE=DATE:20250908
 SUMMARY:Independência do Brasil
@@ -94,6 +103,7 @@ BEGIN:VEVENT
 UID:2025-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251012
 DTEND;VALUE=DATE:20251013
 SUMMARY:Nossa Senhora Aparecida
@@ -103,6 +113,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251102
 DTEND;VALUE=DATE:20251103
 SUMMARY:Finados
@@ -113,6 +124,7 @@ BEGIN:VEVENT
 UID:2025-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251115
 DTEND;VALUE=DATE:20251116
 SUMMARY:Proclamação da República
@@ -122,6 +134,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251120
 DTEND;VALUE=DATE:20251121
 SUMMARY:Consciência Negra
@@ -131,6 +144,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251130
 DTEND;VALUE=DATE:20251201
 SUMMARY:Dia do Evangélico
@@ -140,6 +154,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251224
 DTEND;VALUE=DATE:20251225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -149,6 +164,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2025-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251225
 DTEND;VALUE=DATE:20251226
 SUMMARY:Natal
@@ -159,6 +175,7 @@ BEGIN:VEVENT
 UID:2025-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20251231
 DTEND;VALUE=DATE:20260101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)
@@ -169,6 +186,7 @@ BEGIN:VEVENT
 UID:2026-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260101
 DTEND;VALUE=DATE:20260102
 SUMMARY:Confraternização Universal
@@ -178,6 +196,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-02-16-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260216
 DTEND;VALUE=DATE:20260217
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -187,6 +206,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-02-17-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260217
 DTEND;VALUE=DATE:20260218
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -197,6 +217,7 @@ BEGIN:VEVENT
 UID:2026-02-18-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260218
 DTEND;VALUE=DATE:20260219
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -206,6 +227,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-04-03-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260403
 DTEND;VALUE=DATE:20260404
 SUMMARY:Paixão de Cristo
@@ -215,6 +237,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260421
 DTEND;VALUE=DATE:20260422
 SUMMARY:Tiradentes
@@ -224,6 +247,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260501
 DTEND;VALUE=DATE:20260502
 SUMMARY:Dia do Trabalho
@@ -233,6 +257,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-06-04-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260604
 DTEND;VALUE=DATE:20260605
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -243,6 +268,7 @@ BEGIN:VEVENT
 UID:2026-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20260907
 DTEND;VALUE=DATE:20260908
 SUMMARY:Independência do Brasil
@@ -253,6 +279,7 @@ BEGIN:VEVENT
 UID:2026-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261012
 DTEND;VALUE=DATE:20261013
 SUMMARY:Nossa Senhora Aparecida
@@ -262,6 +289,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261102
 DTEND;VALUE=DATE:20261103
 SUMMARY:Finados
@@ -272,6 +300,7 @@ BEGIN:VEVENT
 UID:2026-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261115
 DTEND;VALUE=DATE:20261116
 SUMMARY:Proclamação da República
@@ -281,6 +310,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261120
 DTEND;VALUE=DATE:20261121
 SUMMARY:Consciência Negra
@@ -290,6 +320,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
 SUMMARY:Dia do Evangélico
@@ -299,6 +330,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261224
 DTEND;VALUE=DATE:20261225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -308,6 +340,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261225
 DTEND;VALUE=DATE:20261226
 SUMMARY:Natal
@@ -318,6 +351,7 @@ BEGIN:VEVENT
 UID:2026-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20261231
 DTEND;VALUE=DATE:20270101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)
@@ -328,6 +362,7 @@ BEGIN:VEVENT
 UID:2027-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270101
 DTEND;VALUE=DATE:20270102
 SUMMARY:Confraternização Universal
@@ -337,6 +372,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-02-08-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270208
 DTEND;VALUE=DATE:20270209
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -346,6 +382,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-02-09-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270209
 DTEND;VALUE=DATE:20270210
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -356,6 +393,7 @@ BEGIN:VEVENT
 UID:2027-02-10-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270210
 DTEND;VALUE=DATE:20270211
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -365,6 +403,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-03-26-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270326
 DTEND;VALUE=DATE:20270327
 SUMMARY:Paixão de Cristo
@@ -374,6 +413,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270421
 DTEND;VALUE=DATE:20270422
 SUMMARY:Tiradentes
@@ -383,6 +423,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270501
 DTEND;VALUE=DATE:20270502
 SUMMARY:Dia do Trabalho
@@ -392,6 +433,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-05-27-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270527
 DTEND;VALUE=DATE:20270528
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -402,6 +444,7 @@ BEGIN:VEVENT
 UID:2027-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20270907
 DTEND;VALUE=DATE:20270908
 SUMMARY:Independência do Brasil
@@ -412,6 +455,7 @@ BEGIN:VEVENT
 UID:2027-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271012
 DTEND;VALUE=DATE:20271013
 SUMMARY:Nossa Senhora Aparecida
@@ -421,6 +465,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271102
 DTEND;VALUE=DATE:20271103
 SUMMARY:Finados
@@ -431,6 +476,7 @@ BEGIN:VEVENT
 UID:2027-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271115
 DTEND;VALUE=DATE:20271116
 SUMMARY:Proclamação da República
@@ -440,6 +486,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271120
 DTEND;VALUE=DATE:20271121
 SUMMARY:Consciência Negra
@@ -449,6 +496,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271130
 DTEND;VALUE=DATE:20271201
 SUMMARY:Dia do Evangélico
@@ -458,6 +506,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271224
 DTEND;VALUE=DATE:20271225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -467,6 +516,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2027-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271225
 DTEND;VALUE=DATE:20271226
 SUMMARY:Natal
@@ -477,6 +527,7 @@ BEGIN:VEVENT
 UID:2027-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20271231
 DTEND;VALUE=DATE:20280101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)
@@ -487,6 +538,7 @@ BEGIN:VEVENT
 UID:2028-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280101
 DTEND;VALUE=DATE:20280102
 SUMMARY:Confraternização Universal
@@ -496,6 +548,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-02-28-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280228
 DTEND;VALUE=DATE:20280229
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -505,6 +558,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-02-29-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280229
 DTEND;VALUE=DATE:20280301
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -515,6 +569,7 @@ BEGIN:VEVENT
 UID:2028-03-01-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280301
 DTEND;VALUE=DATE:20280302
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -524,6 +579,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-04-14-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280414
 DTEND;VALUE=DATE:20280415
 SUMMARY:Paixão de Cristo
@@ -533,6 +589,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280421
 DTEND;VALUE=DATE:20280422
 SUMMARY:Tiradentes
@@ -542,6 +599,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280501
 DTEND;VALUE=DATE:20280502
 SUMMARY:Dia do Trabalho
@@ -551,6 +609,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-06-15-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280615
 DTEND;VALUE=DATE:20280616
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -561,6 +620,7 @@ BEGIN:VEVENT
 UID:2028-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20280907
 DTEND;VALUE=DATE:20280908
 SUMMARY:Independência do Brasil
@@ -571,6 +631,7 @@ BEGIN:VEVENT
 UID:2028-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281012
 DTEND;VALUE=DATE:20281013
 SUMMARY:Nossa Senhora Aparecida
@@ -580,6 +641,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281102
 DTEND;VALUE=DATE:20281103
 SUMMARY:Finados
@@ -590,6 +652,7 @@ BEGIN:VEVENT
 UID:2028-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281115
 DTEND;VALUE=DATE:20281116
 SUMMARY:Proclamação da República
@@ -599,6 +662,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281120
 DTEND;VALUE=DATE:20281121
 SUMMARY:Consciência Negra
@@ -608,6 +672,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281130
 DTEND;VALUE=DATE:20281201
 SUMMARY:Dia do Evangélico
@@ -617,6 +682,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281224
 DTEND;VALUE=DATE:20281225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -626,6 +692,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2028-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281225
 DTEND;VALUE=DATE:20281226
 SUMMARY:Natal
@@ -636,6 +703,7 @@ BEGIN:VEVENT
 UID:2028-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20281231
 DTEND;VALUE=DATE:20290101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)
@@ -646,6 +714,7 @@ BEGIN:VEVENT
 UID:2029-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290101
 DTEND;VALUE=DATE:20290102
 SUMMARY:Confraternização Universal
@@ -655,6 +724,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-02-12-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290212
 DTEND;VALUE=DATE:20290213
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -664,6 +734,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-02-13-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290213
 DTEND;VALUE=DATE:20290214
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -674,6 +745,7 @@ BEGIN:VEVENT
 UID:2029-02-14-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290214
 DTEND;VALUE=DATE:20290215
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -683,6 +755,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-03-30-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290330
 DTEND;VALUE=DATE:20290331
 SUMMARY:Paixão de Cristo
@@ -692,6 +765,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290421
 DTEND;VALUE=DATE:20290422
 SUMMARY:Tiradentes
@@ -701,6 +775,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290501
 DTEND;VALUE=DATE:20290502
 SUMMARY:Dia do Trabalho
@@ -710,6 +785,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-05-31-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290531
 DTEND;VALUE=DATE:20290601
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -720,6 +796,7 @@ BEGIN:VEVENT
 UID:2029-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20290907
 DTEND;VALUE=DATE:20290908
 SUMMARY:Independência do Brasil
@@ -730,6 +807,7 @@ BEGIN:VEVENT
 UID:2029-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291012
 DTEND;VALUE=DATE:20291013
 SUMMARY:Nossa Senhora Aparecida
@@ -739,6 +817,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291102
 DTEND;VALUE=DATE:20291103
 SUMMARY:Finados
@@ -749,6 +828,7 @@ BEGIN:VEVENT
 UID:2029-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291115
 DTEND;VALUE=DATE:20291116
 SUMMARY:Proclamação da República
@@ -758,6 +838,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291120
 DTEND;VALUE=DATE:20291121
 SUMMARY:Consciência Negra
@@ -767,6 +848,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291130
 DTEND;VALUE=DATE:20291201
 SUMMARY:Dia do Evangélico
@@ -776,6 +858,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291224
 DTEND;VALUE=DATE:20291225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -785,6 +868,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2029-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291225
 DTEND;VALUE=DATE:20291226
 SUMMARY:Natal
@@ -795,6 +879,7 @@ BEGIN:VEVENT
 UID:2029-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20291231
 DTEND;VALUE=DATE:20300101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)
@@ -805,6 +890,7 @@ BEGIN:VEVENT
 UID:2030-01-01-confraternizacao-universal@feriadou-distrito-federal.feriado
  s-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300101
 DTEND;VALUE=DATE:20300102
 SUMMARY:Confraternização Universal
@@ -814,6 +900,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-03-04-carnaval-segunda@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300304
 DTEND;VALUE=DATE:20300305
 SUMMARY:Carnaval (segunda) (ponto facultativo)
@@ -823,6 +910,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-03-05-carnaval-terca@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300305
 DTEND;VALUE=DATE:20300306
 SUMMARY:Carnaval (terça) (ponto facultativo)
@@ -833,6 +921,7 @@ BEGIN:VEVENT
 UID:2030-03-06-quarta-feira-de-cinzas@feriadou-distrito-federal.feriados-br
  asil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300306
 DTEND;VALUE=DATE:20300307
 SUMMARY:Quarta-feira de Cinzas (ponto facultativo)
@@ -842,6 +931,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-04-19-paixao-de-cristo@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300419
 DTEND;VALUE=DATE:20300420
 SUMMARY:Paixão de Cristo
@@ -851,6 +941,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-04-21-tiradentes@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300421
 DTEND;VALUE=DATE:20300422
 SUMMARY:Tiradentes
@@ -860,6 +951,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-05-01-dia-do-trabalho@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300501
 DTEND;VALUE=DATE:20300502
 SUMMARY:Dia do Trabalho
@@ -869,6 +961,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-06-20-corpus-christi@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300620
 DTEND;VALUE=DATE:20300621
 SUMMARY:Corpus Christi (ponto facultativo)
@@ -879,6 +972,7 @@ BEGIN:VEVENT
 UID:2030-09-07-independencia-do-brasil@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20300907
 DTEND;VALUE=DATE:20300908
 SUMMARY:Independência do Brasil
@@ -889,6 +983,7 @@ BEGIN:VEVENT
 UID:2030-10-12-nossa-senhora-aparecida@feriadou-distrito-federal.feriados-b
  rasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301012
 DTEND;VALUE=DATE:20301013
 SUMMARY:Nossa Senhora Aparecida
@@ -898,6 +993,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-11-02-finados@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301102
 DTEND;VALUE=DATE:20301103
 SUMMARY:Finados
@@ -908,6 +1004,7 @@ BEGIN:VEVENT
 UID:2030-11-15-proclamacao-da-republica@feriadou-distrito-federal.feriados-
  brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301115
 DTEND;VALUE=DATE:20301116
 SUMMARY:Proclamação da República
@@ -917,6 +1014,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-11-20-consciencia-negra@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301120
 DTEND;VALUE=DATE:20301121
 SUMMARY:Consciência Negra
@@ -926,6 +1024,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-11-30-dia-do-evangelico@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301130
 DTEND;VALUE=DATE:20301201
 SUMMARY:Dia do Evangélico
@@ -935,6 +1034,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-12-24-vespera-de-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301224
 DTEND;VALUE=DATE:20301225
 SUMMARY:Véspera de Natal (ponto facultativo)
@@ -944,6 +1044,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:2030-12-25-natal@feriadou-distrito-federal.feriados-brasil
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301225
 DTEND;VALUE=DATE:20301226
 SUMMARY:Natal
@@ -954,6 +1055,7 @@ BEGIN:VEVENT
 UID:2030-12-31-vespera-de-ano-novo@feriadou-distrito-federal.feriados-brasi
  l
 DTSTAMP:20250101T000000Z
+SEQUENCE:0
 DTSTART;VALUE=DATE:20301231
 DTEND;VALUE=DATE:20310101
 SUMMARY:Véspera de Ano-Novo (ponto facultativo)

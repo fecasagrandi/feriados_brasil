@@ -400,7 +400,9 @@
 
   // iCalendar (RFC 5545). Eventos de dia inteiro: DTEND é exclusivo, então é o dia seguinte.
   // `nome`: título do calendário quando ele é assinado (X-WR-CALNAME), com atualização diária.
-  function paraIcs(lista, agora = new Date(), { nome } = {}) {
+  // `revisao(f)`, se dado, vira o SEQUENCE do evento: o Google Agenda só atualiza um evento
+  // já assinado (mesmo UID) quando esse número sobe.
+  function paraIcs(lista, agora = new Date(), { nome, revisao } = {}) {
     const stamp = agora.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     const compacta = (d) => d.replace(/-/g, "");
     // UID é global (RFC 5545): no calendário assinado leva o nome dele, para não colidir com o
@@ -427,6 +429,7 @@
         "BEGIN:VEVENT",
         `UID:${f.data}-${slug(f.nome)}@${dominio}`,
         `DTSTAMP:${stamp}`,
+        ...(revisao ? [`SEQUENCE:${revisao(f)}`] : []),
         `DTSTART;VALUE=DATE:${compacta(f.data)}`,
         `DTEND;VALUE=DATE:${compacta(somaDias(f.data, 1))}`,
         // No calendário assinado só o título aparece: deixa claro que facultativo não é folga garantida.
