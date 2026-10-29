@@ -7,7 +7,8 @@ X-WR-CALNAME:Feriadou · Pernambuco
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:2025-01-01-confraternizacao-universal@feriados-brasil
+UID:2025-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250101
 DTEND;VALUE=DATE:20250102
@@ -16,7 +17,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-03-03-carnaval-segunda@feriados-brasil
+UID:2025-03-03-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250303
 DTEND;VALUE=DATE:20250304
@@ -25,7 +26,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-03-04-carnaval-terca@feriados-brasil
+UID:2025-03-04-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250304
 DTEND;VALUE=DATE:20250305
@@ -34,7 +35,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-03-05-quarta-feira-de-cinzas@feriados-brasil
+UID:2025-03-05-quarta-feira-de-cinzas@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250305
 DTEND;VALUE=DATE:20250306
@@ -43,7 +44,7 @@ DESCRIPTION:Ponto facultativo (até 14h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2025-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250306
 DTEND;VALUE=DATE:20250307
@@ -52,7 +53,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-04-18-paixao-de-cristo@feriados-brasil
+UID:2025-04-18-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250418
 DTEND;VALUE=DATE:20250419
@@ -61,7 +62,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-04-21-tiradentes@feriados-brasil
+UID:2025-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250421
 DTEND;VALUE=DATE:20250422
@@ -70,7 +71,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-05-01-dia-do-trabalho@feriados-brasil
+UID:2025-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250501
 DTEND;VALUE=DATE:20250502
@@ -79,7 +80,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-06-19-corpus-christi@feriados-brasil
+UID:2025-06-19-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250619
 DTEND;VALUE=DATE:20250620
@@ -88,7 +89,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-09-07-independencia-do-brasil@feriados-brasil
+UID:2025-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20250907
 DTEND;VALUE=DATE:20250908
@@ -97,7 +98,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2025-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251012
 DTEND;VALUE=DATE:20251013
@@ -106,7 +107,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-11-02-finados@feriados-brasil
+UID:2025-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251102
 DTEND;VALUE=DATE:20251103
@@ -115,7 +116,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-11-15-proclamacao-da-republica@feriados-brasil
+UID:2025-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251115
 DTEND;VALUE=DATE:20251116
@@ -124,7 +125,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-11-20-consciencia-negra@feriados-brasil
+UID:2025-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251120
 DTEND;VALUE=DATE:20251121
@@ -133,7 +134,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-12-24-vespera-de-natal@feriados-brasil
+UID:2025-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251224
 DTEND;VALUE=DATE:20251225
@@ -142,7 +143,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-12-25-natal@feriados-brasil
+UID:2025-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251225
 DTEND;VALUE=DATE:20251226
@@ -151,7 +152,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2025-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2025-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20251231
 DTEND;VALUE=DATE:20260101
@@ -160,7 +161,8 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-01-01-confraternizacao-universal@feriados-brasil
+UID:2026-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260101
 DTEND;VALUE=DATE:20260102
@@ -169,7 +171,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-02-16-carnaval-segunda@feriados-brasil
+UID:2026-02-16-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260216
 DTEND;VALUE=DATE:20260217
@@ -178,7 +180,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-02-17-carnaval-terca@feriados-brasil
+UID:2026-02-17-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260217
 DTEND;VALUE=DATE:20260218
@@ -187,7 +189,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-02-18-quarta-feira-de-cinzas@feriados-brasil
+UID:2026-02-18-quarta-feira-de-cinzas@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260218
 DTEND;VALUE=DATE:20260219
@@ -196,7 +198,7 @@ DESCRIPTION:Ponto facultativo (até 14h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2026-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260306
 DTEND;VALUE=DATE:20260307
@@ -205,7 +207,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-04-03-paixao-de-cristo@feriados-brasil
+UID:2026-04-03-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260403
 DTEND;VALUE=DATE:20260404
@@ -214,7 +216,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-04-21-tiradentes@feriados-brasil
+UID:2026-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260421
 DTEND;VALUE=DATE:20260422
@@ -223,7 +225,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-05-01-dia-do-trabalho@feriados-brasil
+UID:2026-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260501
 DTEND;VALUE=DATE:20260502
@@ -232,7 +234,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-06-04-corpus-christi@feriados-brasil
+UID:2026-06-04-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260604
 DTEND;VALUE=DATE:20260605
@@ -241,7 +243,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-09-07-independencia-do-brasil@feriados-brasil
+UID:2026-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20260907
 DTEND;VALUE=DATE:20260908
@@ -250,7 +252,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2026-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261012
 DTEND;VALUE=DATE:20261013
@@ -259,7 +261,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-02-finados@feriados-brasil
+UID:2026-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261102
 DTEND;VALUE=DATE:20261103
@@ -268,7 +270,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-15-proclamacao-da-republica@feriados-brasil
+UID:2026-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261115
 DTEND;VALUE=DATE:20261116
@@ -277,7 +279,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-20-consciencia-negra@feriados-brasil
+UID:2026-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261120
 DTEND;VALUE=DATE:20261121
@@ -286,7 +288,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-24-vespera-de-natal@feriados-brasil
+UID:2026-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261224
 DTEND;VALUE=DATE:20261225
@@ -295,7 +297,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-25-natal@feriados-brasil
+UID:2026-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261225
 DTEND;VALUE=DATE:20261226
@@ -304,7 +306,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2026-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20261231
 DTEND;VALUE=DATE:20270101
@@ -313,7 +315,8 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-01-01-confraternizacao-universal@feriados-brasil
+UID:2027-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270101
 DTEND;VALUE=DATE:20270102
@@ -322,7 +325,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-08-carnaval-segunda@feriados-brasil
+UID:2027-02-08-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270208
 DTEND;VALUE=DATE:20270209
@@ -331,7 +334,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-09-carnaval-terca@feriados-brasil
+UID:2027-02-09-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270209
 DTEND;VALUE=DATE:20270210
@@ -340,7 +343,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-10-quarta-feira-de-cinzas@feriados-brasil
+UID:2027-02-10-quarta-feira-de-cinzas@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270210
 DTEND;VALUE=DATE:20270211
@@ -349,7 +352,7 @@ DESCRIPTION:Ponto facultativo (até 14h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2027-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270306
 DTEND;VALUE=DATE:20270307
@@ -358,7 +361,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-26-paixao-de-cristo@feriados-brasil
+UID:2027-03-26-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270326
 DTEND;VALUE=DATE:20270327
@@ -367,7 +370,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-04-21-tiradentes@feriados-brasil
+UID:2027-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270421
 DTEND;VALUE=DATE:20270422
@@ -376,7 +379,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-05-01-dia-do-trabalho@feriados-brasil
+UID:2027-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270501
 DTEND;VALUE=DATE:20270502
@@ -385,7 +388,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-05-27-corpus-christi@feriados-brasil
+UID:2027-05-27-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270527
 DTEND;VALUE=DATE:20270528
@@ -394,7 +397,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-09-07-independencia-do-brasil@feriados-brasil
+UID:2027-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20270907
 DTEND;VALUE=DATE:20270908
@@ -403,7 +406,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2027-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271012
 DTEND;VALUE=DATE:20271013
@@ -412,7 +415,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-11-02-finados@feriados-brasil
+UID:2027-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271102
 DTEND;VALUE=DATE:20271103
@@ -421,7 +424,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-11-15-proclamacao-da-republica@feriados-brasil
+UID:2027-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271115
 DTEND;VALUE=DATE:20271116
@@ -430,7 +433,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-11-20-consciencia-negra@feriados-brasil
+UID:2027-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271120
 DTEND;VALUE=DATE:20271121
@@ -439,7 +442,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-12-24-vespera-de-natal@feriados-brasil
+UID:2027-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271224
 DTEND;VALUE=DATE:20271225
@@ -448,7 +451,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-12-25-natal@feriados-brasil
+UID:2027-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271225
 DTEND;VALUE=DATE:20271226
@@ -457,7 +460,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2027-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20271231
 DTEND;VALUE=DATE:20280101
@@ -466,7 +469,8 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-01-01-confraternizacao-universal@feriados-brasil
+UID:2028-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280101
 DTEND;VALUE=DATE:20280102
@@ -475,7 +479,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-02-28-carnaval-segunda@feriados-brasil
+UID:2028-02-28-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280228
 DTEND;VALUE=DATE:20280229
@@ -484,7 +488,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-02-29-carnaval-terca@feriados-brasil
+UID:2028-02-29-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280229
 DTEND;VALUE=DATE:20280301
@@ -493,7 +497,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-03-01-quarta-feira-de-cinzas@feriados-brasil
+UID:2028-03-01-quarta-feira-de-cinzas@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280301
 DTEND;VALUE=DATE:20280302
@@ -502,7 +506,7 @@ DESCRIPTION:Ponto facultativo (até 14h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2028-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280306
 DTEND;VALUE=DATE:20280307
@@ -511,7 +515,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-04-14-paixao-de-cristo@feriados-brasil
+UID:2028-04-14-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280414
 DTEND;VALUE=DATE:20280415
@@ -520,7 +524,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-04-21-tiradentes@feriados-brasil
+UID:2028-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280421
 DTEND;VALUE=DATE:20280422
@@ -529,7 +533,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-05-01-dia-do-trabalho@feriados-brasil
+UID:2028-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280501
 DTEND;VALUE=DATE:20280502
@@ -538,7 +542,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-06-15-corpus-christi@feriados-brasil
+UID:2028-06-15-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280615
 DTEND;VALUE=DATE:20280616
@@ -547,7 +551,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-09-07-independencia-do-brasil@feriados-brasil
+UID:2028-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20280907
 DTEND;VALUE=DATE:20280908
@@ -556,7 +560,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2028-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281012
 DTEND;VALUE=DATE:20281013
@@ -565,7 +569,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-11-02-finados@feriados-brasil
+UID:2028-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281102
 DTEND;VALUE=DATE:20281103
@@ -574,7 +578,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-11-15-proclamacao-da-republica@feriados-brasil
+UID:2028-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281115
 DTEND;VALUE=DATE:20281116
@@ -583,7 +587,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-11-20-consciencia-negra@feriados-brasil
+UID:2028-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281120
 DTEND;VALUE=DATE:20281121
@@ -592,7 +596,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-12-24-vespera-de-natal@feriados-brasil
+UID:2028-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281224
 DTEND;VALUE=DATE:20281225
@@ -601,7 +605,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-12-25-natal@feriados-brasil
+UID:2028-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281225
 DTEND;VALUE=DATE:20281226
@@ -610,7 +614,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2028-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2028-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20281231
 DTEND;VALUE=DATE:20290101
@@ -619,7 +623,8 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-01-01-confraternizacao-universal@feriados-brasil
+UID:2029-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290101
 DTEND;VALUE=DATE:20290102
@@ -628,7 +633,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-02-12-carnaval-segunda@feriados-brasil
+UID:2029-02-12-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290212
 DTEND;VALUE=DATE:20290213
@@ -637,7 +642,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-02-13-carnaval-terca@feriados-brasil
+UID:2029-02-13-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290213
 DTEND;VALUE=DATE:20290214
@@ -646,7 +651,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-02-14-quarta-feira-de-cinzas@feriados-brasil
+UID:2029-02-14-quarta-feira-de-cinzas@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290214
 DTEND;VALUE=DATE:20290215
@@ -655,7 +660,7 @@ DESCRIPTION:Ponto facultativo (até 14h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2029-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290306
 DTEND;VALUE=DATE:20290307
@@ -664,7 +669,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-03-30-paixao-de-cristo@feriados-brasil
+UID:2029-03-30-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290330
 DTEND;VALUE=DATE:20290331
@@ -673,7 +678,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-04-21-tiradentes@feriados-brasil
+UID:2029-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290421
 DTEND;VALUE=DATE:20290422
@@ -682,7 +687,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-05-01-dia-do-trabalho@feriados-brasil
+UID:2029-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290501
 DTEND;VALUE=DATE:20290502
@@ -691,7 +696,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-05-31-corpus-christi@feriados-brasil
+UID:2029-05-31-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290531
 DTEND;VALUE=DATE:20290601
@@ -700,7 +705,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-09-07-independencia-do-brasil@feriados-brasil
+UID:2029-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20290907
 DTEND;VALUE=DATE:20290908
@@ -709,7 +714,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2029-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291012
 DTEND;VALUE=DATE:20291013
@@ -718,7 +723,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-11-02-finados@feriados-brasil
+UID:2029-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291102
 DTEND;VALUE=DATE:20291103
@@ -727,7 +732,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-11-15-proclamacao-da-republica@feriados-brasil
+UID:2029-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291115
 DTEND;VALUE=DATE:20291116
@@ -736,7 +741,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-11-20-consciencia-negra@feriados-brasil
+UID:2029-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291120
 DTEND;VALUE=DATE:20291121
@@ -745,7 +750,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-12-24-vespera-de-natal@feriados-brasil
+UID:2029-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291224
 DTEND;VALUE=DATE:20291225
@@ -754,7 +759,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-12-25-natal@feriados-brasil
+UID:2029-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291225
 DTEND;VALUE=DATE:20291226
@@ -763,7 +768,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2029-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2029-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20291231
 DTEND;VALUE=DATE:20300101
@@ -772,7 +777,8 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-01-01-confraternizacao-universal@feriados-brasil
+UID:2030-01-01-confraternizacao-universal@feriadou-pernambuco.feriados-bras
+ il
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300101
 DTEND;VALUE=DATE:20300102
@@ -781,7 +787,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-03-04-carnaval-segunda@feriados-brasil
+UID:2030-03-04-carnaval-segunda@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300304
 DTEND;VALUE=DATE:20300305
@@ -790,7 +796,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-03-05-carnaval-terca@feriados-brasil
+UID:2030-03-05-carnaval-terca@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300305
 DTEND;VALUE=DATE:20300306
@@ -799,7 +805,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-03-06-data-magna-de-pernambuco@feriados-brasil
+UID:2030-03-06-data-magna-de-pernambuco@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300306
 DTEND;VALUE=DATE:20300307
@@ -808,7 +814,7 @@ DESCRIPTION:Feriado estadual (PE) · Lei 16.059/2017
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-04-19-paixao-de-cristo@feriados-brasil
+UID:2030-04-19-paixao-de-cristo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300419
 DTEND;VALUE=DATE:20300420
@@ -817,7 +823,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-04-21-tiradentes@feriados-brasil
+UID:2030-04-21-tiradentes@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300421
 DTEND;VALUE=DATE:20300422
@@ -826,7 +832,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-05-01-dia-do-trabalho@feriados-brasil
+UID:2030-05-01-dia-do-trabalho@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300501
 DTEND;VALUE=DATE:20300502
@@ -835,7 +841,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-06-20-corpus-christi@feriados-brasil
+UID:2030-06-20-corpus-christi@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300620
 DTEND;VALUE=DATE:20300621
@@ -844,7 +850,7 @@ DESCRIPTION:Ponto facultativo
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-09-07-independencia-do-brasil@feriados-brasil
+UID:2030-09-07-independencia-do-brasil@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20300907
 DTEND;VALUE=DATE:20300908
@@ -853,7 +859,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-10-12-nossa-senhora-aparecida@feriados-brasil
+UID:2030-10-12-nossa-senhora-aparecida@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301012
 DTEND;VALUE=DATE:20301013
@@ -862,7 +868,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-11-02-finados@feriados-brasil
+UID:2030-11-02-finados@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301102
 DTEND;VALUE=DATE:20301103
@@ -871,7 +877,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-11-15-proclamacao-da-republica@feriados-brasil
+UID:2030-11-15-proclamacao-da-republica@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301115
 DTEND;VALUE=DATE:20301116
@@ -880,7 +886,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-11-20-consciencia-negra@feriados-brasil
+UID:2030-11-20-consciencia-negra@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301120
 DTEND;VALUE=DATE:20301121
@@ -889,7 +895,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-12-24-vespera-de-natal@feriados-brasil
+UID:2030-12-24-vespera-de-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301224
 DTEND;VALUE=DATE:20301225
@@ -898,7 +904,7 @@ DESCRIPTION:Ponto facultativo (a partir das 13h)
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-12-25-natal@feriados-brasil
+UID:2030-12-25-natal@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301225
 DTEND;VALUE=DATE:20301226
@@ -907,7 +913,7 @@ DESCRIPTION:Feriado nacional
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:2030-12-31-vespera-de-ano-novo@feriados-brasil
+UID:2030-12-31-vespera-de-ano-novo@feriadou-pernambuco.feriados-brasil
 DTSTAMP:20250101T000000Z
 DTSTART;VALUE=DATE:20301231
 DTEND;VALUE=DATE:20310101

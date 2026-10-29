@@ -1,7 +1,7 @@
 name: Erro de data
 description: Um feriado está faltando, sobrando ou na data errada.
 title: "[data] "
-labels: ["dados"]
+labels: ["bug"]
 body:
   - type: markdown
     attributes:

@@ -5,7 +5,8 @@ const ESTADUAIS = require("../estaduais.js");
 const { UFS } = require("../feriados.js");
 
 const CAMPOS = new Set(["mes", "dia", "pascoa", "nome", "lei", "desde", "ate", "tipo", "fonte"]);
-const diasNoMes = (mes) => new Date(Date.UTC(2024, mes, 0)).getUTCDate(); // 2024 é bissexto: aceita 29/02
+// Ano não bissexto: um feriado fixo em 29/02 viraria 01/03 nos outros anos, então é recusado.
+const diasNoMes = (mes) => new Date(Date.UTC(2023, mes, 0)).getUTCDate();
 
 for (const [uf, itens] of Object.entries(ESTADUAIS)) {
   test(`estaduais.js: ${uf}`, () => {

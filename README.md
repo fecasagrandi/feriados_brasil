@@ -51,7 +51,7 @@ Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça 
 
 **Achou um erro?** Use o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml): ele pede a lei e o link do texto oficial, que é o que resolve a dúvida.
 
-**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/estaduais.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/versionar.js`.
+**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/estaduais.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/gerar-calendarios.js` e `node scripts/versionar.js`.
 
 Por que não um `.json`: a página não pode usar `fetch` (a política de segurança tem `connect-src 'none'`, e `file://` bloqueia de qualquer jeito). Um `.js` só com o objeto dá no mesmo para quem edita.
 

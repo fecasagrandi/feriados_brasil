@@ -146,6 +146,7 @@
         const data = f.pascoa != null ? somaDias(p, f.pascoa) : iso(ano, f.mes, f.dia);
         const item = { data, nome: f.nome, tipo: f.tipo || "feriado", abrangencia: "estadual", uf };
         if (f.lei) item.lei = f.lei;
+        if (f.fonte) item.fonte = f.fonte;
         lista.push(item);
       }
       // Onde o estado decreta feriado, o ponto facultativo nacional do mesmo dia deixa
@@ -184,6 +185,16 @@
     return res;
   }
 
+  // Feriados (sem pontos facultativos: não são folga garantida) agrupados por data.
+  function feriadosPorDataEntre(de, ate, uf) {
+    const porData = new Map();
+    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
+      if (!porData.has(f.data)) porData.set(f.data, []);
+      porData.get(f.data).push(f);
+    }
+    return porData;
+  }
+
   /*
    * Planejador de folgas: blocos de descanso que juntam fim de semana, feriados e
    * poucos dias de férias. Considera trabalho de segunda a sexta; ponto facultativo
@@ -197,11 +208,7 @@
     const margem = 10;
     const de = somaDias(inicio, -margem);
     const ate = somaDias(fim, margem);
-    const feriadosPorData = new Map();
-    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
-      if (!feriadosPorData.has(f.data)) feriadosPorData.set(f.data, []);
-      feriadosPorData.get(f.data).push(f);
-    }
+    const feriadosPorData = feriadosPorDataEntre(de, ate, uf);
 
     const n = diasEntre(de, ate) + 1;
     const dias = Array.from({ length: n }, (_, i) => somaDias(de, i));
@@ -270,11 +277,7 @@
     const antes = 10; // folga colada antes de `inicio` também conta
     const depois = 15; // idem depois de `fim`
     const de = somaDias(inicio, -antes);
-    const feriadosPorData = new Map();
-    for (const f of feriadosEntre(de, somaDias(fim, depois), { facultativos: false, uf })) {
-      if (!feriadosPorData.has(f.data)) feriadosPorData.set(f.data, []);
-      feriadosPorData.get(f.data).push(f);
-    }
+    const feriadosPorData = feriadosPorDataEntre(de, somaDias(fim, depois), uf);
 
     const n = diasEntre(de, fim) + 1 + depois;
     const datas = Array.from({ length: n }, (_, i) => somaDias(de, i));
@@ -400,6 +403,9 @@
   function paraIcs(lista, agora = new Date(), { nome } = {}) {
     const stamp = agora.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     const compacta = (d) => d.replace(/-/g, "");
+    // UID é global (RFC 5545): no calendário assinado leva o nome dele, para não colidir com o
+    // mesmo feriado em outro calendário assinado (brasil.ics e SP.ics) ou num .ics baixado.
+    const dominio = nome ? `${slug(nome)}.feriados-brasil` : "feriados-brasil";
     const linhas = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -416,9 +422,10 @@
         ? `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`
         : f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional";
       if (f.lei) desc += ` · ${f.lei}`;
+      if (f.fonte) desc += ` (${f.fonte})`;
       linhas.push(
         "BEGIN:VEVENT",
-        `UID:${f.data}-${slug(f.nome)}@feriados-brasil`,
+        `UID:${f.data}-${slug(f.nome)}@${dominio}`,
         `DTSTAMP:${stamp}`,
         `DTSTART;VALUE=DATE:${compacta(f.data)}`,
         `DTEND;VALUE=DATE:${compacta(somaDias(f.data, 1))}`,
