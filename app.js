@@ -358,6 +358,25 @@
   $("ano-ant").addEventListener("click", () => mudarAno(-1));
   $("ano-prox").addEventListener("click", () => mudarAno(1));
 
+  // Calendário assinável (calendario/*.ics, gerado por scripts/gerar-calendarios.js).
+  // Copiar o link funciona em todo lugar; o Google Agenda não abre links webcal://.
+  function urlCalendario() {
+    const arquivo = `calendario/${state.uf || "brasil"}.ics`;
+    const base = /^https?:$/.test(location.protocol) ? location.href : "https://fecasagrandi.github.io/feriados_brasil/";
+    return new URL(arquivo, base).href;
+  }
+
+  $("assinar").addEventListener("click", async () => {
+    const url = urlCalendario();
+    const qual = state.uf ? F.UFS[state.uf] : "feriados nacionais";
+    try {
+      await navigator.clipboard.writeText(url);
+      avisar(`link do calendário (${qual}) copiado. Google Agenda: Outras agendas › Do URL. iPhone e Outlook: assinar calendário.`);
+    } catch {
+      avisar(`assine este endereço no seu calendário: ${url}`);
+    }
+  });
+
   $("ics").addEventListener("click", () => {
     const ics = F.paraIcs(F.feriadosDoAno(state.ano, opcoes()));
     const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));

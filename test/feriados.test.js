@@ -279,3 +279,21 @@ test("RO: Dia do Evangélico (18/06) só até 2019, derrubado pelo STF", () => {
   assert.equal(tem(2019), true);
   assert.equal(tem(2020), false);
 });
+
+test("paraIcs dobra linhas longas (RFC 5545) sem cortar caractere acentuado", () => {
+  const nome = "Criação do Território Federal do Amapá — com um nome bem comprido para forçar a dobra";
+  const ics = F.paraIcs([{ data: "2026-09-13", nome, tipo: "feriado", abrangencia: "estadual", uf: "AP", lei: "Constituição estadual, art. 335" }], new Date(0));
+  const fisicas = ics.split("\r\n");
+  for (const l of fisicas) assert.ok(Buffer.byteLength(l) <= 75, `linha longa: ${l}`);
+  assert.ok(!ics.includes("�"), "caractere cortado ao meio");
+  // desdobrar (RFC 5545: CRLF + espaço) devolve o texto original
+  const desdobrado = ics.replace(/\r\n /g, "");
+  assert.ok(desdobrado.includes(`SUMMARY:${nome}`));
+  assert.ok(desdobrado.includes("DESCRIPTION:Feriado estadual (AP) · Constituição estadual\\, art. 335"));
+});
+
+test("paraIcs: facultativo marcado no título; calendário nomeado quando assinável", () => {
+  const ics = F.paraIcs(F.feriadosDoAno(2027).filter((f) => f.nome === "Carnaval (terça)"), new Date(0), { nome: "Feriadou · Brasil" });
+  assert.ok(ics.includes("SUMMARY:Carnaval (terça) (ponto facultativo)"));
+  assert.ok(ics.includes("X-WR-CALNAME:Feriadou · Brasil\r\nREFRESH-INTERVAL;VALUE=DURATION:P1D"));
+});

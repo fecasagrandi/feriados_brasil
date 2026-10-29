@@ -270,8 +270,30 @@
     return s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
   }
 
+  // RFC 5545 §3.1: linha com mais de 75 octetos é dobrada; a continuação começa com um espaço.
+  // Conta bytes UTF-8 por caractere, para nunca cortar um "ç" ou "ã" ao meio.
+  function dobrar(linha) {
+    const octetos = (c) => { const n = c.codePointAt(0); return n < 0x80 ? 1 : n < 0x800 ? 2 : n < 0x10000 ? 3 : 4; };
+    const pedacos = [];
+    let atual = "";
+    let bytes = 0;
+    for (const c of linha) {
+      const b = octetos(c);
+      if (bytes + b > 75) {
+        pedacos.push(atual);
+        atual = " ";
+        bytes = 1;
+      }
+      atual += c;
+      bytes += b;
+    }
+    pedacos.push(atual);
+    return pedacos.join("\r\n");
+  }
+
   // iCalendar (RFC 5545). Eventos de dia inteiro: DTEND é exclusivo, então é o dia seguinte.
-  function paraIcs(lista, agora = new Date()) {
+  // `nome`: título do calendário quando ele é assinado (X-WR-CALNAME), com atualização diária.
+  function paraIcs(lista, agora = new Date(), { nome } = {}) {
     const stamp = agora.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     const compacta = (d) => d.replace(/-/g, "");
     const linhas = [
@@ -281,25 +303,30 @@
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
     ];
+    if (nome) {
+      linhas.push(`X-WR-CALNAME:${escaparIcs(nome)}`, "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D");
+    }
     for (const f of lista) {
-      const desc =
-        f.tipo === "feriado"
-          ? f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional"
-          : `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`;
+      const facultativo = f.tipo !== "feriado";
+      let desc = facultativo
+        ? `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`
+        : f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional";
+      if (f.lei) desc += ` · ${f.lei}`;
       linhas.push(
         "BEGIN:VEVENT",
         `UID:${f.data}-${slug(f.nome)}@feriados-brasil`,
         `DTSTAMP:${stamp}`,
         `DTSTART;VALUE=DATE:${compacta(f.data)}`,
         `DTEND;VALUE=DATE:${compacta(somaDias(f.data, 1))}`,
-        `SUMMARY:${escaparIcs(f.nome)}`,
+        // No calendário assinado só o título aparece: deixa claro que facultativo não é folga garantida.
+        `SUMMARY:${escaparIcs(facultativo ? `${f.nome} (ponto facultativo)` : f.nome)}`,
         `DESCRIPTION:${escaparIcs(desc)}`,
         "TRANSP:TRANSPARENT",
         "END:VEVENT"
       );
     }
     linhas.push("END:VCALENDAR");
-    return linhas.join("\r\n") + "\r\n";
+    return linhas.map(dobrar).join("\r\n") + "\r\n";
   }
 
   const api = {

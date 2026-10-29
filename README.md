@@ -87,6 +87,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 - Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
 - **Planejador de folgas**: as emendas dos próximos 12 meses que rendem mais dias de descanso por dia de férias (mínimo 2,5×), já com os feriados do estado.
 - Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
+- **Calendário assinável** por estado: o botão "assinar" copia o link de `calendario/<UF>.ics` (ou `brasil.ics`). Assinado no Google Agenda (*Outras agendas › Do URL*), Outlook ou Apple, ele **se atualiza sozinho** quando uma data é corrigida. Pontos facultativos vêm marcados no título.
 - Tema claro e escuro num botão (sol/lua). A primeira visita abre no tema do sistema; depois vale a escolha, salva no navegador.
 - Animações respeitam `prefers-reduced-motion`.
 
@@ -103,6 +104,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
 | `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
+| `scripts/gerar-calendarios.js`, `calendario/` | Calendários assináveis (Brasil + 27 UFs, 2025–2030). |
 | `scripts/gerar-og.js`, `og.png` | Imagem da prévia de link (1200×630). A URL absoluta dela está no `index.html`: atualize se o endereço do site mudar. |
 | `test/` | Testes de unidade (`node:test`). |
 | `e2e/`, `playwright.config.js` | Testes de ponta a ponta (Playwright). |
@@ -132,8 +134,11 @@ O que não vale a pena aqui: minificar (o gzip do GitHub Pages já reduz os scri
 ## Ao alterar qualquer `.js` ou `.css`
 
 ```sh
+node scripts/gerar-calendarios.js   # se mexeu em datas (feriados.js ou estaduais.js)
 node scripts/versionar.js
 ```
+
+Os dois têm teste que falha no CI se forem esquecidos. O dos calendários também falha quando a cobertura fica a menos de 2 anos do fim (hoje, 2030): é o lembrete para aumentar `ANO_FIM` no script.
 
 O GitHub Pages serve cada arquivo com cache de 10 minutos, e cada um expira numa hora diferente. Sem versão na URL, logo após um deploy o navegador pode juntar um `app.js` novo com um `feriados.js` antigo e a página quebra. O script coloca o hash do conteúdo em cada URL; um teste falha no CI se alguém esquecer.
 

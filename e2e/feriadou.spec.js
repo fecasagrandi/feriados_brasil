@@ -247,3 +247,35 @@ test("'reportar um erro de data' abre o formulário de issue com a lei obrigató
   const link = page.locator(".rodape a", { hasText: "reportar um erro de data" });
   await expect(link).toHaveAttribute("href", /\/issues\/new\?template=erro-de-data\.yml$/);
 });
+
+test.describe("calendário assinável", () => {
+  test.use({ permissions: ["clipboard-read", "clipboard-write"] });
+
+  test("'assinar' copia o link do calendário, que é servido e tem os feriados", async ({ page, request }) => {
+    await abrir(page);
+    await page.locator("#assinar").click();
+    await expect(page.locator("#geo-status")).toContainText("copiado");
+    const link = await page.evaluate(() => navigator.clipboard.readText());
+    expect(link).toBe("http://127.0.0.1:4173/calendario/brasil.ics");
+
+    const resposta = await request.get("/calendario/brasil.ics");
+    expect(resposta.status()).toBe(200);
+    expect(resposta.headers()["content-type"]).toContain("text/calendar");
+    const ics = await resposta.text();
+    expect(ics).toContain("X-WR-CALNAME:Feriadou · Brasil");
+    expect(ics).toContain("SUMMARY:Natal");
+  });
+});
+
+test.describe("calendário assinável do estado", () => {
+  test.use({ permissions: ["geolocation", "clipboard-read", "clipboard-write"], geolocation: { latitude: -23.55, longitude: -46.63 } });
+
+  test("com o estado detectado, 'assinar' copia o calendário da UF", async ({ page }) => {
+    await abrir(page);
+    await page.locator("#geo").click();
+    await expect(page.locator("#geo-uf")).toHaveText("SP");
+    await page.locator("#assinar").click();
+    await expect(page.locator("#geo-status")).toContainText("São Paulo");
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(/\/calendario\/SP\.ics$/);
+  });
+});
