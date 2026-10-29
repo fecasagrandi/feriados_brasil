@@ -86,6 +86,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 - Marcas de "dias riscados" desde o último feriado.
 - Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
 - **Planejador de folgas**: as emendas dos próximos 12 meses que rendem mais dias de descanso por dia de férias (mínimo 2,5×), já com os feriados do estado.
+- **Planejador de férias (CLT)**: onde marcar 30 (ou 20, 24…) dias de férias em até 3 períodos para colar o máximo de folga antes e depois. Segue as regras da CLT (art. 134 e 135): dias corridos, um período de 14+ dias e os outros de 5+, não começa nos 2 dias antes de feriado ou domingo, aviso de 30 dias. É programação dinâmica, conferida contra força bruta nos testes.
 - Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
 - **Calendário assinável** por estado: o botão "assinar" copia o link de `calendario/<UF>.ics` (ou `brasil.ics`). Assinado no Google Agenda (*Outras agendas › Do URL*), Outlook ou Apple, ele **se atualiza sozinho** quando uma data é corrigida. Pontos facultativos vêm marcados no título.
 - Tema claro e escuro num botão (sol/lua). A primeira visita abre no tema do sistema; depois vale a escolha, salva no navegador.

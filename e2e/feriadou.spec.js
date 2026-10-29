@@ -167,6 +167,26 @@ test("planejador não repete o mês quando a emenda cabe num mês só", async ({
   await expect(page.locator("#folgas .folga").nth(1)).toContainText("17 a 21 abr · férias em 19 e 20 abr");
 });
 
+test("planejador de férias: 30 dias em até 3 períodos e recalcula ao mudar a escolha", async ({ page }) => {
+  const { erros } = await abrir(page);
+  await expect(page.locator("#ferias-resumo")).toHaveText("30 dias de férias viram 44 de descanso (+14)");
+  const linhas = page.locator("#ferias .periodo");
+  await expect(linhas).toHaveCount(3);
+  // começa 30 dias depois de hoje (aviso da CLT), numa terça: segunda é Finados
+  await expect(linhas.nth(0)).toContainText("17 dias de férias: ter 3 nov a qui 19 nov");
+  await expect(linhas.nth(0)).toContainText("folga de sáb 31 out a dom 22 nov, volta seg 23 nov");
+  await expect(linhas.nth(0)).toContainText("+6 de folga");
+
+  await page.locator("#ferias-periodos").selectOption("1");
+  await expect(page.locator("#ferias-resumo")).toHaveText("30 dias de férias viram 33 de descanso (+3)");
+  await expect(linhas).toHaveCount(1);
+
+  await page.locator("#ferias-dias").selectOption("20");
+  await page.locator("#ferias-periodos").selectOption("2");
+  await expect(page.locator("#ferias-resumo")).toHaveText("20 dias de férias viram 28 de descanso (+8)");
+  expect(erros).toEqual([]);
+});
+
 test("mostra o que o feriado comemora, com link para a fonte, e troca ao escolher outro", async ({ page }) => {
   await abrir(page);
   const sobre = page.locator("#hsobre");

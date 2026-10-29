@@ -248,6 +248,110 @@
       .sort((x, y) => x.inicio.localeCompare(y.inicio));
   }
 
+  /*
+   * Planejador de férias CLT: onde marcar `dias` de férias, em até `periodos` períodos,
+   * para emendar o máximo de folga antes e depois de cada período.
+   *
+   * Regras (CLT art. 134 e 135):
+   * - férias contam em dias corridos: fim de semana e feriado dentro do período não somam nada;
+   *   o ganho está na folga colada no começo e no fim;
+   * - até 3 períodos, um de 14 dias ou mais e os demais de 5 ou mais (com menos de 14 dias, um só);
+   * - não podem começar nos 2 dias antes de feriado ou do domingo (repouso semanal),
+   *   então o início é um dia útil de segunda a quinta.
+   *
+   * Todo período começa entre `inicio` e termina até `fim`. Programação dinâmica sobre
+   * (dia, dias restantes, períodos restantes, falta o período de 14+): ~2 milhões de passos por ano.
+   * Empate: menos períodos e, depois, o mais cedo. Devolve null se não há como encaixar.
+   */
+  function planejarFerias(inicio, fim, { dias = 30, periodos = 3, uf = null } = {}) {
+    if (!Number.isInteger(dias) || dias < 1 || dias > 30) throw new RangeError(`dias de férias inválido: ${dias}`);
+    if (![1, 2, 3].includes(periodos)) throw new RangeError(`períodos inválido: ${periodos}`);
+
+    const antes = 10; // folga colada antes de `inicio` também conta
+    const depois = 15; // idem depois de `fim`
+    const de = somaDias(inicio, -antes);
+    const feriadosPorData = new Map();
+    for (const f of feriadosEntre(de, somaDias(fim, depois), { facultativos: false, uf })) {
+      if (!feriadosPorData.has(f.data)) feriadosPorData.set(f.data, []);
+      feriadosPorData.get(f.data).push(f);
+    }
+
+    const n = diasEntre(de, fim) + 1 + depois;
+    const datas = Array.from({ length: n }, (_, i) => somaDias(de, i));
+    const feriado = datas.map((d) => feriadosPorData.has(d));
+    const folga = datas.map((d, i) => feriado[i] || diaDaSemana(d) === 0 || diaDaSemana(d) === 6);
+    const pre = new Int16Array(n); // folgas seguidas logo antes do dia i
+    for (let i = 1; i < n; i++) pre[i] = folga[i - 1] ? pre[i - 1] + 1 : 0;
+    const pos = new Int16Array(n); // folgas seguidas logo depois do dia i
+    for (let i = n - 2; i >= 0; i--) pos[i] = folga[i + 1] ? pos[i + 1] + 1 : 0;
+    const podeComecar = (t) =>
+      !folga[t] && diaDaSemana(datas[t]) !== 5 && !feriado[t + 1] && !feriado[t + 2];
+
+    const primeiro = antes;
+    const ultimo = diasEntre(de, fim);
+    const K = dias >= 14 ? periodos : 1;
+    const minimo = dias >= 14 ? 5 : dias;
+    const R = dias + 1;
+    const T = ultimo + 2; // linha T-1 = depois da janela
+    const at = (t, r, k, g) => ((t * R + r) * (K + 1) + k) * 2 + g;
+    const valor = new Float64Array(T * R * (K + 1) * 2).fill(-Infinity);
+    const escolha = new Int8Array(valor.length); // 0 = não começa período em t
+
+    for (let r = 0; r < R; r++) for (let k = 0; k <= K; k++) for (let g = 0; g < 2; g++) {
+      if (r === 0 && g === 0) valor[at(T - 1, r, k, g)] = 0;
+    }
+    for (let t = T - 2; t >= primeiro; t--) {
+      const comeca = podeComecar(t);
+      for (let r = 0; r < R; r++) for (let k = 0; k <= K; k++) for (let g = 0; g < 2; g++) {
+        const i = at(t, r, k, g);
+        let melhor = valor[at(t + 1, r, k, g)];
+        let qual = 0;
+        if (comeca && k > 0) {
+          for (let L = minimo; L <= r && t + L - 1 <= ultimo; L++) {
+            const e = t + L - 1;
+            // b+1 é dia útil; começar nele colaria os períodos e contaria a folga de b duas vezes.
+            const prox = Math.min(e + pos[e] + 2, T - 1);
+            const resto = valor[at(prox, r - L, k - 1, g && L < 14 ? 1 : 0)];
+            if (resto === -Infinity) continue;
+            // 4 por dia de folga ganho, -1 por período: o ganho manda, o nº de períodos desempata.
+            const v = 4 * (pre[t] + pos[e]) - 1 + resto;
+            if (v >= melhor) { melhor = v; qual = L; }
+          }
+        }
+        valor[i] = melhor;
+        escolha[i] = qual;
+      }
+    }
+
+    let t = primeiro, r = dias, k = K, g = dias >= 14 ? 1 : 0;
+    if (valor[at(t, r, k, g)] === -Infinity) return null;
+    const lista = [];
+    while (r > 0) {
+      const L = escolha[at(t, r, k, g)];
+      if (!L) { t++; continue; }
+      const e = t + L - 1;
+      const a = t - pre[t];
+      const b = e + pos[e];
+      const feriados = [];
+      for (let x = a; x <= b; x++) feriados.push(...(feriadosPorData.get(datas[x]) || []));
+      lista.push({
+        inicio: datas[t],
+        fim: datas[e],
+        dias: L,
+        descanso: { inicio: datas[a], fim: datas[b], dias: b - a + 1 },
+        volta: somaDias(datas[b], 1),
+        ganho: pre[t] + pos[e],
+        feriados,
+      });
+      r -= L;
+      k -= 1;
+      if (L >= 14) g = 0;
+      t = Math.min(b + 2, T - 1);
+    }
+    const ganho = lista.reduce((s, p) => s + p.ganho, 0);
+    return { periodos: lista, ferias: dias, descanso: dias + ganho, ganho };
+  }
+
   // Impacto no calendário de quem trabalha de segunda a sexta.
   function classificar(data) {
     const dow = diaDaSemana(data);
@@ -333,6 +437,7 @@
     UFS,
     pascoa,
     oportunidades,
+    planejarFerias,
     paraIcs,
     feriadosDoAno,
     feriadosEntre,
