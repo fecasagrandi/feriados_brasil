@@ -18,7 +18,7 @@ Carnaval e Corpus Christi **não são feriados nacionais por lei**: são pontos 
 
 ## Feriados estaduais
 
-A tabela `ESTADUAIS` em `feriados.js` foi montada **cruzando fontes**, porque não existe uma base oficial única e as fontes disponíveis divergem:
+Os dados ficam em `estaduais.js`, um arquivo **só de dados** (sem lógica), montado **cruzando fontes**, porque não existe uma base oficial única e as fontes disponíveis divergem:
 
 - [`date-holidays`](https://github.com/commenthol/date-holidays) (dados com lei e data de vigência),
 - [`@lfreneda/eh-dia-util`](https://www.npmjs.com/package/@lfreneda/eh-dia-util) (dados com lei citada),
@@ -49,7 +49,11 @@ Ressalva honesta: as leis acima foram localizadas por busca, não lidas no texto
 
 Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça de Carnaval no RJ), vale o feriado.
 
-**Achou um erro?** Abra uma issue com o link da lei — é a única coisa que resolve a dúvida.
+**Achou um erro?** Use o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml): ele pede a lei e o link do texto oficial, que é o que resolve a dúvida.
+
+**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/estaduais.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/versionar.js`.
+
+Por que não um `.json`: a página não pode usar `fetch` (a política de segurança tem `connect-src 'none'`, e `file://` bloqueia de qualquer jeito). Um `.js` só com o objeto dá no mesmo para quem edita.
 
 ## O que cada feriado comemora
 
@@ -91,6 +95,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | Arquivo | O que é |
 |---|---|
 | `feriados.js` | Cálculo das datas (nacionais e estaduais) e exportação `.ics`. Lógica pura. |
+| `estaduais.js` | Feriados estaduais: só dados, validados por `test/estaduais.test.js`. |
 | `localizacao.js` | Coordenada → UF (point-in-polygon). Lógica pura. |
 | `sobre.js` | O que cada feriado comemora, com a fonte. Só conteúdo. |
 | `ufs-geo.js` | Contornos das UFs (gerado). |
