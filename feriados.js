@@ -48,83 +48,10 @@
     SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
   };
 
-  /*
-   * Feriados estaduais. Entram só os que têm consenso entre as fontes consultadas
-   * (date-holidays, eh-dia-util e levantamentos de 2026); divergências estão no README.
-   * Critério: duas fontes independentes concordando e citando a lei.
-   * Sem entrada = sem feriado estadual em dia útil próprio: MG e DF (21/04 coincide com
-   * Tiradentes), MT (só tinha a Consciência Negra, hoje nacional), PR (19/12 revogado pela
-   * Lei 18.384/2014), SC (Lei 12.906/2004 transfere as datas para o domingo).
-   * `pascoa`: dias a partir do Domingo de Páscoa, no lugar de mes/dia.
-   * `ate`: último ano em que vale. Os 20/11 estaduais param em 2023 porque a partir de
-   * 2024 a data é feriado nacional (Lei 14.759/2023).
-   * Todo item cita `lei`; um teste garante isso.
-   */
-  const ESTADUAIS = {
-    AC: [
-      { mes: 1, dia: 23, nome: "Dia do Evangélico", desde: 2004, lei: "Lei 1.538/2004" },
-      { mes: 3, dia: 8, nome: "Dia Internacional da Mulher", desde: 2001, lei: "Lei 1.411/2001" },
-      { mes: 6, dia: 15, nome: "Aniversário do Acre", desde: 1964, lei: "Lei 14/1964" },
-      { mes: 9, dia: 5, nome: "Dia da Amazônia", desde: 2004, lei: "Lei 243/1968" },
-      { mes: 11, dia: 17, nome: "Tratado de Petrópolis", desde: 2012, lei: "Lei 57/1965" },
-    ],
-    AL: [
-      { mes: 6, dia: 24, nome: "São João", desde: 1993, lei: "Lei 5.508/1993" },
-      { mes: 6, dia: 29, nome: "São Pedro", desde: 1993, lei: "Lei 5.509/1993" },
-      { mes: 9, dia: 16, nome: "Emancipação Política de Alagoas", lei: "Lei 5.247/1991" },
-      { mes: 11, dia: 20, nome: "Consciência Negra", desde: 1995, ate: 2023, lei: "Lei 5.724/1995" },
-    ],
-    AM: [
-      { mes: 9, dia: 5, nome: "Elevação do Amazonas a Província", desde: 1977, lei: "Lei 25/1977" },
-      { mes: 11, dia: 20, nome: "Consciência Negra", desde: 2010, ate: 2023, lei: "Lei 84/2010" },
-    ],
-    AP: [
-      { mes: 3, dia: 19, nome: "Dia de São José", desde: 2002, lei: "Lei 667/2002" },
-      { mes: 9, dia: 13, nome: "Criação do Território Federal do Amapá", lei: "Constituição estadual, art. 335" },
-      { mes: 11, dia: 20, nome: "Consciência Negra", desde: 2008, ate: 2023, lei: "Lei 1.169/2007" },
-    ],
-    BA: [{ mes: 7, dia: 2, nome: "Independência da Bahia", lei: "Constituição estadual, art. 6º" }],
-    CE: [{ mes: 3, dia: 25, nome: "Data Magna do Ceará", desde: 2011, lei: "Constituição estadual, art. 18" }],
-    DF: [{ mes: 11, dia: 30, nome: "Dia do Evangélico", desde: 1995, lei: "Lei distrital 963/1995" }],
-    ES: [{ pascoa: 8, nome: "Nossa Senhora da Penha", desde: 2019, lei: "Lei 11.010/2019" }],
-    GO: [
-      { mes: 7, dia: 26, nome: "Fundação da Cidade de Goiás", lei: "Lei 20.756/2020" },
-      { mes: 10, dia: 24, nome: "Pedra Fundamental de Goiânia", lei: "Lei 20.756/2020" },
-    ],
-    MA: [{ mes: 7, dia: 28, nome: "Adesão do Maranhão à Independência", desde: 1964, lei: "Lei 2.457/1964" }],
-    MT: [{ mes: 11, dia: 20, nome: "Consciência Negra", desde: 2003, ate: 2023, lei: "Lei 7.879/2002" }],
-    MS: [{ mes: 10, dia: 11, nome: "Criação do Estado", desde: 1979, lei: "Lei 10/1979" }],
-    PA: [{ mes: 8, dia: 15, nome: "Adesão do Grão-Pará à Independência", desde: 1996, lei: "Lei 5.999/1996" }],
-    PB: [
-      { mes: 7, dia: 26, nome: "Homenagem a João Pessoa", desde: 1967, lei: "Lei 3.489/1967" },
-      { mes: 8, dia: 5, nome: "Fundação do Estado", desde: 1967, lei: "Lei 3.489/1967" },
-    ],
-    PE: [{ mes: 3, dia: 6, nome: "Data Magna de Pernambuco", desde: 2017, lei: "Lei 16.059/2017" }],
-    PI: [{ mes: 10, dia: 19, nome: "Dia do Piauí", lei: "Lei 176/1937" }],
-    RJ: [
-      { pascoa: -47, nome: "Carnaval", desde: 2009, lei: "Lei 5.243/2008" },
-      { mes: 4, dia: 23, nome: "Dia de São Jorge", desde: 2008, lei: "Lei 5.198/2008" },
-      { mes: 11, dia: 20, nome: "Consciência Negra", desde: 2002, ate: 2023, lei: "Lei 4.007/2002" },
-    ],
-    RN: [{ mes: 10, dia: 3, nome: "Mártires de Cunhaú e Uruaçu", desde: 2006, lei: "Lei 8.913/2006" }],
-    RO: [
-      { mes: 1, dia: 4, nome: "Criação do Estado", desde: 2010, lei: "Lei 2.291/2010" },
-      // Declarada inconstitucional pelo STF (ADI 3940, publicada em 2020).
-      { mes: 6, dia: 18, nome: "Dia do Evangélico", desde: 2002, ate: 2019, lei: "Lei 1.026/2001" },
-    ],
-    RR: [{ mes: 10, dia: 5, nome: "Criação do Estado", lei: "Constituição estadual, art. 9º" }],
-    RS: [{ mes: 9, dia: 20, nome: "Revolução Farroupilha", lei: "Constituição estadual, art. 6º" }],
-    SE: [{ mes: 7, dia: 8, nome: "Emancipação Política de Sergipe", lei: "Constituição estadual, art. 269" }],
-    SP: [
-      { mes: 7, dia: 9, nome: "Revolução Constitucionalista", desde: 1997, lei: "Lei 9.497/1997" },
-      { mes: 11, dia: 20, nome: "Consciência Negra", desde: 2023, ate: 2023, lei: "Lei 17.746/2023" },
-    ],
-    TO: [
-      { mes: 3, dia: 18, nome: "Autonomia do Estado", desde: 1998, lei: "Lei 960/1998" },
-      { mes: 9, dia: 8, nome: "Nossa Senhora da Natividade", desde: 1993, lei: "Lei 627/1993" },
-      { mes: 10, dia: 5, nome: "Criação do Estado", desde: 1989, lei: "Lei 98/1989" },
-    ],
-  };
+  // Feriados estaduais: estaduais.js (só dados; o formato é conferido por test/estaduais.test.js).
+  const ESTADUAIS =
+    typeof module !== "undefined" && module.exports ? require("./estaduais.js") : root.FERIADOS_ESTADUAIS;
+  if (!ESTADUAIS) throw new Error("estaduais.js precisa ser carregado antes de feriados.js");
 
   const ANO_MIN = 1583; // primeiro ano completo do calendário gregoriano
   const ANO_MAX = 9999; // limite do formato AAAA
@@ -219,6 +146,7 @@
         const data = f.pascoa != null ? somaDias(p, f.pascoa) : iso(ano, f.mes, f.dia);
         const item = { data, nome: f.nome, tipo: f.tipo || "feriado", abrangencia: "estadual", uf };
         if (f.lei) item.lei = f.lei;
+        if (f.fonte) item.fonte = f.fonte;
         lista.push(item);
       }
       // Onde o estado decreta feriado, o ponto facultativo nacional do mesmo dia deixa
@@ -257,6 +185,16 @@
     return res;
   }
 
+  // Feriados (sem pontos facultativos: não são folga garantida) agrupados por data.
+  function feriadosPorDataEntre(de, ate, uf) {
+    const porData = new Map();
+    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
+      if (!porData.has(f.data)) porData.set(f.data, []);
+      porData.get(f.data).push(f);
+    }
+    return porData;
+  }
+
   /*
    * Planejador de folgas: blocos de descanso que juntam fim de semana, feriados e
    * poucos dias de férias. Considera trabalho de segunda a sexta; ponto facultativo
@@ -270,11 +208,7 @@
     const margem = 10;
     const de = somaDias(inicio, -margem);
     const ate = somaDias(fim, margem);
-    const feriadosPorData = new Map();
-    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
-      if (!feriadosPorData.has(f.data)) feriadosPorData.set(f.data, []);
-      feriadosPorData.get(f.data).push(f);
-    }
+    const feriadosPorData = feriadosPorDataEntre(de, ate, uf);
 
     const n = diasEntre(de, ate) + 1;
     const dias = Array.from({ length: n }, (_, i) => somaDias(de, i));
@@ -321,6 +255,106 @@
       .sort((x, y) => x.inicio.localeCompare(y.inicio));
   }
 
+  /*
+   * Planejador de férias CLT: onde marcar `dias` de férias, em até `periodos` períodos,
+   * para emendar o máximo de folga antes e depois de cada período.
+   *
+   * Regras (CLT art. 134 e 135):
+   * - férias contam em dias corridos: fim de semana e feriado dentro do período não somam nada;
+   *   o ganho está na folga colada no começo e no fim;
+   * - até 3 períodos, um de 14 dias ou mais e os demais de 5 ou mais (com menos de 14 dias, um só);
+   * - não podem começar nos 2 dias antes de feriado ou do domingo (repouso semanal),
+   *   então o início é um dia útil de segunda a quinta.
+   *
+   * Todo período começa entre `inicio` e termina até `fim`. Programação dinâmica sobre
+   * (dia, dias restantes, períodos restantes, falta o período de 14+): ~2 milhões de passos por ano.
+   * Empate: menos períodos e, depois, o mais cedo. Devolve null se não há como encaixar.
+   */
+  function planejarFerias(inicio, fim, { dias = 30, periodos = 3, uf = null } = {}) {
+    if (!Number.isInteger(dias) || dias < 1 || dias > 30) throw new RangeError(`dias de férias inválido: ${dias}`);
+    if (![1, 2, 3].includes(periodos)) throw new RangeError(`períodos inválido: ${periodos}`);
+
+    const antes = 10; // folga colada antes de `inicio` também conta
+    const depois = 15; // idem depois de `fim`
+    const de = somaDias(inicio, -antes);
+    const feriadosPorData = feriadosPorDataEntre(de, somaDias(fim, depois), uf);
+
+    const n = diasEntre(de, fim) + 1 + depois;
+    const datas = Array.from({ length: n }, (_, i) => somaDias(de, i));
+    const feriado = datas.map((d) => feriadosPorData.has(d));
+    const folga = datas.map((d, i) => feriado[i] || diaDaSemana(d) === 0 || diaDaSemana(d) === 6);
+    const pre = new Int16Array(n); // folgas seguidas logo antes do dia i
+    for (let i = 1; i < n; i++) pre[i] = folga[i - 1] ? pre[i - 1] + 1 : 0;
+    const pos = new Int16Array(n); // folgas seguidas logo depois do dia i
+    for (let i = n - 2; i >= 0; i--) pos[i] = folga[i + 1] ? pos[i + 1] + 1 : 0;
+    const podeComecar = (t) =>
+      !folga[t] && diaDaSemana(datas[t]) !== 5 && !feriado[t + 1] && !feriado[t + 2];
+
+    const primeiro = antes;
+    const ultimo = diasEntre(de, fim);
+    const K = dias >= 14 ? periodos : 1;
+    const minimo = dias >= 14 ? 5 : dias;
+    const R = dias + 1;
+    const T = ultimo + 2; // linha T-1 = depois da janela
+    const at = (t, r, k, g) => ((t * R + r) * (K + 1) + k) * 2 + g;
+    const valor = new Float64Array(T * R * (K + 1) * 2).fill(-Infinity);
+    const escolha = new Int8Array(valor.length); // 0 = não começa período em t
+
+    for (let r = 0; r < R; r++) for (let k = 0; k <= K; k++) for (let g = 0; g < 2; g++) {
+      if (r === 0 && g === 0) valor[at(T - 1, r, k, g)] = 0;
+    }
+    for (let t = T - 2; t >= primeiro; t--) {
+      const comeca = podeComecar(t);
+      for (let r = 0; r < R; r++) for (let k = 0; k <= K; k++) for (let g = 0; g < 2; g++) {
+        const i = at(t, r, k, g);
+        let melhor = valor[at(t + 1, r, k, g)];
+        let qual = 0;
+        if (comeca && k > 0) {
+          for (let L = minimo; L <= r && t + L - 1 <= ultimo; L++) {
+            const e = t + L - 1;
+            // b+1 é dia útil; começar nele colaria os períodos e contaria a folga de b duas vezes.
+            const prox = Math.min(e + pos[e] + 2, T - 1);
+            const resto = valor[at(prox, r - L, k - 1, g && L < 14 ? 1 : 0)];
+            if (resto === -Infinity) continue;
+            // 4 por dia de folga ganho, -1 por período: o ganho manda, o nº de períodos desempata.
+            const v = 4 * (pre[t] + pos[e]) - 1 + resto;
+            if (v >= melhor) { melhor = v; qual = L; }
+          }
+        }
+        valor[i] = melhor;
+        escolha[i] = qual;
+      }
+    }
+
+    let t = primeiro, r = dias, k = K, g = dias >= 14 ? 1 : 0;
+    if (valor[at(t, r, k, g)] === -Infinity) return null;
+    const lista = [];
+    while (r > 0) {
+      const L = escolha[at(t, r, k, g)];
+      if (!L) { t++; continue; }
+      const e = t + L - 1;
+      const a = t - pre[t];
+      const b = e + pos[e];
+      const feriados = [];
+      for (let x = a; x <= b; x++) feriados.push(...(feriadosPorData.get(datas[x]) || []));
+      lista.push({
+        inicio: datas[t],
+        fim: datas[e],
+        dias: L,
+        descanso: { inicio: datas[a], fim: datas[b], dias: b - a + 1 },
+        volta: somaDias(datas[b], 1),
+        ganho: pre[t] + pos[e],
+        feriados,
+      });
+      r -= L;
+      k -= 1;
+      if (L >= 14) g = 0;
+      t = Math.min(b + 2, T - 1);
+    }
+    const ganho = lista.reduce((s, p) => s + p.ganho, 0);
+    return { periodos: lista, ferias: dias, descanso: dias + ganho, ganho };
+  }
+
   // Impacto no calendário de quem trabalha de segunda a sexta.
   function classificar(data) {
     const dow = diaDaSemana(data);
@@ -343,10 +377,37 @@
     return s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
   }
 
+  // RFC 5545 §3.1: linha com mais de 75 octetos é dobrada; a continuação começa com um espaço.
+  // Conta bytes UTF-8 por caractere, para nunca cortar um "ç" ou "ã" ao meio.
+  function dobrar(linha) {
+    const octetos = (c) => { const n = c.codePointAt(0); return n < 0x80 ? 1 : n < 0x800 ? 2 : n < 0x10000 ? 3 : 4; };
+    const pedacos = [];
+    let atual = "";
+    let bytes = 0;
+    for (const c of linha) {
+      const b = octetos(c);
+      if (bytes + b > 75) {
+        pedacos.push(atual);
+        atual = " ";
+        bytes = 1;
+      }
+      atual += c;
+      bytes += b;
+    }
+    pedacos.push(atual);
+    return pedacos.join("\r\n");
+  }
+
   // iCalendar (RFC 5545). Eventos de dia inteiro: DTEND é exclusivo, então é o dia seguinte.
-  function paraIcs(lista, agora = new Date()) {
+  // `nome`: título do calendário quando ele é assinado (X-WR-CALNAME), com atualização diária.
+  // `revisao(f)`, se dado, vira o SEQUENCE do evento: o Google Agenda só atualiza um evento
+  // já assinado (mesmo UID) quando esse número sobe.
+  function paraIcs(lista, agora = new Date(), { nome, revisao } = {}) {
     const stamp = agora.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     const compacta = (d) => d.replace(/-/g, "");
+    // UID é global (RFC 5545): no calendário assinado leva o nome dele, para não colidir com o
+    // mesmo feriado em outro calendário assinado (brasil.ics e SP.ics) ou num .ics baixado.
+    const dominio = nome ? `${slug(nome)}.feriados-brasil` : "feriados-brasil";
     const linhas = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -354,31 +415,39 @@
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
     ];
+    if (nome) {
+      linhas.push(`X-WR-CALNAME:${escaparIcs(nome)}`, "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D");
+    }
     for (const f of lista) {
-      const desc =
-        f.tipo === "feriado"
-          ? f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional"
-          : `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`;
+      const facultativo = f.tipo !== "feriado";
+      let desc = facultativo
+        ? `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`
+        : f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional";
+      if (f.lei) desc += ` · ${f.lei}`;
+      if (f.fonte) desc += ` (${f.fonte})`;
       linhas.push(
         "BEGIN:VEVENT",
-        `UID:${f.data}-${slug(f.nome)}@feriados-brasil`,
+        `UID:${f.data}-${slug(f.nome)}@${dominio}`,
         `DTSTAMP:${stamp}`,
+        ...(revisao ? [`SEQUENCE:${revisao(f)}`] : []),
         `DTSTART;VALUE=DATE:${compacta(f.data)}`,
         `DTEND;VALUE=DATE:${compacta(somaDias(f.data, 1))}`,
-        `SUMMARY:${escaparIcs(f.nome)}`,
+        // No calendário assinado só o título aparece: deixa claro que facultativo não é folga garantida.
+        `SUMMARY:${escaparIcs(facultativo ? `${f.nome} (ponto facultativo)` : f.nome)}`,
         `DESCRIPTION:${escaparIcs(desc)}`,
         "TRANSP:TRANSPARENT",
         "END:VEVENT"
       );
     }
     linhas.push("END:VCALENDAR");
-    return linhas.join("\r\n") + "\r\n";
+    return linhas.map(dobrar).join("\r\n") + "\r\n";
   }
 
   const api = {
     UFS,
     pascoa,
     oportunidades,
+    planejarFerias,
     paraIcs,
     feriadosDoAno,
     feriadosEntre,

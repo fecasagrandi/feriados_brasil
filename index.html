@@ -36,17 +36,18 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=dffbfc73" />
 
   <!-- CSS primeiro: um script bloqueante antes dele atrasaria a descoberta do CSS. -->
-  <link rel="stylesheet" href="estilo.css?v=7d5b2862">
+  <link rel="stylesheet" href="estilo.css?v=61dd8afd">
   <!-- Fontes antes do primeiro render do JS: sem isso, a troca de fonte faz a página pular. -->
   <link rel="preload" href="fontes/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fontes/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
   <script src="tema.js?v=228cee21"></script>
   <!-- defer no <head>: baixam em paralelo com o CSS e rodam na ordem, depois do HTML. -->
-  <script defer src="feriados.js?v=30af2803"></script>
+  <script defer src="estaduais.js?v=9c1a8dd8"></script>
+  <script defer src="feriados.js?v=f19919bd"></script>
   <script defer src="sobre.js?v=343693e5"></script>
   <script defer src="localizacao.js?v=a5b0384e"></script>
-  <script defer src="app.js?v=e8181f84"></script>
+  <script defer src="app.js?v=a0390e25"></script>
 </head>
 <body class="entrando">
   <main class="container">
@@ -137,10 +138,42 @@
       </p>
     </section>
 
+    <section aria-labelledby="t-ferias">
+      <div class="secao-topo">
+        <h2 class="rotulo" id="t-ferias">planejador de férias</h2>
+        <div class="controles">
+          <label class="escolha">
+            <select id="ferias-dias" aria-label="dias de férias">
+              <option value="30">30 dias</option>
+              <option value="20">20 dias (vendendo 10)</option>
+              <option value="24">24 dias</option>
+              <option value="18">18 dias</option>
+              <option value="12">12 dias</option>
+            </select>
+          </label>
+          <label class="escolha">
+            <select id="ferias-periodos" aria-label="em quantos períodos">
+              <option value="1">1 período</option>
+              <option value="2">até 2 períodos</option>
+              <option value="3" selected>até 3 períodos</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <p class="ferias-resumo" id="ferias-resumo" aria-live="polite"></p>
+      <div class="lista" id="ferias"></div>
+      <p class="lista-nota">
+        Regras da CLT: férias contam em dias corridos, então o ganho está na folga colada antes e depois.
+        Até 3 períodos, um de 14 dias ou mais e os outros de 5 ou mais, se o empregador concordar.
+        Não começa nos 2 dias antes de feriado ou domingo. Aviso de 30 dias: o plano começa daqui a um mês.
+      </p>
+    </section>
+
     <section aria-labelledby="t-calendario">
       <div class="secao-topo">
         <h2 class="rotulo" id="t-calendario">calendário</h2>
         <div class="controles">
+          <button type="button" class="link" id="assinar" title="copia o link para assinar no Google Agenda, Outlook ou Apple: as correções chegam sozinhas">assinar</button>
           <button type="button" class="link" id="ics">baixar .ics</button>
           <div class="ano-nav">
             <button type="button" id="ano-ant" aria-label="ano anterior">‹</button>
@@ -197,7 +230,7 @@
               código no GitHub
             </a>
           </li>
-          <li><a href="https://github.com/fecasagrandi/feriados_brasil/issues" rel="noopener">reportar um erro de data</a></li>
+          <li><a href="https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml" rel="noopener">reportar um erro de data</a></li>
           <li>Tipografia: Barlow Condensed e DM Mono (SIL OFL)</li>
         </ul>
       </nav>

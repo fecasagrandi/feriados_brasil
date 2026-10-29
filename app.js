@@ -5,7 +5,7 @@
   const $ = (id) => document.getElementById(id);
 
   // Arquivos de versões diferentes (cache logo após um deploy): avisar em vez de quebrar em silêncio.
-  if (!F || !F.UFS || !window.Localizacao) {
+  if (!F || !F.UFS || !F.planejarFerias || !window.Localizacao) {
     $("hnome").textContent = "página desatualizada";
     $("hmeta").textContent = "recarregue com Ctrl+Shift+R (ou Cmd+Shift+R no Mac).";
     document.documentElement.classList.remove("carregando");
@@ -31,6 +31,7 @@
     proximos: [],
     ultimo: null,      // último feriado antes de hoje
     alvoAnterior: null,
+    ferias: { dias: 30, periodos: 3 },
   };
 
   function ler(k) { try { return localStorage.getItem(k); } catch { return null; } }
@@ -103,6 +104,56 @@
       textContent: `${n} dia${n > 1 ? "s" : ""} de férias`,
     }));
     return el;
+  }
+
+  // "seg 28 dez"
+  const curta = (d) => {
+    const [, m, dia] = partes(d);
+    return `${SEMANA[F.diaDaSemana(d)].slice(0, 3)} ${dia} ${MESES[m - 1]}`;
+  };
+
+  function periodo(p) {
+    const nomes = [...new Set(p.feriados.map((f) => f.nome))].join(" + ");
+    const b = el("div", "linha periodo revela");
+    const total = el("span", "l-data");
+    total.append(el("span", "l-dia", String(p.descanso.dias)), el("span", "l-mes", "dias"));
+    const meio = el("span", "l-meio");
+    meio.append(
+      el("span", "l-nome", `${p.dias} dias de férias: ${curta(p.inicio)} a ${curta(p.fim)}`),
+      el("span", "l-sem", `folga de ${curta(p.descanso.inicio)} a ${curta(p.descanso.fim)}, volta ${curta(p.volta)}${nomes ? " · " + nomes : ""}`)
+    );
+    b.append(total, meio, el("span", "l-quando", p.ganho ? `+${p.ganho} de folga` : "sem emenda"));
+    return b;
+  }
+
+  // ~2 milhões de passos: só recalcula quando muda o dia, o estado ou a escolha.
+  let planoCache = { chave: null, plano: null };
+  function planoFerias(hoje) {
+    const { dias, periodos } = state.ferias;
+    const chave = [hoje, state.uf, dias, periodos].join("|");
+    if (planoCache.chave !== chave) {
+      const inicio = F.somaDias(hoje, 30); // aviso de 30 dias (CLT art. 135)
+      planoCache = { chave, plano: F.planejarFerias(inicio, F.somaDias(inicio, 364), { dias, periodos, uf: state.uf }) };
+    }
+    return planoCache.plano;
+  }
+
+  function renderFerias(hoje) {
+    const plano = planoFerias(hoje);
+    $("ferias-dias").value = String(state.ferias.dias);
+    $("ferias-periodos").value = String(state.ferias.periodos);
+    if (!plano) {
+      $("ferias-resumo").textContent = "";
+      $("ferias").replaceChildren(el("p", "lista-vazia", "não dá para encaixar essas férias nos próximos 12 meses."));
+      return;
+    }
+    $("ferias-resumo").replaceChildren(
+      document.createTextNode(`${plano.ferias} dias de férias viram `),
+      el("strong", null, String(plano.descanso)),
+      document.createTextNode(" de descanso "),
+      el("span", "ganho", `(+${plano.ganho})`)
+    );
+    $("ferias").replaceChildren(...plano.periodos.map(periodo));
   }
 
   function quando(dias) {
@@ -262,6 +313,7 @@
     $("folgas").replaceChildren(
       ...(emendas.length ? emendas.map(folga) : [Object.assign(document.createElement("p"), { className: "lista-vazia", textContent: "nenhuma emenda boa nos próximos 12 meses." })])
     );
+    renderFerias(hoje);
     $("ano").textContent = state.ano;
     $("facultativos").checked = state.facultativos;
 
@@ -338,6 +390,13 @@
     render();
   });
 
+  for (const [id, campo] of [["ferias-dias", "dias"], ["ferias-periodos", "periodos"]]) {
+    $(id).addEventListener("change", (e) => {
+      state.ferias[campo] = Number(e.target.value);
+      renderFerias(state.dia);
+    });
+  }
+
   $("voltar").addEventListener("click", () => {
     state.selecionado = null;
     render();
@@ -357,6 +416,25 @@
   }
   $("ano-ant").addEventListener("click", () => mudarAno(-1));
   $("ano-prox").addEventListener("click", () => mudarAno(1));
+
+  // Calendário assinável (calendario/*.ics, gerado por scripts/gerar-calendarios.js).
+  // Copiar o link funciona em todo lugar; o Google Agenda não abre links webcal://.
+  function urlCalendario() {
+    const arquivo = `calendario/${state.uf || "brasil"}.ics`;
+    const base = /^https?:$/.test(location.protocol) ? location.href : "https://fecasagrandi.github.io/feriados_brasil/";
+    return new URL(arquivo, base).href;
+  }
+
+  $("assinar").addEventListener("click", async () => {
+    const url = urlCalendario();
+    const qual = state.uf ? F.UFS[state.uf] : "feriados nacionais";
+    try {
+      await navigator.clipboard.writeText(url);
+      avisar(`link do calendário (${qual}) copiado. Google Agenda: Outras agendas › Do URL. iPhone e Outlook: assinar calendário.`);
+    } catch {
+      avisar(`assine este endereço no seu calendário: ${url}`);
+    }
+  });
 
   $("ics").addEventListener("click", () => {
     const ics = F.paraIcs(F.feriadosDoAno(state.ano, opcoes()));

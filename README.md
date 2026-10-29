@@ -18,7 +18,7 @@ Carnaval e Corpus Christi **não são feriados nacionais por lei**: são pontos 
 
 ## Feriados estaduais
 
-A tabela `ESTADUAIS` em `feriados.js` foi montada **cruzando fontes**, porque não existe uma base oficial única e as fontes disponíveis divergem:
+Os dados ficam em `estaduais.js`, um arquivo **só de dados** (sem lógica), montado **cruzando fontes**, porque não existe uma base oficial única e as fontes disponíveis divergem:
 
 - [`date-holidays`](https://github.com/commenthol/date-holidays) (dados com lei e data de vigência),
 - [`@lfreneda/eh-dia-util`](https://www.npmjs.com/package/@lfreneda/eh-dia-util) (dados com lei citada),
@@ -49,7 +49,11 @@ Ressalva honesta: as leis acima foram localizadas por busca, não lidas no texto
 
 Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça de Carnaval no RJ), vale o feriado.
 
-**Achou um erro?** Abra uma issue com o link da lei — é a única coisa que resolve a dúvida.
+**Achou um erro?** Use o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml): ele pede a lei e o link do texto oficial, que é o que resolve a dúvida.
+
+**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/estaduais.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/gerar-calendarios.js` (regera os `.ics` e sobe o `SEQUENCE` dos eventos que mudaram, para a correção chegar a quem assinou) e `node scripts/versionar.js`.
+
+Por que não um `.json`: a página não pode usar `fetch` (a política de segurança tem `connect-src 'none'`, e `file://` bloqueia de qualquer jeito). Um `.js` só com o objeto dá no mesmo para quem edita.
 
 ## O que cada feriado comemora
 
@@ -82,7 +86,9 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 - Marcas de "dias riscados" desde o último feriado.
 - Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
 - **Planejador de folgas**: as emendas dos próximos 12 meses que rendem mais dias de descanso por dia de férias (mínimo 2,5×), já com os feriados do estado.
+- **Planejador de férias (CLT)**: onde marcar 30 (ou 20, 24…) dias de férias em até 3 períodos para colar o máximo de folga antes e depois. Segue as regras da CLT (art. 134 e 135): dias corridos, um período de 14+ dias e os outros de 5+, não começa nos 2 dias antes de feriado ou domingo, aviso de 30 dias. É programação dinâmica, conferida contra força bruta nos testes.
 - Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
+- **Calendário assinável** por estado: o botão "assinar" copia o link de `calendario/<UF>.ics` (ou `brasil.ics`). Assinado no Google Agenda (*Outras agendas › Do URL*), Outlook ou Apple, ele **se atualiza sozinho** quando uma data é corrigida. Pontos facultativos vêm marcados no título.
 - Tema claro e escuro num botão (sol/lua). A primeira visita abre no tema do sistema; depois vale a escolha, salva no navegador.
 - Animações respeitam `prefers-reduced-motion`.
 
@@ -91,6 +97,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | Arquivo | O que é |
 |---|---|
 | `feriados.js` | Cálculo das datas (nacionais e estaduais) e exportação `.ics`. Lógica pura. |
+| `estaduais.js` | Feriados estaduais: só dados, validados por `test/estaduais.test.js`. |
 | `localizacao.js` | Coordenada → UF (point-in-polygon). Lógica pura. |
 | `sobre.js` | O que cada feriado comemora, com a fonte. Só conteúdo. |
 | `ufs-geo.js` | Contornos das UFs (gerado). |
@@ -98,6 +105,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
 | `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
+| `scripts/gerar-calendarios.js`, `calendario/` | Calendários assináveis (Brasil + 27 UFs, 2025–2030). |
 | `scripts/gerar-og.js`, `og.png` | Imagem da prévia de link (1200×630). A URL absoluta dela está no `index.html`: atualize se o endereço do site mudar. |
 | `test/` | Testes de unidade (`node:test`). |
 | `e2e/`, `playwright.config.js` | Testes de ponta a ponta (Playwright). |
@@ -127,8 +135,11 @@ O que não vale a pena aqui: minificar (o gzip do GitHub Pages já reduz os scri
 ## Ao alterar qualquer `.js` ou `.css`
 
 ```sh
+node scripts/gerar-calendarios.js   # se mexeu em datas (feriados.js ou estaduais.js)
 node scripts/versionar.js
 ```
+
+Os dois têm teste que falha no CI se forem esquecidos. O dos calendários também falha quando a cobertura fica a menos de 2 anos do fim (hoje, 2030): é o lembrete para aumentar `ANO_FIM` no script.
 
 O GitHub Pages serve cada arquivo com cache de 10 minutos, e cada um expira numa hora diferente. Sem versão na URL, logo após um deploy o navegador pode juntar um `app.js` novo com um `feriados.js` antigo e a página quebra. O script coloca o hash do conteúdo em cada URL; um teste falha no CI se alguém esquecer.
 

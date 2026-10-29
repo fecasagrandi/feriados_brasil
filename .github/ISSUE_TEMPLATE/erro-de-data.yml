@@ -1,0 +1,82 @@
+name: Erro de data
+description: Um feriado está faltando, sobrando ou na data errada.
+title: "[data] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por avisar. O que resolve a dúvida é **a lei**: com o número e um link para o texto oficial
+        (site da assembleia legislativa, do governo do estado ou do Planalto), a correção é rápida.
+  - type: dropdown
+    id: abrangencia
+    attributes:
+      label: Tipo
+      options:
+        - Feriado nacional
+        - Feriado estadual
+        - Ponto facultativo
+    validations:
+      required: true
+  - type: dropdown
+    id: uf
+    attributes:
+      label: Estado (se for estadual)
+      options:
+        - "-"
+        - AC
+        - AL
+        - AP
+        - AM
+        - BA
+        - CE
+        - DF
+        - ES
+        - GO
+        - MA
+        - MT
+        - MS
+        - MG
+        - PA
+        - PB
+        - PR
+        - PE
+        - PI
+        - RJ
+        - RN
+        - RS
+        - RO
+        - RR
+        - SC
+        - SP
+        - SE
+        - TO
+  - type: input
+    id: data
+    attributes:
+      label: Data
+      description: Dia e mês (ou a regra, se for móvel, como "segunda após a Páscoa").
+      placeholder: "ex.: 23/01"
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: O que está errado
+      placeholder: "ex.: o Dia do Evangélico no AC é 23/01, mas o site mostra 12/01."
+    validations:
+      required: true
+  - type: input
+    id: lei
+    attributes:
+      label: Lei
+      placeholder: "ex.: Lei 1.538/2004"
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link para o texto oficial da lei
+      placeholder: "https://..."
+    validations:
+      required: true
