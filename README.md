@@ -69,11 +69,11 @@ Critério: a data aparece em **ato oficial** (portaria de tribunal, decreto da p
 |---|---|---|
 | Macapá | 04/02 Aniversário | calendários do TSE e do MPF |
 | Goiânia | 24/05 Nossa Senhora Auxiliadora | calendário do TJGO |
-| Campo Grande | 13/06 Santo Antônio, 26/08 Aniversário | Justiça Federal e TJMS |
+| Campo Grande | 13/06 Santo Antônio, 26/08 Aniversário | Justiça Federal e TJMS. Um calendário cita a Lei 3.901/2001 para Santo Antônio |
 | Cuiabá | 08/04 Aniversário | decreto municipal de 2026 |
 | Teresina | 16/08 Aniversário | Lei 5.573/2021 (antecipou o feriado de 2021) |
-| Rio de Janeiro | 20/01 São Sebastião | Agência Brasil e prefeitura. Uma única fonte cita a Lei 1.271/1988 |
-| Natal | 06/01 Santos Reis, 21/11 Nossa Senhora da Apresentação | prefeitura e TCE-RN |
+| Rio de Janeiro | 20/01 São Sebastião | lei do calendário oficial do município (art. 8º). Uma única fonte cita a Lei 1.271/1988 |
+| Natal | 06/01 Santos Reis, 21/11 Nossa Senhora da Apresentação | Decreto municipal 13.643/2025 (06/01) e TCE-RN (21/11) |
 
 **Fora, por divergência:**
 
@@ -85,9 +85,8 @@ Critério: a data aparece em **ato oficial** (portaria de tribunal, decreto da p
 | Boa Vista | Corpus Christi está como feriado no decreto de 2026, mas sem lei; os 4 religiosos da Lei 104/1984 já fecham o limite. |
 | Porto Velho | 24/01 e 24/05 só em calendários privados, sem ato oficial. |
 | Aracaju | 08/12 só em calendário privado. |
-| Vitória | Corpus Christi: o decreto de 2009 e a antecipação de 2021 tratam como feriado (Lei 1.732/1967); um guia de 2026 diz facultativo. **Mantido como feriado**, vale conferir. |
 
-Ressalva honesta: tudo isso veio de **busca**, não da leitura do texto original das leis (o ambiente onde o levantamento foi feito não abria os portais das câmaras). Atos de tribunais e do MPF citam as leis, mas às vezes divergem entre si (João Pessoa: Lei 8.805/1999 ou 13.768/2019 para São João). Se você mora numa capital e sabe que algo está errado, o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml) tem a opção "Feriado municipal (capital)".
+Ressalva honesta: tudo isso veio de **busca**, não da leitura do texto original das leis (o ambiente onde o levantamento foi feito não abria os portais das câmaras). Atos de tribunais e do MPF citam as leis, mas às vezes divergem entre si. Em João Pessoa, um documento do MPF cita a Lei 13.768/2019, mas o TRE-PB e a imprensa local atribuem os três feriados à Lei 8.805/1999, que ficou. Corpus Christi em Vitória foi confirmado como feriado (Lei 1.732/1967) pela Findes, apesar de um guia privado dizer facultativo. Se você mora numa capital e sabe que algo está errado, o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml) tem a opção "Feriado municipal (capital)".
 
 ## O que cada feriado comemora
 

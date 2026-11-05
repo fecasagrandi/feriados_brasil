@@ -70,17 +70,17 @@
     { mes: 12, dia: 8, nome: "Imaculada Conceição", lei: "Lei 11.397/2022" },
   ] },
   MS: { cidade: "Campo Grande", feriados: [
-    { mes: 6, dia: 13, nome: "Santo Antônio", lei: "a confirmar", ato: "calendários da Justiça Federal e do TJMS" },
+    { mes: 6, dia: 13, nome: "Santo Antônio", lei: "a confirmar", ato: "calendários da Justiça Federal e do TJMS; um calendário cita a Lei 3.901/2001" },
     { mes: 8, dia: 26, nome: "Aniversário de Campo Grande", lei: "a confirmar", ato: "calendários da Justiça Federal e do TJMS" },
   ] },
   MT: { cidade: "Cuiabá", feriados: [
     { mes: 4, dia: 8, nome: "Aniversário de Cuiabá", lei: "a confirmar", ato: "decreto municipal de feriados de 2026" },
   ] },
   PB: { cidade: "João Pessoa", feriados: [
-    { mes: 6, dia: 24, nome: "São João", lei: "Lei 13.768/2019" },
+    { mes: 6, dia: 24, nome: "São João", lei: "Lei 8.805/1999" },
     // 05/08 também é feriado estadual (Fundação do Estado).
     { mes: 8, dia: 5, nome: "Nossa Senhora das Neves", lei: "Lei 8.805/1999" },
-    { mes: 12, dia: 8, nome: "Nossa Senhora da Conceição", lei: "Lei 13.768/2019" },
+    { mes: 12, dia: 8, nome: "Nossa Senhora da Conceição", lei: "Lei 8.805/1999" },
   ] },
   PE: { cidade: "Recife", feriados: [
     { mes: 6, dia: 24, nome: "São João", lei: "Lei 9.777/1967" },
@@ -95,10 +95,10 @@
     { mes: 9, dia: 8, nome: "Nossa Senhora da Luz dos Pinhais", lei: "Lei 3.015/1967" },
   ] },
   RJ: { cidade: "Rio de Janeiro", feriados: [
-    { mes: 1, dia: 20, nome: "São Sebastião", lei: "a confirmar", ato: "Agência Brasil e calendários da prefeitura" },
+    { mes: 1, dia: 20, nome: "São Sebastião", lei: "a confirmar", ato: "lei do calendário oficial do município, art. 8º; um calendário cita a Lei 1.271/1988" },
   ] },
   RN: { cidade: "Natal", feriados: [
-    { mes: 1, dia: 6, nome: "Santos Reis", lei: "a confirmar", ato: "calendário de feriados da Prefeitura do Natal" },
+    { mes: 1, dia: 6, nome: "Santos Reis", lei: "a confirmar", ato: "Decreto municipal 13.643/2025 (calendário de 2026)" },
     { mes: 11, dia: 21, nome: "Nossa Senhora da Apresentação", lei: "a confirmar", ato: "portaria de feriados do TCE-RN" },
   ] },
   RO: { cidade: "Porto Velho", feriados: [
