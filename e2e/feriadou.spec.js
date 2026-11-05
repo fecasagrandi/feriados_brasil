@@ -69,6 +69,7 @@ test.describe("localização", () => {
 
     const armazenado = await page.evaluate(() => ({ ...localStorage }));
     expect(armazenado).toEqual({ "feriados:uf": "SP" });
+    await page.locator("#calendario .passados").click(); // 9 de julho já passou em 30/09
     await expect(page.locator("#calendario")).toContainText("Revolução Constitucionalista");
     expect(externas).toEqual([]);
 
@@ -312,6 +313,7 @@ test.describe("feriados da capital", () => {
     await expect(page.locator("#capital-opcao")).toContainText("moro em São Paulo");
 
     const cal = page.locator("#calendario");
+    await cal.locator(".passados").click(); // 25/01 e 04/06 já passaram em 30/09
     await expect(cal).not.toContainText("Aniversário de São Paulo");
     await page.locator("#capital").check();
     await expect(cal.locator(".linha", { hasText: "Aniversário de São Paulo" })).toContainText("municipal · São Paulo");
@@ -339,4 +341,43 @@ test.describe("feriados da capital", () => {
     expect(await page.evaluate(() => ({ ...localStorage }))).not.toHaveProperty("feriados:capital");
     expect(erros).toEqual([]);
   });
+});
+
+test("calendário do ano atual recolhe o que já passou; outro ano mostra tudo", async ({ page }) => {
+  await abrir(page); // 30/09/2026
+  const cal = page.locator("#calendario");
+  await expect(cal.locator(".passados")).toHaveText("mostrar os 5 feriados de 2026 que já passaram");
+  await expect(cal.locator(".linha").first()).toContainText("Nossa Senhora Aparecida");
+  await cal.locator(".passados").click();
+  await expect(cal.locator(".passados")).toHaveCount(0);
+  await expect(cal.locator(".linha").first()).toContainText("Confraternização Universal");
+  await expect(cal).toBeFocused(); // o foco não se perde quando o botão some
+  await page.locator("#ano-prox").click();
+  await expect(cal.locator(".passados")).toHaveCount(0);
+  await page.locator("#ano-ant").click();
+  await expect(cal.locator(".passados")).toHaveCount(1); // voltar ao ano atual recolhe de novo
+});
+
+test("convite para incluir o estado aparece sem UF e some depois", async ({ page, context }) => {
+  await context.grantPermissions(["geolocation"]);
+  await context.setGeolocation({ latitude: -22.9, longitude: -43.2 });
+  await abrir(page);
+  await expect(page.locator("#convite")).toBeVisible();
+  await page.locator("#convite").click();
+  await expect(page.locator("#geo-uf")).toHaveText("RJ");
+  await expect(page.locator("#convite")).toBeHidden();
+});
+
+test("navegação entre seções gruda no topo e marca onde a pessoa está", async ({ page }) => {
+  await abrir(page);
+  const nav = page.locator("#secoes");
+  await expect(nav.locator("[aria-current]")).toHaveCount(0);
+  await nav.getByRole("link", { name: "férias" }).click();
+  await expect(nav.locator('[aria-current="location"]')).toHaveText("férias");
+  await expect(nav).toHaveClass(/grudado/);
+  const caixa = await nav.boundingBox();
+  expect(Math.round(caixa.y)).toBe(0);
+  // o título da seção não fica escondido atrás da barra
+  const titulo = await page.locator("#t-ferias").boundingBox();
+  expect(titulo.y).toBeGreaterThanOrEqual(caixa.height);
 });

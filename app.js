@@ -26,6 +26,7 @@
     facultativos: ler(K_FAC) === "1",
     uf: Object.prototype.hasOwnProperty.call(F.UFS, ler(K_UF) || "") ? ler(K_UF) : null,
     capital: ler(K_CAP) === "1", // mora na capital do estado acima
+    verPassados: false, // calendário do ano atual: mostrar os feriados que já passaram
     tema: document.documentElement.dataset.theme === "dark" ? "escuro" : "claro", // definido por tema.js
     selecionado: null, // objeto do feriado; null = o próximo
     ano: null,
@@ -293,6 +294,28 @@
     $("leg-conta").textContent = f.data === hoje ? "chegou" : `dia ${passados} de ${total}`;
   }
 
+  // No ano atual, os que já passaram ficam atrás de um botão: o que interessa é o que vem.
+  function renderCalendario(hoje) {
+    const doAno = F.feriadosDoAno(state.ano, opcoes());
+    const passados = doAno.filter((f) => f.data < hoje).length;
+    const recolher = !state.verPassados && passados > 0 && passados < doAno.length;
+    const visiveis = recolher ? doAno.slice(passados) : doAno;
+    const linhas = visiveis.map((f, i) => linha(f, hoje, i));
+    if (recolher) {
+      const b = el("button", "passados", `mostrar ${passados === 1 ? "o 1 feriado" : `os ${passados} feriados`} de ${state.ano} que já passaram`);
+      b.type = "button";
+      b.addEventListener("click", () => {
+        state.verPassados = true;
+        renderCalendario(hoje);
+        // o botão sumiu: o foco do teclado vai para a lista, não para o fim da página
+        $("calendario").tabIndex = -1;
+        $("calendario").focus({ preventScroll: true });
+      });
+      linhas.unshift(b);
+    }
+    $("calendario").replaceChildren(...linhas);
+  }
+
   // ---------- render: só quando algo muda (dia, seleção, filtro, ano) ----------
 
   function render() {
@@ -316,7 +339,7 @@
     }
 
     $("proximos").replaceChildren(...state.proximos.map((f, i) => linha(f, hoje, i)));
-    $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f, i) => linha(f, hoje, i)));
+    renderCalendario(hoje);
     const emendas = F.oportunidades(hoje, F.somaDias(hoje, 365), { uf: state.uf, capital: capitalAtiva() });
     $("folgas").replaceChildren(
       ...(emendas.length ? emendas.map(folga) : [Object.assign(document.createElement("p"), { className: "lista-vazia", textContent: "nenhuma emenda boa nos próximos 12 meses." })])
@@ -421,6 +444,7 @@
     const novo = Math.min(9999, Math.max(1583, state.ano + delta));
     if (novo === state.ano) return;
     state.ano = novo;
+    state.verPassados = false;
     render();
     if (!reduzMovimento()) {
       $("calendario").animate(
@@ -478,6 +502,7 @@
     $("local").classList.toggle("ativo", !!state.uf);
     $("geo-uf").textContent = state.uf || "";
     $("esquecer").hidden = !state.uf;
+    $("convite").hidden = !!state.uf || !("geolocation" in navigator) || !window.isSecureContext;
     const cidade = state.uf && F.capitalDe(state.uf);
     $("capital-opcao").hidden = !cidade;
     $("capital-nome").textContent = cidade || "";
@@ -559,6 +584,27 @@
       local.classList.remove("buscando");
     }
   });
+
+  // O convite faz o mesmo que o pino do topo, que sozinho passa despercebido.
+  $("convite").addEventListener("click", () => $("geo").click());
+
+  // ---------- navegação entre seções ----------
+
+  const secoes = [...$("secoes").querySelectorAll("a")].map((a) => [a, document.getElementById(a.hash.slice(1))]);
+  let quadroPendente = false;
+  function marcarSecao() {
+    quadroPendente = false;
+    $("secoes").classList.toggle("grudado", $("secoes").getBoundingClientRect().top <= 0);
+    let atual = null;
+    for (const [a, alvo] of secoes) if (alvo.getBoundingClientRect().top < innerHeight * 0.35) atual = a;
+    for (const [a] of secoes) {
+      if (a === atual) a.setAttribute("aria-current", "location");
+      else a.removeAttribute("aria-current");
+    }
+  }
+  addEventListener("scroll", () => {
+    if (!quadroPendente) { quadroPendente = true; requestAnimationFrame(marcarSecao); }
+  }, { passive: true });
 
   mostrarUf();
 
