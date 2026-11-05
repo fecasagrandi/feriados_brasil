@@ -29,7 +29,7 @@ Critério: entra quando **duas fontes independentes concordam e citam a lei**. A
 | UF | Situação |
 |---|---|
 | AC | Dia do Evangélico em **23/01** (Lei 1.538/2004). Uma biblioteca tinha 12/01 com vigência a partir de 29/01/2004 — a data da própria lei, provável erro de digitação. **Incluído.** |
-| PE | Data Magna em **6 de março**, data fixa desde a Lei 16.059/2017 (a regra antiga era o 1º domingo de março). **Incluído a partir de 2017.** São João (24/06) é municipal (Recife): fora. |
+| PE | Data Magna em **6 de março**, data fixa desde a Lei 16.059/2017 (a regra antiga era o 1º domingo de março). **Incluído a partir de 2017.** São João (24/06) é municipal (Recife): entra só como feriado da capital. |
 | PR | 19/12 foi **revogado** como feriado pela Lei 18.384/2014 (virou só data comemorativa). Fora. |
 | SC | 11/08 e 25/11 são **transferidos para o domingo** (Lei 12.906/2004): não afetam dia útil. Fora. |
 | CE | São José (19/03): só encontrada como data comemorativa (Lei 18.390/2023), sem lei clara de feriado. **Fora, pendente de confirmação.** |
@@ -51,9 +51,43 @@ Se o estado tiver feriado no mesmo dia de um ponto facultativo nacional (terça 
 
 **Achou um erro?** Use o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml): ele pede a lei e o link do texto oficial, que é o que resolve a dúvida.
 
-**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/estaduais.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/gerar-calendarios.js` (regera os `.ics` e sobe o `SEQUENCE` dos eventos que mudaram, para a correção chegar a quem assinou) e `node scripts/versionar.js`.
+**Quer corrigir você mesmo?** Edite a linha da UF em `estaduais.js` ou `municipais.js` (os campos estão explicados no topo do arquivo; `fonte` aceita o link da lei) e rode `npm test`. O `test/dados.test.js` acusa campo errado, data impossível, lei faltando ou item duplicado, com a UF e o nome do feriado na mensagem. Depois rode `node scripts/gerar-calendarios.js` (regera os `.ics` e sobe o `SEQUENCE` dos eventos que mudaram, para a correção chegar a quem assinou) e `node scripts/versionar.js`.
 
 Por que não um `.json`: a página não pode usar `fetch` (a política de segurança tem `connect-src 'none'`, e `file://` bloqueia de qualquer jeito). Um `.js` só com o objeto dá no mesmo para quem edita.
+
+## Feriados das capitais
+
+Feriado municipal depende de lei de cada um dos 5.570 municípios, e não existe base oficial única. Por isso o site cobre **só as capitais**, e só para quem marca "moro em …" depois que o estado é detectado. Morar na região metropolitana não vale: Guarulhos não tem o feriado de São Paulo.
+
+Os dados ficam em `municipais.js` (só dados, mesmo formato de `estaduais.js`, validados por `test/dados.test.js`). Lei federal 9.093/1995: cada município pode ter até 4 feriados religiosos (contando a Sexta-feira Santa) e a data de fundação. Por isso Corpus Christi, ponto facultativo nacional, é feriado em boa parte das capitais. Quando a capital decreta feriado no dia de um ponto facultativo nacional, vale o feriado.
+
+Critério: a data aparece em **ato oficial** (portaria de tribunal, decreto da prefeitura, calendário do MPF) e em pelo menos mais uma fonte. O número da lei vem do ato que a cita.
+
+**A confirmar** (data confirmada por ato oficial, mas sem o número da lei localizado). Aparecem no site e no `.ics` como "lei a confirmar":
+
+| Capital | Data | Onde a data foi confirmada |
+|---|---|---|
+| Macapá | 04/02 Aniversário | calendários do TSE e do MPF |
+| Goiânia | 24/05 Nossa Senhora Auxiliadora | calendário do TJGO |
+| Campo Grande | 13/06 Santo Antônio, 26/08 Aniversário | Justiça Federal e TJMS |
+| Cuiabá | 08/04 Aniversário | decreto municipal de 2026 |
+| Teresina | 16/08 Aniversário | Lei 5.573/2021 (antecipou o feriado de 2021) |
+| Rio de Janeiro | 20/01 São Sebastião | Agência Brasil e prefeitura. Uma única fonte cita a Lei 1.271/1988 |
+| Natal | 06/01 Santos Reis, 21/11 Nossa Senhora da Apresentação | prefeitura e TCE-RN |
+
+**Fora, por divergência:**
+
+| Capital | Situação |
+|---|---|
+| Brasília | O DF não tem municípios. |
+| Belém | Em 2026 a prefeitura decretou **ponto facultativo** no aniversário (12/01). Corpus Christi aparece como feriado e como facultativo, conforme a fonte. |
+| Cuiabá | 08/12 (Lei 5.576/2012) foi contestado na Justiça pela CDL, desfecho não localizado. Corpus Christi divergente. |
+| Boa Vista | Corpus Christi está como feriado no decreto de 2026, mas sem lei; os 4 religiosos da Lei 104/1984 já fecham o limite. |
+| Porto Velho | 24/01 e 24/05 só em calendários privados, sem ato oficial. |
+| Aracaju | 08/12 só em calendário privado. |
+| Vitória | Corpus Christi: o decreto de 2009 e a antecipação de 2021 tratam como feriado (Lei 1.732/1967); um guia de 2026 diz facultativo. **Mantido como feriado**, vale conferir. |
+
+Ressalva honesta: tudo isso veio de **busca**, não da leitura do texto original das leis (o ambiente onde o levantamento foi feito não abria os portais das câmaras). Atos de tribunais e do MPF citam as leis, mas às vezes divergem entre si (João Pessoa: Lei 8.805/1999 ou 13.768/2019 para São João). Se você mora numa capital e sabe que algo está errado, o formulário [Erro de data](https://github.com/fecasagrandi/feriados_brasil/issues/new?template=erro-de-data.yml) tem a opção "Feriado municipal (capital)".
 
 ## O que cada feriado comemora
 
@@ -75,7 +109,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 
 - **Sem cookies, sem analytics, sem rastreadores.** Não há banner de cookies porque não há cookies.
 - A localização nunca sai do aparelho (ver acima).
-- No `localStorage` ficam só: `feriados:uf` (sigla), `feriados:tema` e `feriados:facultativos`. O "×" ao lado da sigla apaga a UF.
+- No `localStorage` ficam só: `feriados:uf` (sigla), `feriados:capital` (se marcou que mora na capital), `feriados:tema` e `feriados:facultativos`. O "×" ao lado da sigla apaga a UF e a marca da capital.
 - Fontes servidas pelo próprio site (antes vinham do Google Fonts, que recebe o IP de cada visitante).
 - A página declara uma **Content-Security-Policy** com `connect-src 'none'` e todos os recursos em `'self'`: o próprio navegador impede que qualquer script envie dados para fora. É uma garantia verificável, não só uma promessa.
 - A hospedagem (GitHub Pages) pode registrar IPs de acesso, como qualquer servidor web.
@@ -87,8 +121,9 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 - Etiquetas de **feriadão** (segunda/sexta) e **ponte** (terça/quinta).
 - **Planejador de folgas**: as emendas dos próximos 12 meses que rendem mais dias de descanso por dia de férias (mínimo 2,5×), já com os feriados do estado.
 - **Planejador de férias (CLT)**: onde marcar 30 (ou 20, 24…) dias de férias em até 3 períodos para colar o máximo de folga antes e depois. Segue as regras da CLT (art. 134 e 135): dias corridos, um período de 14+ dias e os outros de 5+, não começa nos 2 dias antes de feriado ou domingo, aviso de 30 dias. É programação dinâmica, conferida contra força bruta nos testes.
+- **Feriados da capital**: com o estado detectado, a opção "moro em …" inclui os feriados municipais da capital (25 capitais; ver "Feriados das capitais").
 - Calendário de qualquer ano, exportável para `.ics` (Google Agenda, Outlook, Apple Calendário).
-- **Calendário assinável** por estado: o botão "assinar" copia o link de `calendario/<UF>.ics` (ou `brasil.ics`). Assinado no Google Agenda (*Outras agendas › Do URL*), Outlook ou Apple, ele **se atualiza sozinho** quando uma data é corrigida. Pontos facultativos vêm marcados no título.
+- **Calendário assinável** por estado: o botão "assinar" copia o link de `calendario/<UF>.ics`, `calendario/<UF>-capital.ics` (ou `brasil.ics`). Assinado no Google Agenda (*Outras agendas › Do URL*), Outlook ou Apple, ele **se atualiza sozinho** quando uma data é corrigida. Pontos facultativos vêm marcados no título.
 - Tema claro e escuro num botão (sol/lua). A primeira visita abre no tema do sistema; depois vale a escolha, salva no navegador.
 - Animações respeitam `prefers-reduced-motion`.
 
@@ -96,8 +131,8 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 
 | Arquivo | O que é |
 |---|---|
-| `feriados.js` | Cálculo das datas (nacionais e estaduais) e exportação `.ics`. Lógica pura. |
-| `estaduais.js` | Feriados estaduais: só dados, validados por `test/estaduais.test.js`. |
+| `feriados.js` | Cálculo das datas (nacionais, estaduais e das capitais) e exportação `.ics`. Lógica pura. |
+| `estaduais.js`, `municipais.js` | Feriados estaduais e das capitais: só dados, validados por `test/dados.test.js`. |
 | `localizacao.js` | Coordenada → UF (point-in-polygon). Lógica pura. |
 | `sobre.js` | O que cada feriado comemora, com a fonte. Só conteúdo. |
 | `ufs-geo.js` | Contornos das UFs (gerado). |
@@ -105,7 +140,7 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 | `fontes/` | Barlow Condensed e DM Mono (SIL OFL 1.1, licenças na pasta). |
 | `scripts/gerar-ufs-geo.js` | Regenera `ufs-geo.js`. |
 | `scripts/versionar.js` | Atualiza o `?v=<hash>` dos assets (cache busting). |
-| `scripts/gerar-calendarios.js`, `calendario/` | Calendários assináveis (Brasil + 27 UFs, 2025–2030). |
+| `scripts/gerar-calendarios.js`, `calendario/` | Calendários assináveis (Brasil, 27 UFs e 25 capitais, 2025–2030). |
 | `scripts/gerar-og.js`, `og.png` | Imagem da prévia de link (1200×630). A URL absoluta dela está no `index.html`: atualize se o endereço do site mudar. |
 | `test/` | Testes de unidade (`node:test`). |
 | `e2e/`, `playwright.config.js` | Testes de ponta a ponta (Playwright). |

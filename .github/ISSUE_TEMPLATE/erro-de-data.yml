@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Obrigado por avisar. O que resolve a dúvida é **a lei**: com o número e um link para o texto oficial
-        (site da assembleia legislativa, do governo do estado ou do Planalto), a correção é rápida.
+        (site da assembleia legislativa, da câmara municipal, do governo do estado ou do Planalto), a correção é rápida.
   - type: dropdown
     id: abrangencia
     attributes:
@@ -15,13 +15,14 @@ body:
       options:
         - Feriado nacional
         - Feriado estadual
+        - Feriado municipal (capital)
         - Ponto facultativo
     validations:
       required: true
   - type: dropdown
     id: uf
     attributes:
-      label: Estado (se for estadual)
+      label: Estado (se for estadual ou da capital)
       options:
         - "-"
         - AC

@@ -36,18 +36,19 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=dffbfc73" />
 
   <!-- CSS primeiro: um script bloqueante antes dele atrasaria a descoberta do CSS. -->
-  <link rel="stylesheet" href="estilo.css?v=61dd8afd">
+  <link rel="stylesheet" href="estilo.css?v=37d471f1">
   <!-- Fontes antes do primeiro render do JS: sem isso, a troca de fonte faz a página pular. -->
   <link rel="preload" href="fontes/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fontes/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Aplica o tema salvo antes do primeiro paint (evita piscar). -->
   <script src="tema.js?v=228cee21"></script>
   <!-- defer no <head>: baixam em paralelo com o CSS e rodam na ordem, depois do HTML. -->
-  <script defer src="estaduais.js?v=9c1a8dd8"></script>
-  <script defer src="feriados.js?v=f19919bd"></script>
+  <script defer src="estaduais.js?v=83f3e93d"></script>
+  <script defer src="municipais.js?v=0440ca0f"></script>
+  <script defer src="feriados.js?v=a43171d9"></script>
   <script defer src="sobre.js?v=343693e5"></script>
   <script defer src="localizacao.js?v=a5b0384e"></script>
-  <script defer src="app.js?v=a0390e25"></script>
+  <script defer src="app.js?v=da38d6f2"></script>
 </head>
 <body class="entrando">
   <main class="container">
@@ -118,10 +119,16 @@
     <section aria-labelledby="t-proximos">
       <div class="secao-topo revela" style="--d:6">
         <h2 class="rotulo" id="t-proximos">próximos</h2>
-        <label class="toggle">
-          <input type="checkbox" id="facultativos">
-          pontos facultativos
-        </label>
+        <div class="controles">
+          <label class="toggle" id="capital-opcao" hidden>
+            <input type="checkbox" id="capital">
+            moro em <span id="capital-nome">—</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="facultativos">
+            pontos facultativos
+          </label>
+        </div>
       </div>
       <div class="lista" id="proximos"></div>
     </section>
@@ -205,6 +212,7 @@
           <li>Datas móveis: Páscoa pelo algoritmo de Meeus/Jones/Butcher</li>
           <li>Pontos facultativos: portaria anual do governo federal</li>
           <li><a href="https://github.com/fecasagrandi/feriados_brasil#feriados-estaduais" rel="noopener">Estaduais: fontes e divergências</a></li>
+          <li><a href="https://github.com/fecasagrandi/feriados_brasil#feriados-das-capitais" rel="noopener">Capitais: leis e o que falta confirmar</a></li>
           <li><a href="https://github.com/giuliano-oliveira/geodata-br-states" rel="noopener">Contornos das UFs: geodata-br-states</a></li>
         </ul>
       </nav>
@@ -214,7 +222,7 @@
         <ul>
           <li>Sem cookies, analytics ou rastreadores.</li>
           <li>A localização vira estado no seu aparelho e é descartada. Nada é enviado.</li>
-          <li>No navegador ficam só a sigla do estado, o tema e suas preferências.</li>
+          <li>No navegador ficam só a sigla do estado, se você mora na capital, o tema e suas preferências.</li>
           <li>A política de segurança da página bloqueia conexões com outros servidores.</li>
           <li>A hospedagem pode registrar IPs, como qualquer servidor: <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">política do GitHub</a>.</li>
         </ul>
@@ -237,7 +245,7 @@
     </div>
 
     <div class="rodape-base">
-      <span>Feriados municipais não estão incluídos. Na dúvida, confira com o seu estado ou município.</span>
+      <span>Feriados municipais só das capitais, e só se você marcar que mora nela. Na dúvida, confira com a sua prefeitura.</span>
       <span>© 2026 Felipe Moreira Casagrandi</span>
     </div>
   </footer>

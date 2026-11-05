@@ -5,7 +5,7 @@
   const $ = (id) => document.getElementById(id);
 
   // Arquivos de versões diferentes (cache logo após um deploy): avisar em vez de quebrar em silêncio.
-  if (!F || !F.UFS || !F.planejarFerias || !window.Localizacao) {
+  if (!F || !F.UFS || !F.planejarFerias || !F.capitalDe || !window.Localizacao) {
     $("hnome").textContent = "página desatualizada";
     $("hmeta").textContent = "recarregue com Ctrl+Shift+R (ou Cmd+Shift+R no Mac).";
     document.documentElement.classList.remove("carregando");
@@ -20,10 +20,12 @@
   const K_FAC = "feriados:facultativos";
   const K_TEMA = "feriados:tema";
   const K_UF = "feriados:uf";
+  const K_CAP = "feriados:capital";
 
   const state = {
     facultativos: ler(K_FAC) === "1",
     uf: Object.prototype.hasOwnProperty.call(F.UFS, ler(K_UF) || "") ? ler(K_UF) : null,
+    capital: ler(K_CAP) === "1", // mora na capital do estado acima
     tema: document.documentElement.dataset.theme === "dark" ? "escuro" : "claro", // definido por tema.js
     selecionado: null, // objeto do feriado; null = o próximo
     ano: null,
@@ -39,7 +41,9 @@
   function apagar(k) { try { localStorage.removeItem(k); } catch { /* idem */ } }
 
   const reduzMovimento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const opcoes = () => ({ facultativos: state.facultativos, uf: state.uf });
+  // Feriados da capital só valem com o estado definido e a capital em municipais.js.
+  const capitalAtiva = () => !!(state.capital && state.uf && F.capitalDe(state.uf));
+  const opcoes = () => ({ facultativos: state.facultativos, uf: state.uf, capital: capitalAtiva() });
   const mesmo = (a, b) => !!a && !!b && a.data === b.data && a.nome === b.nome;
   const pad = (n) => String(n).padStart(2, "0");
   const partes = (data) => data.split("-").map(Number);
@@ -130,10 +134,10 @@
   let planoCache = { chave: null, plano: null };
   function planoFerias(hoje) {
     const { dias, periodos } = state.ferias;
-    const chave = [hoje, state.uf, dias, periodos].join("|");
+    const chave = [hoje, state.uf, capitalAtiva(), dias, periodos].join("|");
     if (planoCache.chave !== chave) {
       const inicio = F.somaDias(hoje, 30); // aviso de 30 dias (CLT art. 135)
-      planoCache = { chave, plano: F.planejarFerias(inicio, F.somaDias(inicio, 364), { dias, periodos, uf: state.uf }) };
+      planoCache = { chave, plano: F.planejarFerias(inicio, F.somaDias(inicio, 364), { dias, periodos, uf: state.uf, capital: capitalAtiva() }) };
     }
     return planoCache.plano;
   }
@@ -166,6 +170,7 @@
   function tagsDe(f) {
     const t = [];
     if (f.abrangencia === "estadual") t.push(el("span", "tag", `estadual · ${f.uf}`));
+    if (f.abrangencia === "municipal") t.push(el("span", "tag", `municipal · ${f.cidade}`));
     if (f.tipo === "facultativo") t.push(el("span", "tag", f.obs ? `facultativo ${f.obs}` : "facultativo"));
     const c = F.classificar(f.data);
     if (c === "feriadão" || c === "ponte") t.push(el("span", "tag forte", c));
@@ -302,14 +307,17 @@
     state.ultimo = passados[passados.length - 1] || null;
 
     const s = state.selecionado;
-    const filtrado = (s && s.tipo === "facultativo" && !state.facultativos) || (s && s.uf && s.uf !== state.uf);
+    const filtrado =
+      (s && s.tipo === "facultativo" && !state.facultativos) ||
+      (s && s.uf && s.uf !== state.uf) ||
+      (s && s.abrangencia === "municipal" && !capitalAtiva());
     if (s && (s.data < hoje || filtrado)) {
       state.selecionado = null;
     }
 
     $("proximos").replaceChildren(...state.proximos.map((f, i) => linha(f, hoje, i)));
     $("calendario").replaceChildren(...F.feriadosDoAno(state.ano, opcoes()).map((f, i) => linha(f, hoje, i)));
-    const emendas = F.oportunidades(hoje, F.somaDias(hoje, 365), { uf: state.uf });
+    const emendas = F.oportunidades(hoje, F.somaDias(hoje, 365), { uf: state.uf, capital: capitalAtiva() });
     $("folgas").replaceChildren(
       ...(emendas.length ? emendas.map(folga) : [Object.assign(document.createElement("p"), { className: "lista-vazia", textContent: "nenhuma emenda boa nos próximos 12 meses." })])
     );
@@ -397,6 +405,13 @@
     });
   }
 
+  $("capital").addEventListener("change", (e) => {
+    state.capital = e.target.checked;
+    if (state.capital) gravar(K_CAP, "1");
+    else apagar(K_CAP);
+    render();
+  });
+
   $("voltar").addEventListener("click", () => {
     state.selecionado = null;
     render();
@@ -420,14 +435,14 @@
   // Calendário assinável (calendario/*.ics, gerado por scripts/gerar-calendarios.js).
   // Copiar o link funciona em todo lugar; o Google Agenda não abre links webcal://.
   function urlCalendario() {
-    const arquivo = `calendario/${state.uf || "brasil"}.ics`;
+    const arquivo = `calendario/${state.uf ? state.uf + (capitalAtiva() ? "-capital" : "") : "brasil"}.ics`;
     const base = /^https?:$/.test(location.protocol) ? location.href : "https://fecasagrandi.github.io/feriados_brasil/";
     return new URL(arquivo, base).href;
   }
 
   $("assinar").addEventListener("click", async () => {
     const url = urlCalendario();
-    const qual = state.uf ? F.UFS[state.uf] : "feriados nacionais";
+    const qual = capitalAtiva() ? `${F.capitalDe(state.uf)}, capital` : state.uf ? F.UFS[state.uf] : "feriados nacionais";
     try {
       await navigator.clipboard.writeText(url);
       avisar(`link do calendário (${qual}) copiado. Google Agenda: Outras agendas › Do URL. iPhone e Outlook: assinar calendário.`);
@@ -441,7 +456,7 @@
     const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
     const a = el("a");
     a.href = url;
-    a.download = `feriados-${state.ano}${state.uf ? "-" + state.uf : ""}.ics`;
+    a.download = `feriados-${state.ano}${state.uf ? "-" + state.uf : ""}${capitalAtiva() ? "-capital" : ""}.ics`;
     document.body.append(a);
     a.click();
     a.remove();
@@ -463,6 +478,10 @@
     $("local").classList.toggle("ativo", !!state.uf);
     $("geo-uf").textContent = state.uf || "";
     $("esquecer").hidden = !state.uf;
+    const cidade = state.uf && F.capitalDe(state.uf);
+    $("capital-opcao").hidden = !cidade;
+    $("capital-nome").textContent = cidade || "";
+    $("capital").checked = capitalAtiva();
     $("geo").setAttribute(
       "aria-label",
       state.uf
@@ -472,6 +491,11 @@
   }
 
   function definirUf(uf) {
+    // "Moro na capital" vale para o estado em que foi marcado.
+    if ((uf || null) !== state.uf) {
+      state.capital = false;
+      apagar(K_CAP);
+    }
     state.uf = uf || null;
     if (state.uf) gravar(K_UF, state.uf);
     else apagar(K_UF);

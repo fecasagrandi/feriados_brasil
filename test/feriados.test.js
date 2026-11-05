@@ -297,3 +297,33 @@ test("paraIcs: facultativo marcado no título; calendário nomeado quando assin�
   assert.ok(ics.includes("SUMMARY:Carnaval (terça) (ponto facultativo)"));
   assert.ok(ics.includes("X-WR-CALNAME:Feriadou · Brasil\r\nREFRESH-INTERVAL;VALUE=DURATION:P1D"));
 });
+
+test("capital: só entra com uf + capital, e o feriado municipal substitui o facultativo nacional", () => {
+  const nomes = (opts) => F.feriadosDoAno(2027, opts).map((f) => `${f.data} ${f.nome} ${f.tipo} ${f.abrangencia}`);
+  const sp = nomes({ uf: "SP" });
+  const spCapital = nomes({ uf: "SP", capital: true });
+  assert.ok(!sp.some((l) => l.includes("Aniversário de São Paulo")));
+  assert.ok(spCapital.includes("2027-01-25 Aniversário de São Paulo feriado municipal"));
+  // Corpus Christi 2027: 27/05. Facultativo nacional sem a capital; feriado municipal com ela, uma vez só.
+  assert.ok(sp.includes("2027-05-27 Corpus Christi facultativo nacional"));
+  assert.deepEqual(spCapital.filter((l) => l.startsWith("2027-05-27")), ["2027-05-27 Corpus Christi feriado municipal"]);
+  assert.deepEqual(nomes({ capital: true }), nomes({}), "capital sem uf não muda nada");
+  assert.deepEqual(nomes({ uf: "DF", capital: true }), nomes({ uf: "DF" }), "DF não tem capital em municipais.js");
+});
+
+test("capital: item municipal traz cidade, lei e uf", () => {
+  const f = F.feriadosDoAno(2027, { uf: "RS", capital: true }).find((x) => x.abrangencia === "municipal" && x.data === "2027-02-02");
+  assert.deepEqual(f, { data: "2027-02-02", nome: "Nossa Senhora dos Navegantes", tipo: "feriado", abrangencia: "municipal", uf: "RS", cidade: "Porto Alegre", lei: "Lei 3.033/1967" });
+  assert.equal(F.capitalDe("RS"), "Porto Alegre");
+  assert.equal(F.capitalDe("DF"), null);
+});
+
+test("capital: feriado municipal entra nos planejadores e no .ics", () => {
+  // Navegantes 2027 cai numa terça: com a capital, a segunda vira uma emenda boa.
+  const com = F.oportunidades("2027-01-20", "2027-02-20", { uf: "RS", capital: true });
+  const sem = F.oportunidades("2027-01-20", "2027-02-20", { uf: "RS" });
+  assert.ok(com.some((o) => o.inicio <= "2027-02-02" && o.fim >= "2027-02-02"));
+  assert.ok(!sem.some((o) => o.inicio <= "2027-02-02" && o.fim >= "2027-02-02"));
+  const ics = F.paraIcs(F.feriadosDoAno(2027, { uf: "AP", capital: true }), new Date(0));
+  assert.match(ics.replace(/\r\n /g, ""), /DESCRIPTION:Feriado municipal \(Macapá\) · lei a confirmar \(data em calendários de/);
+});

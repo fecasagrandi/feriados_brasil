@@ -299,3 +299,44 @@ test.describe("calendário assinável do estado", () => {
     expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(/\/calendario\/SP\.ics$/);
   });
 });
+
+test.describe("feriados da capital", () => {
+  test.use({ permissions: ["geolocation", "clipboard-read", "clipboard-write"], geolocation: { latitude: -23.55, longitude: -46.63 } });
+
+  test("'moro em São Paulo' inclui os municipais, assina o calendário da capital e o × apaga tudo", async ({ page, request }) => {
+    const { erros } = await abrir(page);
+    await expect(page.locator("#capital-opcao")).toBeHidden(); // sem estado, sem opção
+    await page.locator("#geo").click();
+    await expect(page.locator("#geo-uf")).toHaveText("SP");
+    await expect(page.locator("#capital-opcao")).toBeVisible();
+    await expect(page.locator("#capital-opcao")).toContainText("moro em São Paulo");
+
+    const cal = page.locator("#calendario");
+    await expect(cal).not.toContainText("Aniversário de São Paulo");
+    await page.locator("#capital").check();
+    await expect(cal.locator(".linha", { hasText: "Aniversário de São Paulo" })).toContainText("municipal · São Paulo");
+    // Corpus Christi 2026 (04/06) vira feriado municipal: uma linha só, sem o "facultativo".
+    const corpus = cal.locator(".linha", { hasText: "Corpus Christi" });
+    await expect(corpus).toHaveCount(1);
+    await expect(corpus).toContainText("municipal · São Paulo");
+    expect(await page.evaluate(() => localStorage.getItem("feriados:capital"))).toBe("1");
+
+    await page.locator("#assinar").click();
+    await expect(page.locator("#geo-status")).toContainText("São Paulo, capital");
+    const url = await page.evaluate(() => navigator.clipboard.readText());
+    expect(url).toMatch(/\/calendario\/SP-capital\.ics$/);
+    const resp = await request.get(new URL(url).pathname);
+    expect(await resp.text()).toContain("X-WR-CALNAME:Feriadou · São Paulo (capital)");
+
+    // a escolha sobrevive a um recarregamento
+    await page.reload();
+    await page.clock.runFor(2000);
+    await expect(page.locator("#capital")).toBeChecked();
+
+    await page.locator("#esquecer").click();
+    await expect(page.locator("#capital-opcao")).toBeHidden();
+    await expect(cal).not.toContainText("Aniversário de São Paulo");
+    expect(await page.evaluate(() => ({ ...localStorage }))).not.toHaveProperty("feriados:capital");
+    expect(erros).toEqual([]);
+  });
+});
