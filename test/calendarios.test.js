@@ -42,7 +42,7 @@ test("calendários cobrem pelo menos os próximos 2 anos (lembrete para aumentar
 });
 
 test("cada calendário é iCalendar válido: nome, linhas ≤ 75 octetos, UIDs únicos", () => {
-  assert.equal(Object.keys(gerados).length, 28); // Brasil + 27 UFs
+  assert.equal(Object.keys(gerados).length, 28 + 25); // Brasil + 27 UFs + 25 capitais (sem DF e PA)
   for (const [nome, ics] of Object.entries(gerados)) {
     assert.match(ics, /^BEGIN:VCALENDAR\r\n/, nome);
     assert.match(ics, /X-WR-CALNAME:Feriadou · /, nome);

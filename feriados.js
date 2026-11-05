@@ -48,10 +48,13 @@
     SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
   };
 
-  // Feriados estaduais: estaduais.js (só dados; o formato é conferido por test/estaduais.test.js).
+  // Feriados estaduais e das capitais: estaduais.js e municipais.js (só dados; formato conferido por test/dados.test.js).
   const ESTADUAIS =
     typeof module !== "undefined" && module.exports ? require("./estaduais.js") : root.FERIADOS_ESTADUAIS;
   if (!ESTADUAIS) throw new Error("estaduais.js precisa ser carregado antes de feriados.js");
+  const MUNICIPAIS =
+    typeof module !== "undefined" && module.exports ? require("./municipais.js") : root.FERIADOS_MUNICIPAIS;
+  if (!MUNICIPAIS) throw new Error("municipais.js precisa ser carregado antes de feriados.js");
 
   const ANO_MIN = 1583; // primeiro ano completo do calendário gregoriano
   const ANO_MAX = 9999; // limite do formato AAAA
@@ -116,10 +119,14 @@
   }
 
   const PESO_TIPO = { feriado: 0, facultativo: 1 };
-  const PESO_ABRANGENCIA = { nacional: 0, estadual: 1 };
+  const PESO_ABRANGENCIA = { nacional: 0, estadual: 1, municipal: 2 };
+
+  // Nome da capital da UF, se há feriados dela em municipais.js.
+  const capitalDe = (uf) => (MUNICIPAIS[uf] ? MUNICIPAIS[uf].cidade : null);
 
   // `uf`: sigla (ex.: "SP") para incluir os feriados estaduais; null/omitido = só nacionais.
-  function feriadosDoAno(ano, { facultativos = true, uf = null } = {}) {
+  // `capital`: com `uf`, inclui também os feriados municipais da capital desse estado.
+  function feriadosDoAno(ano, { facultativos = true, uf = null, capital = false } = {}) {
     validarAno(ano);
     validarUf(uf);
     const p = pascoa(ano);
@@ -140,29 +147,34 @@
       lista.push({ data: iso(ano, f.mes, f.dia), nome: f.nome, tipo: "facultativo", abrangencia: "nacional", obs: f.obs });
     }
 
-    if (uf) {
-      for (const f of ESTADUAIS[uf] || []) {
+    const locais = (itens, abrangencia, extra) => {
+      for (const f of itens) {
         if ((f.desde && ano < f.desde) || (f.ate && ano > f.ate)) continue;
         const data = f.pascoa != null ? somaDias(p, f.pascoa) : iso(ano, f.mes, f.dia);
-        const item = { data, nome: f.nome, tipo: f.tipo || "feriado", abrangencia: "estadual", uf };
+        const item = { data, nome: f.nome, tipo: f.tipo || "feriado", abrangencia, uf, ...extra };
         if (f.lei) item.lei = f.lei;
+        if (f.ato) item.ato = f.ato;
         if (f.fonte) item.fonte = f.fonte;
         lista.push(item);
       }
-      // Onde o estado decreta feriado, o ponto facultativo nacional do mesmo dia deixa
-      // de fazer sentido (ex.: terça de Carnaval no RJ).
-      const feriadosEstaduais = new Set(
-        lista.filter((f) => f.abrangencia === "estadual" && f.tipo === "feriado").map((f) => f.data)
+    };
+    if (uf) {
+      locais(ESTADUAIS[uf] || [], "estadual");
+      if (capital && MUNICIPAIS[uf]) locais(MUNICIPAIS[uf].feriados, "municipal", { cidade: MUNICIPAIS[uf].cidade });
+      // Onde o estado ou a capital decreta feriado, o ponto facultativo nacional do mesmo dia
+      // deixa de fazer sentido (ex.: terça de Carnaval no RJ, Corpus Christi em São Paulo).
+      const feriadosLocais = new Set(
+        lista.filter((f) => f.abrangencia !== "nacional" && f.tipo === "feriado").map((f) => f.data)
       );
       lista = lista.filter(
-        (f) => !(f.abrangencia === "nacional" && f.tipo === "facultativo" && feriadosEstaduais.has(f.data))
+        (f) => !(f.abrangencia === "nacional" && f.tipo === "facultativo" && feriadosLocais.has(f.data))
       );
     }
 
     if (!facultativos) lista = lista.filter((f) => f.tipo === "feriado");
 
     // Datas podem coincidir (Paixão de Cristo caiu em 21/04 em 2000, junto com Tiradentes).
-    // Desempate: feriado antes de facultativo, nacional antes de estadual, depois nome.
+    // Desempate: feriado antes de facultativo, nacional > estadual > municipal, depois nome.
     return lista.sort(
       (x, y) =>
         x.data.localeCompare(y.data) ||
@@ -186,9 +198,9 @@
   }
 
   // Feriados (sem pontos facultativos: não são folga garantida) agrupados por data.
-  function feriadosPorDataEntre(de, ate, uf) {
+  function feriadosPorDataEntre(de, ate, uf, capital) {
     const porData = new Map();
-    for (const f of feriadosEntre(de, ate, { facultativos: false, uf })) {
+    for (const f of feriadosEntre(de, ate, { facultativos: false, uf, capital })) {
       if (!porData.has(f.data)) porData.set(f.data, []);
       porData.get(f.data).push(f);
     }
@@ -204,11 +216,11 @@
    * contém ao menos um feriado e pede de 1 a `maxFerias` dias de férias.
    * Para cada feriado fica o bloco de melhor rendimento (dias de folga ÷ dias de férias).
    */
-  function oportunidades(inicio, fim, { uf = null, maxFerias = 4, rendimentoMinimo = 2.5 } = {}) {
+  function oportunidades(inicio, fim, { uf = null, capital = false, maxFerias = 4, rendimentoMinimo = 2.5 } = {}) {
     const margem = 10;
     const de = somaDias(inicio, -margem);
     const ate = somaDias(fim, margem);
-    const feriadosPorData = feriadosPorDataEntre(de, ate, uf);
+    const feriadosPorData = feriadosPorDataEntre(de, ate, uf, capital);
 
     const n = diasEntre(de, ate) + 1;
     const dias = Array.from({ length: n }, (_, i) => somaDias(de, i));
@@ -270,14 +282,14 @@
    * (dia, dias restantes, períodos restantes, falta o período de 14+): ~2 milhões de passos por ano.
    * Empate: menos períodos e, depois, o mais cedo. Devolve null se não há como encaixar.
    */
-  function planejarFerias(inicio, fim, { dias = 30, periodos = 3, uf = null } = {}) {
+  function planejarFerias(inicio, fim, { dias = 30, periodos = 3, uf = null, capital = false } = {}) {
     if (!Number.isInteger(dias) || dias < 1 || dias > 30) throw new RangeError(`dias de férias inválido: ${dias}`);
     if (![1, 2, 3].includes(periodos)) throw new RangeError(`períodos inválido: ${periodos}`);
 
     const antes = 10; // folga colada antes de `inicio` também conta
     const depois = 15; // idem depois de `fim`
     const de = somaDias(inicio, -antes);
-    const feriadosPorData = feriadosPorDataEntre(de, somaDias(fim, depois), uf);
+    const feriadosPorData = feriadosPorDataEntre(de, somaDias(fim, depois), uf, capital);
 
     const n = diasEntre(de, fim) + 1 + depois;
     const datas = Array.from({ length: n }, (_, i) => somaDias(de, i));
@@ -422,8 +434,9 @@
       const facultativo = f.tipo !== "feriado";
       let desc = facultativo
         ? `Ponto facultativo${f.obs ? ` (${f.obs})` : ""}`
+        : f.abrangencia === "municipal" ? `Feriado municipal (${f.cidade})`
         : f.abrangencia === "estadual" ? `Feriado estadual (${f.uf})` : "Feriado nacional";
-      if (f.lei) desc += ` · ${f.lei}`;
+      if (f.lei) desc += ` · ${f.lei === "a confirmar" ? `lei a confirmar (data em ${f.ato})` : f.lei}`;
       if (f.fonte) desc += ` (${f.fonte})`;
       linhas.push(
         "BEGIN:VEVENT",
@@ -445,6 +458,7 @@
 
   const api = {
     UFS,
+    capitalDe,
     pascoa,
     oportunidades,
     planejarFerias,

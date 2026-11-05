@@ -372,6 +372,7 @@ body.is-today .countdown { display: none; }
   cursor: pointer;
 }
 .toggle input { accent-color: var(--red); cursor: pointer; }
+.toggle[hidden] { display: none; }
 
 .ano-nav { display: flex; align-items: center; gap: 2px; }
 .ano-nav button {

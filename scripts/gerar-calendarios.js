@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /*
- * Gera os calendários assináveis: calendario/brasil.ics (nacionais) e calendario/<UF>.ics
- * (nacionais + estaduais), com pontos facultativos marcados no título.
+ * Gera os calendários assináveis: calendario/brasil.ics (nacionais), calendario/<UF>.ics
+ * (nacionais + estaduais) e calendario/<UF>-capital.ics (+ municipais da capital), com
+ * pontos facultativos marcados no título.
  *
  * Quem assina a URL no Google Agenda, Outlook ou Apple recebe as correções sozinho: o UID de
  * cada evento é estável e o DTSTAMP é fixo, então o arquivo só muda quando um dado muda.
@@ -29,7 +30,7 @@ function lerRevisoes() {
 }
 
 // Nome e data já estão no UID; o resto do que aparece no evento entra no hash.
-const chave = (f) => `${f.data}|${f.uf || ""}|${f.nome}`;
+const chave = (f) => `${f.data}|${f.uf || ""}${f.abrangencia === "municipal" ? "-capital" : ""}|${f.nome}`;
 const conteudo = (f) =>
   crypto.createHash("sha256").update(JSON.stringify([f.tipo, f.obs, f.abrangencia, f.lei, f.fonte])).digest("hex").slice(0, 12);
 
@@ -49,6 +50,11 @@ function gerar(anteriores = lerRevisoes()) {
   };
   for (const [uf, nome] of Object.entries(F.UFS)) {
     arquivos[`${uf}.ics`] = F.paraIcs(F.feriadosEntre(de, ate, { facultativos: true, uf }), agora, { nome: `Feriadou · ${nome}`, revisao });
+    const cidade = F.capitalDe(uf);
+    if (cidade) {
+      const lista = F.feriadosEntre(de, ate, { facultativos: true, uf, capital: true });
+      arquivos[`${uf}-capital.ics`] = F.paraIcs(lista, agora, { nome: `Feriadou · ${cidade} (capital)`, revisao });
+    }
   }
   const ordenadas = Object.fromEntries(Object.entries(revisoes).sort(([a], [b]) => a.localeCompare(b)));
   return { arquivos, revisoes: ordenadas };

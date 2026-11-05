@@ -1,6 +1,6 @@
 /*
  * Feriados estaduais: SÓ DADOS, sem lógica. Corrigir uma data é editar uma linha aqui.
- * O formato é conferido por test/estaduais.test.js (rode `npm test`).
+ * O formato é conferido por test/dados.test.js (rode `npm test`).
  *
  * Critério para entrar: duas fontes independentes concordando e citando a lei.
  * Divergências e decisões estão no README ("Feriados estaduais").
