@@ -154,7 +154,7 @@ O site é estático (sem build) e roda em dois lugares:
 - **Vercel** (principal): `vercel.json` define os cabeçalhos HTTP que o GitHub Pages não deixa configurar:
   - CSP de verdade, incluindo `frame-ancestors 'none'` (impede abrir a página dentro de um iframe, o que a `<meta>` não consegue);
   - `nosniff`, `Referrer-Policy` e `Permissions-Policy` (só a geolocalização da própria página);
-  - cache de 1 ano (`immutable`) para `.js`, `.css`, imagens e fontes, o que só é seguro porque toda URL leva `?v=<hash>` (ver "Ao alterar…"). As fontes não têm hash: se mudarem, troque o nome do arquivo;
+  - cache de 1 ano (`immutable`) para `.js`, `.css` e imagens **só quando a URL traz `?v=<hash>`** (ver "Ao alterar…"); sem o parâmetro, vale o cache padrão da Vercel. As fontes não têm hash e também têm cache de 1 ano: se mudarem, troque o nome do arquivo;
   - `.ics` com `text/calendar` e cache de 1 hora.
   O `.vercelignore` deixa de fora testes, scripts e o `package.json`, então a Vercel não roda `npm install`: publica os arquivos como estão.
 - **GitHub Pages** (continua no ar): quem assinou um calendário em `fecasagrandi.github.io/feriados_brasil/calendario/…` segue recebendo as correções, já que o Pages não permite redirecionar.

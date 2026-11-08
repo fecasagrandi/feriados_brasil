@@ -18,19 +18,21 @@ test("vercel.json: a CSP do cabeçalho é a mesma da <meta>, mais frame-ancestor
   assert.equal(cabecalho("/(.*)", "Content-Security-Policy"), `${meta}; frame-ancestors 'none'`);
 });
 
-test("vercel.json: cache imutável só para arquivos com ?v=hash na URL (as fontes não mudam: trocam de nome)", () => {
-  const imutavel = new RegExp(`^${config.headers[1].source}$`); // a "source" da Vercel já é uma regex
-  assert.match(cabecalho(config.headers[1].source, "Cache-Control"), /immutable/);
+test("vercel.json: cache imutável só com ?v= na URL (ou para as fontes, que trocam de nome se mudarem)", () => {
+  const imutaveis = config.headers.filter((r) => r.headers.some((h) => h.key === "Cache-Control" && /immutable/.test(h.value)));
+  assert.ok(imutaveis.length > 0);
+  for (const r of imutaveis) {
+    const exigeV = (r.has || []).some((c) => c.type === "query" && c.key === "v");
+    assert.ok(exigeV || r.source.startsWith("/fontes/"), `${r.source}: cache de 1 ano sem exigir ?v= serviria a versão velha`);
+  }
+  // E tudo que a página carrega leva ?v=, senão perde o cache longo.
   const refs = [...html.matchAll(/(?:src|href)="([^"#:][^"]*)"/g)].map((m) => m[1]);
   const app = fs.readFileSync(path.join(RAIZ, "app.js"), "utf8");
   refs.push(...[...app.matchAll(/"([\w-]+\.js\?v=[0-9a-f]+)"/g)].map((m) => m[1]));
-  const og = html.match(/property="og:image" content="([^"]+)"/)[1];
-  refs.push(new URL(og).pathname.replace(/^\/feriados_brasil\//, "") + new URL(og).search);
   for (const ref of refs) {
     const [caminho, busca = ""] = ref.split("?");
-    if (!imutavel.test("/" + caminho)) continue;
-    if (caminho.startsWith("fontes/")) continue;
-    assert.match(busca, /^v=[0-9a-f]{8}$/, `${ref}: cache de 1 ano sem ?v=hash serviria a versão velha para sempre`);
+    if (!/\.(js|css|svg|png)$/.test(caminho)) continue;
+    assert.match(busca, /^v=[0-9a-f]{8}$/, `${ref}: sem ?v=hash`);
   }
 });
 
