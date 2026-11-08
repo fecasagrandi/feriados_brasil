@@ -14,6 +14,17 @@ const TIPOS = {
   ".svg": "image/svg+xml", ".png": "image/png", ".woff2": "font/woff2", ".txt": "text/plain; charset=utf-8", ".ics": "text/calendar; charset=utf-8",
 };
 
+// Os mesmos cabeçalhos da Vercel (vercel.json): os testes E2E rodam sob a CSP de verdade.
+const REGRAS = JSON.parse(fs.readFileSync(path.join(RAIZ, "vercel.json"), "utf8")).headers.map((r) => ({
+  re: new RegExp(`^${r.source}$`),
+  headers: r.headers,
+}));
+function cabecalhos(caminho) {
+  const h = {};
+  for (const r of REGRAS) if (r.re.test(caminho)) for (const { key, value } of r.headers) h[key.toLowerCase()] = value;
+  return h;
+}
+
 http
   .createServer((req, res) => {
     let caminho;
@@ -38,7 +49,10 @@ http
     }
     fs.readFile(arquivo, (erro, dados) => {
       if (erro) return res.writeHead(404).end();
-      res.writeHead(200, { "content-type": TIPOS[path.extname(arquivo)] || "application/octet-stream" }).end(dados);
+      res.writeHead(200, {
+        "content-type": TIPOS[path.extname(arquivo)] || "application/octet-stream",
+        ...cabecalhos(caminho),
+      }).end(dados);
     });
   })
   .listen(PORTA, HOST, function () {

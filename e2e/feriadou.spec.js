@@ -381,3 +381,17 @@ test("navegação entre seções gruda no topo e marca onde a pessoa está", asy
   const titulo = await page.locator("#t-ferias").boundingBox();
   expect(titulo.y).toBeGreaterThanOrEqual(caixa.height);
 });
+
+test("cabeçalhos da Vercel: a página funciona sob a CSP de verdade e não abre dentro de iframe", async ({ page, request }) => {
+  const resp = await request.get("/");
+  expect(resp.headers()["content-security-policy"]).toContain("frame-ancestors 'none'");
+  expect(resp.headers()["x-content-type-options"]).toBe("nosniff");
+  expect((await request.get("/app.js")).headers()["cache-control"]).toContain("immutable");
+  expect((await request.get("/calendario/brasil.ics")).headers()["cache-control"]).toBe("public, max-age=3600");
+  const violacoes = [];
+  page.on("console", (m) => { if (/Content Security Policy/i.test(m.text())) violacoes.push(m.text()); });
+  const { erros } = await abrir(page);
+  await expect(page.locator("#hnome")).not.toHaveText("—");
+  expect(violacoes).toEqual([]);
+  expect(erros).toEqual([]);
+});
