@@ -36,7 +36,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=dffbfc73" />
 
   <!-- CSS primeiro: um script bloqueante antes dele atrasaria a descoberta do CSS. -->
-  <link rel="stylesheet" href="estilo.css?v=37d471f1">
+  <link rel="stylesheet" href="estilo.css?v=bef38881">
   <!-- Fontes antes do primeiro render do JS: sem isso, a troca de fonte faz a página pular. -->
   <link rel="preload" href="fontes/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fontes/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -48,7 +48,7 @@
   <script defer src="feriados.js?v=a43171d9"></script>
   <script defer src="sobre.js?v=343693e5"></script>
   <script defer src="localizacao.js?v=a5b0384e"></script>
-  <script defer src="app.js?v=da38d6f2"></script>
+  <script defer src="app.js?v=09485654"></script>
 </head>
 <body class="entrando">
   <main class="container">
@@ -116,6 +116,13 @@
       <div class="dias-legenda"><span id="leg-desde"></span><span id="leg-conta"></span></div>
     </div>
 
+    <nav class="secoes revela" id="secoes" style="--d:6" aria-label="seções da página">
+      <a href="#t-proximos">próximos</a>
+      <a href="#t-folgas">emendas</a>
+      <a href="#t-ferias">férias</a>
+      <a href="#t-calendario">calendário</a>
+    </nav>
+
     <section aria-labelledby="t-proximos">
       <div class="secao-topo revela" style="--d:6">
         <h2 class="rotulo" id="t-proximos">próximos</h2>
@@ -130,6 +137,13 @@
           </label>
         </div>
       </div>
+      <button type="button" class="convite" id="convite" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 21.5s-6.5-5.9-6.5-11.2a6.5 6.5 0 0 1 13 0c0 5.3-6.5 11.2-6.5 11.2z" />
+          <circle cx="12" cy="10.2" r="2.3" />
+        </svg>
+        <span><strong>incluir os feriados do seu estado</strong> e da capital, se você mora nela. A localização não sai do aparelho.</span>
+      </button>
       <div class="lista" id="proximos"></div>
     </section>
 
