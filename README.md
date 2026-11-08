@@ -147,6 +147,22 @@ Precisão medida contra os 5.564 municípios do IBGE: **5.563 corretos** (o úni
 
 Os arquivos `.js` funcionam como `<script>` clássico e como módulo CommonJS, por isso dá para testar no Node sem build.
 
+## Hospedagem
+
+O site é estático (sem build) e roda em dois lugares:
+
+- **Vercel** (principal): `vercel.json` define os cabeçalhos HTTP que o GitHub Pages não deixa configurar:
+  - CSP de verdade, incluindo `frame-ancestors 'none'` (impede abrir a página dentro de um iframe, o que a `<meta>` não consegue);
+  - `nosniff`, `Referrer-Policy` e `Permissions-Policy` (só a geolocalização da própria página);
+  - cache de 1 ano (`immutable`) para `.js`, `.css` e imagens **só quando a URL traz `?v=<hash>`** (ver "Ao alterar…"); sem o parâmetro, vale o cache padrão da Vercel. As fontes não têm hash e também têm cache de 1 ano: se mudarem, troque o nome do arquivo;
+  - `.ics` com `text/calendar` e cache de 1 hora.
+  O `.vercelignore` deixa de fora testes, scripts e o `package.json`, então a Vercel não roda `npm install`: publica os arquivos como estão.
+- **GitHub Pages** (continua no ar): quem assinou um calendário em `fecasagrandi.github.io/feriados_brasil/calendario/…` segue recebendo as correções, já que o Pages não permite redirecionar.
+
+`scripts/servidor.js` aplica os mesmos cabeçalhos do `vercel.json`, então os testes E2E rodam sob a CSP de produção. `test/vercel.test.js` garante que a CSP do cabeçalho é a da `<meta>` + `frame-ancestors` e que nada com cache de 1 ano fica sem `?v=hash`.
+
+**Publicar na Vercel (uma vez):** vercel.com → *Add New › Project* → importar `fecasagrandi/feriados_brasil` → *Framework Preset: Other*, sem comando de build, diretório raiz. A partir daí, cada push na `main` publica sozinho e cada PR ganha uma URL de prévia.
+
 ## Desempenho
 
 Medido no Chromium com rede 4G lenta simulada (150 ms de latência, 1,6 Mbps), CPU 4× mais lenta, HTTP/2 e gzip como no GitHub Pages; mediana de 15 carregamentos:

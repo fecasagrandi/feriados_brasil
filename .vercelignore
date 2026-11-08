@@ -1,0 +1,10 @@
+# Só o site vai para a Vercel. Sem package.json, ela também não roda npm install.
+node_modules
+test
+test-results
+e2e
+scripts
+playwright.config.js
+package.json
+package-lock.json
+.github
